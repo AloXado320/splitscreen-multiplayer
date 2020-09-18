@@ -1,0 +1,36 @@
+Splitscreen Bug List
+
+
+* = Introduced in the current update (or unable to be duplicated in Kaze's splitscreen release)
+** = Improvement for splitscreen
+Desktop
+
+
+*0. Player 2 can no longer press buttons to skip dialogue, only player 1.
+*1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
+2. Hurtbox feels *huge* - but in case it's enemies having huge hitboxes, Piranah Plant, Goomba, Oyester / clam shells, Orange bug dudes from Hazy Maze Cave, Blue bug dudes from Wet/dry world, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopa. Lakitu. Purse Frog thing? Helicopter spinny head girls? (this list is almost guaranteed to be incomplete sadly)
+*3. King Bobomb Boss Music does not play
+*4. Flame Orbi's, Shy Guys, and single shot Bowser breath won't burn Luigi
+5. "lets eh go!" voice clip does not have enough time to play to completion
+6. Owl still generates dialogue.
+7. Dialogue does not freeze players in place.
+8. Electric Orbi's won't shock Luigi.
+9. Luigi doesn't say "So long gay bowser!" **would it work if we added a sound specifically for Luigi?
+10. When both players die, Bowser's laugh doesn't seem to play the entire duration?
+11. Standing on Dory's head as either player will not raise her head up.
+12. Unsure if volcano explosion hurts either player...
+13. Ring detection is extremely off in The Manta Ray's Reward
+*14. Big Boo's Balcony; Big Boo will not come onto the balcony forcing you to butt stomp all the way back to the ground every time you want to hit him. Makes it easier overall since you never have to worry about being hit. ***fixed***
+15. Cool Cool Island's Snowman Body still produces dialogue.
+*16. Swimming camera on Jolly Rancher Bay and outside the castle is all screwed up. 
+17. (from Inky) entering another room while one player dies at the point where the transition would happen makes both players receive death eject knockback when entering the room (or knocked out of the painting if during a level transition such as finishing the Secret Slide as one player while the other player dies)
+18. Wet/Dry world can only be entered with the water drained unless both players jump into the painting at the same time.
+19. Monkey bugs; after the monkey takes your hat and you catch him, he becomes invisible. When you put him down, he becomes visible again but you can't put your hat back on. Monkey and anyone who takes your hat, always the Mario hat (which it's OK, it can be Mario's hat, it's the same way it works in Odyssey for some reason)
+20. Dialogue still exists for the monkey at the top of the mountain in the Monkey Cage star. (that may be just so you can free him, nevermind)
+21. Sides of cannon do not rotate properly with cannon.
+*22. Crashes when I try to go to the mirror room. ***fixed***
+23. Bowser level 1: Painting does not transition from Peach to Bowser as you get closer. Is simply Bowser.
+*24. Crashes during the ending.*******************
+*25. Bully type enemies are unable to collide with Luigi.
+**26. Since the Snowman's Land painting can't be seen in the mirror room as the Mirror is removed, why not place the painting on the wall????
+**27. Why don't we make the 2nd Bowser fight take two bombs to win?
