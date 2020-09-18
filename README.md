@@ -1,6 +1,10 @@
+# Ultra 64 Mario Bros
+
+- This repo aims to combine the ability to have Splitscreen or Single Player with the ability to select Mario or Luigi on the same N64 cart.
+
 # Super Mario 64
 
-- This repo contains a full decompilation of Super Mario 64 (J), (U), and (E) with minor exceptions in the audio subsystem.
+- Contains a full decompilation of Super Mario 64 (J), (U), and (E) with minor exceptions in the audio subsystem.
 - Naming and documentation of the source code and data structures are in progress.
 - Efforts to decompile the Shindou ROM steadily advance toward a matching build.
 
