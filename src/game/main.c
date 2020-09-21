@@ -116,11 +116,11 @@ void setup_mesg_queues(void) {
 
 void alloc_pool(void) {
     void *start = (void *) SEG_POOL_START;
-    void *end = (void *) SEG_POOL_END;
+    void *end = (void *) (SEG_POOL_START + POOL_SIZE);
 
     // Detect memory size
     if (does_pool_end_lie_out_of_bounds(end))
-        end = (void *)SEG_POOL_END_4MB;
+        end = (void *)RAM_END_4MB;
 
     main_pool_init(start, end);
     gEffectsMemoryPool = mem_pool_init(0x4000, MEMORY_POOL_LEFT);
