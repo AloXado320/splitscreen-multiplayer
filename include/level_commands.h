@@ -165,8 +165,8 @@
     CMD_PTR(romEnd)
 #endif
 
-#define LOAD_MARIO_HEAD() \
-    CMD_BBH(0x32, 0x04, 0x0000)
+#define LOAD_MARIO_HEAD(sethead) \
+    CMD_BBH(0x19, 0x04, sethead)
 
 #ifdef NO_SEGMENTED_MEMORY
 #define LOAD_MIO0_TEXTURE(seg, romStart, romEnd) \
