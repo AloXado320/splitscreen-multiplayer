@@ -373,12 +373,12 @@ void bhv_mario_update(void) {
             && (gMarioStates[l].action != ACT_SPECIAL_DEATH_EXIT)
             && (gMarioStates[l].action != ACT_SPECIAL_EXIT_AIRBORNE)
             && (gMarioStates[l ^ 1].action != ACT_BUBBLED)) {
-            if (gMarioStates[l ^ 1].marioObj->header.gfx.unk38.animID == MARIO_ANIM_CROUCHING) {
+            if (gMarioStates[l ^ 1].marioObj->header.gfx.animInfo.animID == MARIO_ANIM_CROUCHING) {
                 bounce_off_object(&gMarioStates[l], gMarioStates[l ^ 1].marioObj, 80.0f);
                 gMarioStates[l].vel[1] = 60.f;
                 set_mario_action( &gMarioStates[l], ACT_TWIRLING, 0);
                 /*if (gMarioStates[l].action == ACT_TWIRLING){
-                    gMarioStates[l].marioObj->header.gfx.unk38.animFrame = 0;
+                    gMarioStates[l].marioObj->header.gfx.animInfo.animFrame = 0;
                 }*/
             } else {
                 bounce_off_object(&gMarioStates[l], gMarioStates[l ^ 1].marioObj, 80.0f);
@@ -395,7 +395,7 @@ void bhv_mario_update(void) {
 
         hitMario = FALSE;
         for (iterate = 0; iterate < hitboxAnimCount; iterate++) {
-            if (gCurrentObject->header.gfx.unk38.animID == multiplayerHurtboxAnims[iterate]) {
+            if (gCurrentObject->header.gfx.animInfo.animID == multiplayerHurtboxAnims[iterate]) {
                 hitMario = TRUE;
             }
         }
@@ -406,7 +406,7 @@ void bhv_mario_update(void) {
             playerHurtbox->oIntangibleTimer = 0;
 
             for (iterate = 0; iterate < hitboxMovelessAnimCount; iterate++) {
-                if (gCurrentObject->header.gfx.unk38.animID
+                if (gCurrentObject->header.gfx.animInfo.animID
                     == multiplayerHurtboxAnimsMoveless[iterate]) {
                     iterate = hitboxMovelessAnimCount + 1;
                 }
@@ -575,7 +575,7 @@ void unload_objects_from_area(UNUSED s32 unused, s32 areaIndex) {
             obj = (struct Object *) node;
             node = node->next;
 
-            if (obj->header.gfx.unk19 == areaIndex) {
+            if (obj->header.gfx.activeAreaIndex == areaIndex) {
                 unload_object(obj);
             }
         }
@@ -590,7 +590,7 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
     gTimeStopState = 0;
 
     gWDWWaterLevelChanging = FALSE;
-    gMarioOnMerryGoRound = 0;
+    gMarioOnMerryGoRound = FALSE;
 
     //! (Spawning Displacement) On the Japanese version, Mario's platform object
     //  isn't cleared when transitioning between areas. This can cause Mario to

@@ -31,7 +31,7 @@ void bhv_pushable_loop(void) {
     obj_set_hitbox(o, &sMetalBoxHitbox);
     for (i = 0; i < gActivePlayers; i++) {
         o->oForwardVel = 0.0f;
-        if (obj_check_if_collided_with_object(o, gMarioStates[i].marioObj) && gMarioStates[i].flags & 0x80000000) {
+        if (obj_check_if_collided_with_object(o, gMarioStates[i].marioObj) && gMarioStates[i].flags & MARIO_UNKNOWN_31) {
             sp1C = obj_angle_to_object(o, gMarioStates[i].marioObj);
             if (abs_angle_diff(sp1C, gMarioStates[i].marioObj->oMoveAngleYaw) > 0x4000) {
                 o->oMoveAngleYaw = (s16)((gMarioStates[i].marioObj->oMoveAngleYaw + 0x2000) & 0xc000);

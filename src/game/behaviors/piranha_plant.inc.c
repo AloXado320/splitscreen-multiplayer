@@ -240,7 +240,7 @@ static s8 sPiranhaPlantBiteSoundFrames[] = { 12, 28, 50, 64, -1 };
  * Piranha Plant will move to the attacked state.
  */
 void piranha_plant_act_biting(void) {
-    s32 frame = o->header.gfx.unk38.animFrame;
+    s32 frame = o->header.gfx.animInfo.animFrame;
 
     cur_obj_become_tangible();
 

@@ -52,6 +52,7 @@ Gfx *geo_envfx_main(s32 callContext, struct GraphNode *node, Mat4 mtxf) {
         vec3s_copy(marioPos, gVec3sZero);
         envfx_update_particles(ENVFX_MODE_NONE, marioPos, camTo, camFrom);
     }
+
     return gfx;
 }
 
@@ -74,5 +75,6 @@ Gfx *geo_skybox_main(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) 
                             gLakituState[luigiCamFirst].pos[1], gLakituState[luigiCamFirst].pos[2], gLakituState[luigiCamFirst].focus[0],
                             gLakituState[luigiCamFirst].focus[1], gLakituState[luigiCamFirst].focus[2]);
     }
+
     return gfx;
 }

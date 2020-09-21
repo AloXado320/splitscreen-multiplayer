@@ -79,9 +79,9 @@ struct GraphNodeObject gMirrorMario;  // copy of Mario's geo node for drawing mi
 
 static void toad_message_faded(void) {
     if (gCurrentObject->oDistanceToMario > 700.0f) {
-        gCurrentObject->oToadMessageRecentlyTalked = 0;
+        gCurrentObject->oToadMessageRecentlyTalked = FALSE;
     }
-    if (gCurrentObject->oToadMessageRecentlyTalked == 0 && gCurrentObject->oDistanceToMario < 600.0f) {
+    if (!gCurrentObject->oToadMessageRecentlyTalked && gCurrentObject->oDistanceToMario < 600.0f) {
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_OPACIFYING;
     }
 }
@@ -89,22 +89,20 @@ static void toad_message_faded(void) {
 static void toad_message_opaque(void) {
     if (gCurrentObject->oDistanceToMario > 700.0f) {
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADING;
-    } else {
-        if (gCurrentObject->oToadMessageRecentlyTalked == 0) {
-            gCurrentObject->oInteractionSubtype = INT_SUBTYPE_NPC;
-            //if (gCurrentObject->oInteractStatus & INT_STATUS_INTERACTED) {
+    } else if (!gCurrentObject->oToadMessageRecentlyTalked) {
+        gCurrentObject->oInteractionSubtype = INT_SUBTYPE_NPC;
+        //if (gCurrentObject->oInteractStatus & INT_STATUS_INTERACTED) {
             gCurrentObject->oInteractStatus = 0;
             gCurrentObject->oToadMessageState = TOAD_MESSAGE_TALKING;
             play_toads_jingle();
-            //}
-        }
+        //}
     }
 }
 
 static void toad_message_talking(void) {
     if (cur_obj_update_dialog_with_cutscene(3, 1, CUTSCENE_DIALOG, gCurrentObject->oToadMessageDialogId)
         != 0) {
-        gCurrentObject->oToadMessageRecentlyTalked = 1;
+        gCurrentObject->oToadMessageRecentlyTalked = TRUE;
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADING;
         switch (gCurrentObject->oToadMessageDialogId) {
             case TOAD_STAR_1_DIALOG:
@@ -160,33 +158,33 @@ void bhv_toad_message_loop(void) {
 
 void bhv_toad_message_init(void) {
     s32 saveFlags = save_file_get_flags();
-    s32 starCount = save_file_get_total_star_count(gCurrSaveFileNum - 1, 0, 24);
+    s32 starCount = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
     s32 dialogId = (gCurrentObject->oBehParams >> 24) & 0xFF;
     s32 enoughStars = TRUE;
 
     switch (dialogId) {
         case TOAD_STAR_1_DIALOG:
             enoughStars = (starCount >= TOAD_STAR_1_REQUIREMENT);
-            if (saveFlags & (1 << 24)) {
+            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_1) {
                 dialogId = TOAD_STAR_1_DIALOG_AFTER;
             }
             break;
         case TOAD_STAR_2_DIALOG:
             enoughStars = (starCount >= TOAD_STAR_2_REQUIREMENT);
-            if (saveFlags & (1 << 25)) {
+            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_2) {
                 dialogId = TOAD_STAR_2_DIALOG_AFTER;
             }
             break;
         case TOAD_STAR_3_DIALOG:
             enoughStars = (starCount >= TOAD_STAR_3_REQUIREMENT);
-            if (saveFlags & (1 << 26)) {
+            if (saveFlags & SAVE_FLAG_COLLECTED_TOAD_STAR_3) {
                 dialogId = TOAD_STAR_3_DIALOG_AFTER;
             }
             break;
     }
     if (enoughStars) {
         gCurrentObject->oToadMessageDialogId = dialogId;
-        gCurrentObject->oToadMessageRecentlyTalked = 0;
+        gCurrentObject->oToadMessageRecentlyTalked = FALSE;
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADED;
         gCurrentObject->oOpacity = 81;
     } else {
@@ -338,7 +336,7 @@ Gfx *geo_switch_mario_stand_run(s32 callContext, struct GraphNode *node, UNUSED 
         }
         bodyState = &gBodyStates[obj->oAnimState];
         // assign result. 0 if moving, 1 if stationary.
-        switchCase->selectedCase = ((bodyState->action & ACT_FLAG_STATIONARY) == FALSE);
+        switchCase->selectedCase = ((bodyState->action & ACT_FLAG_STATIONARY) == 0);
     }
     return NULL;
 }
@@ -568,7 +566,7 @@ Gfx *geo_mario_rotate_wing_cap_wings(s32 callContext, struct GraphNode *node, UN
         }
         //rotNode = &gBodyStates[obj->oAnimState];
 
-        if (gBodyStates[obj->oAnimState].wingFlutter == FALSE) {
+        if (!gBodyStates[asGenerated->parameter >> 1].wingFlutter) {
             rotX = (coss((gAreaUpdateCounter & 0xF) << 12) + 1.0f) * 4096.0f;
         } else {
             rotX = (coss((gAreaUpdateCounter & 7) << 13) + 1.0f) * 6144.0f;
@@ -660,24 +658,18 @@ Gfx *geo_render_mirror_mario(s32 callContext, struct GraphNode *node, UNUSED Mat
                 if (obj->header.gfx.pos[0] > 1700.0f) {
                     // TODO: Is this a geo layout copy or a graph node copy?
                     gMirrorMario.sharedChild = obj->header.gfx.sharedChild;
-                    gMirrorMario.unk18 = obj->header.gfx.unk18;
+                    gMirrorMario.areaIndex = obj->header.gfx.areaIndex;
                     vec3s_copy(gMirrorMario.angle, obj->header.gfx.angle);
                     vec3f_copy(gMirrorMario.pos, obj->header.gfx.pos);
                     vec3f_copy(gMirrorMario.scale, obj->header.gfx.scale);
-                    // FIXME: why does this set unk38, an inline struct, to a ptr to another one? wrong
-                    // GraphNode types again?
-                    gMirrorMario.unk38 = *(struct GraphNodeObject_sub *) &obj->header.gfx.unk38.animID;
+                    gMirrorMario.animInfo = obj->header.gfx.animInfo;
                     mirroredX = MIRROR_X - gMirrorMario.pos[0];
                     gMirrorMario.pos[0] = mirroredX + MIRROR_X;
                     gMirrorMario.angle[1] = -gMirrorMario.angle[1];
                     gMirrorMario.scale[0] *= -1.0f;
-                    // FIXME: Why doesn't this match?
-                    // gMirrorMario.node.flags |= 1;
-                    ((s16 *) &gMirrorMario)[1] |= 1;
+                    ((struct GraphNode *) &gMirrorMario)->flags |= 1;
                 } else {
-                    // FIXME: Why doesn't this match?
-                    // gMirrorMario.node.flags &= ~1;
-                    ((s16 *) &gMirrorMario)[1] &= ~1;
+                    ((struct GraphNode *) &gMirrorMario)->flags &= ~1;
                 }
                 break;
         }

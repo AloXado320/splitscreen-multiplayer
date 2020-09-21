@@ -81,7 +81,7 @@ void set_mario_pos(f32 x, f32 y, f32 z, int ID) {
 
 /**
  * Apply one frame of platform rotation to Mario or an object using the given
- * platform. If isMario is 0, use gCurrentObject.
+ * platform. If isMario is false, use gCurrentObject.
  */
 void apply_platform_displacement(u32 isMario, struct Object *platform) {
     f32 x;

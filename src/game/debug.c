@@ -255,7 +255,7 @@ void print_stageinfo(void) {
 void print_string_array_info(const char **strArr) {
     s32 i;
 
-    if (sDebugStringArrPrinted == FALSE) {
+    if (!sDebugStringArrPrinted) {
         sDebugStringArrPrinted += 1; // again, why not = TRUE...
         for (i = 0; i < 8; i++) {
             // sDebugPage is assumed to be 4 or 5 here.
