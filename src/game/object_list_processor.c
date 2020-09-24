@@ -327,7 +327,7 @@ void bhv_mario_update(void) {
         save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
           if (gMarioState->controller->buttonPressed & L_TRIG){
              level_trigger_warp(gMarioState, WARP_OP_CREDITS_START);
-    //    }
+        }
     // give stars
     // debug
     // get_all_stars();

@@ -189,7 +189,18 @@ Gfx *geo_exec_flying_carpet_create(s32 callContext, struct GraphNode *node, UNUS
 
     return displayList;
 }
+void copyData( u32 *destination, u32 *source, u32 size){
+    u32 *end = destination+size;
+    while (destination < end){
+        *destination = *source;
+        destination++;
+        source++;
+    }
 
+}
+extern const u8 cake_end_texture_0[];
+extern const u8 cake_end_texture_luigi_0[];
+extern const u8 cake_end_texture_mario_0[];
 /**
  * Create a display list for the end screen with Peach's delicious cake.
  */
@@ -198,6 +209,13 @@ Gfx *geo_exec_cake_end_screen(s32 callContext, struct GraphNode *node, UNUSED f3
     Gfx *displayList = NULL;
     Gfx *displayListHead = NULL;
     //overwrite texture with other texture if not in coop mode
+    if (gActivePlayers == 1){
+        if (singlePlayerChar){  
+            copyData(segmented_to_virtual(cake_end_texture_0), segmented_to_virtual(cake_end_texture_luigi_0), 0xc80 * 12);
+        } else {
+            copyData(segmented_to_virtual(cake_end_texture_0), segmented_to_virtual(cake_end_texture_mario_0), 0xc80 * 12);
+        }
+    }
     if (callContext == GEO_CONTEXT_RENDER) {
         displayList = alloc_display_list(3 * sizeof(*displayList));
         displayListHead = displayList;

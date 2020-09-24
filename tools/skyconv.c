@@ -315,7 +315,7 @@ static void write_skybox_c() { /* write c data to disc */
 
     for (int i = 0; i < props.numRows * props.numCols; i++) {
         if (!tiles[i].useless) {
-            fprintf(cFile, "ALIGNED8 static const u8 %s_skybox_texture_%05X[] = {\n", skyboxName, tiles[i].pos);
+            fprintf(cFile, "ALIGNED8 const u8 %s_skybox_texture_%05X[] = {\n", skyboxName, tiles[i].pos);
 
             print_raw_data(cFile, &tiles[i]);
 
@@ -368,7 +368,7 @@ static void write_cake_c() {
 
     int numTiles = TABLE_DIMENSIONS[type].cols * TABLE_DIMENSIONS[type].rows;
     for (int i = 0; i < numTiles; ++i) {
-        fprintf(cFile, "ALIGNED8 static const u8 cake_end_texture_%s%d[] = {\n", euSuffx, i);
+        fprintf(cFile, "ALIGNED8 static u8 cake_end_texture_%s%d[] = {\n", euSuffx, i);
         print_raw_data(cFile, &tiles[i]);
         fputs("};\n\n", cFile);
     }
