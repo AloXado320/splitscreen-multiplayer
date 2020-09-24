@@ -30,6 +30,8 @@ struct UnkData {
 // data
 struct ObjGroup *gMarioFaceGrp = NULL;     // @ 801A82E0; returned by load_dynlist
 struct ObjShape *D_801A82E4 = NULL;        // Shape used for drawing lights?
+struct ObjGroup *gLuigiFaceGrp = NULL;     // @ 801A82E0; returned by load_dynlist
+struct ObjShape *D_801A82E4L = NULL;        // Shape used for drawing lights?
 static struct ObjShape *D_801A82E8 = NULL; // returned by load_dynlist
 struct ObjShape *gShapeRedSpark = NULL;    // @ 801A82EC
 struct ObjShape *gShapeSilverSpark = NULL;    // @ 801A82F0
@@ -1437,6 +1439,149 @@ s32 load_mario_head(void (*aniFn)(struct ObjAnimator *)) {
 
     return 0;
 }
+
+
+
+
+
+
+
+/* @ 248B48 for 0x740; orig name: func_8019A378 */
+s32 load_luigi_head(void (*aniFn)(struct ObjAnimator *)) {
+    struct ObjNet *sp54; // net made with sp48 group
+    UNUSED u8 pad4C[0x54 - 0x4c];
+    struct ObjGroup *sp48; // Joint group
+    UNUSED u8 pad40[0x48 - 0x40];
+    struct ObjGroup *sp3C;
+    struct GdObj *sp38;       // object list head before making a bunch of joints
+    struct GdObj *sp34;       // d_use_obj returned
+    struct ObjJoint *sp30;    // created joint pointer
+    struct ObjCamera *sp2C;   // dNewCamera
+    struct ObjAnimator *sp28; // dNewAnim
+    struct ObjParticle *sp24; // particle (?)
+
+    start_memtracker("luigi face");
+    d_copystr_to_idbuf("l");
+
+    dynid_is_int(TRUE);
+    sp28 = (struct ObjAnimator *) d_makeobj(D_ANIMATOR, AsDynId(1001));
+    sp28->fn48 = aniFn;
+    dynid_is_int(FALSE);
+    // FIXME: make segment address work once seg4 is disassembled
+    gLuigiFaceGrp = (struct ObjGroup *) load_dynlist(dynlist_luigi_master);
+    stop_memtracker("luigi face");
+
+    sp2C = (struct ObjCamera *) d_makeobj(D_CAMERA, NULL);
+    d_set_rel_pos(0.0f, 200.0f, 2000.0f);
+    d_set_world_pos(0.0f, 200.0f, 2000.0f);
+    d_set_flags(4);
+    sp2C->unk34.x = 0.0f;
+    sp2C->unk34.y = 200.0f;
+    sp2C->unk34.z = 0.0f;
+
+    addto_group(gLuigiFaceGrp, &sp2C->header);
+    addto_group(gLuigiFaceGrp, &sp28->header);
+
+    d_copystr_to_idbuf(NULL);
+    sp24 = make_particle(0, 1, 0.0f, 0.0f, 0.0f);
+    sp24->unk60 = 3;
+    sp24->unk64 = 3;
+    sp24->unkBC = &sp2C->header;
+    sp24->unk1C = gShapeSilverSpark;
+    addto_group(gGdLightGroup, &sp24->header);
+
+    sp24 = make_particle(0, 1, 0.0f, 0.0f, 0.0f);
+    sp24->unk60 = 3;
+    sp24->unk64 = 2;
+    sp24->unkBC = d_use_obj("N228l"); // probably a camera
+    sp24->unk1C = gShapeSilverSpark;
+    addto_group(gGdLightGroup, &sp24->header);
+
+    sp24 = make_particle(0, 2, 0.0f, 0.0f, 0.0f);
+    sp24->unk60 = 3;
+    sp24->unk64 = 2;
+    sp24->unkBC = d_use_obj("N231l"); // probably a camera
+    sp24->unk1C = gShapeRedSpark;
+    addto_group(gGdLightGroup, &sp24->header);
+
+    sp3C = (struct ObjGroup *) d_use_obj("N1000l");
+    create_gddl_for_shapes(sp3C);
+    sp38 = gGdObjectList;
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, -500.0f, 0.0f, -150.0f);
+    sp34 = d_use_obj("N167l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 500.0f, 0.0f, -150.0f);
+    sp34 = d_use_obj("N176l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 0.0f, 700.0f, 300.0f);
+    sp34 = d_use_obj("N131l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp34 = d_use_obj("N206l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp34 = d_use_obj("N215l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp34 = d_use_obj("N31l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp34 = d_use_obj("N65l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 0.0f, 0.0f, 600.0f);
+    sp34 = d_use_obj("N185l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 0.0f, -300.0f, 300.0f);
+    sp34 = d_use_obj("N194l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 250.0f, -150.0f, 300.0f);
+    sp34 = d_use_obj("N158l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp34 = d_use_obj("N15l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, -250.0f, -150.0f, 300.0f);
+    sp34 = d_use_obj("N149l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp34 = d_use_obj("N6l");
+    addto_group(sp30->unk1F8, sp34);
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, 100.0f, 200.0f, 400.0f);
+    sp34 = d_use_obj("N112l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30->fn2C = &func_8018EBE8;
+    sp30->unk1D0 = sp28;
+    sp30->header.drawFlags &= ~OBJ_IS_GRABBALE;
+
+    sp30 = make_joint_withshape(D_801A82E8, 0, -100.0f, 200.0f, 400.0f);
+    sp34 = d_use_obj("N96l");
+    sp30->unk1F8 = make_group(1, sp34);
+
+    sp30->fn2C = &func_8018EBE8;
+    sp30->unk1D0 = sp28;
+    sp30->header.drawFlags &= ~OBJ_IS_GRABBALE;
+
+    sp48 = make_group_of_type(OBJ_TYPE_JOINTS, sp38, NULL);
+    sp54 = make_net(0, NULL, sp48, NULL, NULL);
+    sp54->netType = 3;
+    addto_group(gLuigiFaceGrp, &sp48->header);
+    addto_groupfirst(gLuigiFaceGrp, &sp54->header);
+
+    return 0;
+}
+
+
+
+
 
 /* @ 249288 for 0xe0 */
 void load_shapes2(void) {

@@ -8,6 +8,8 @@
 #include "textures.h"
 #include "types.h"
 #include "prevent_bss_reordering.h"
+#include "game/game_init.h"
+#include "audio/external.h"
 
 // frame counts for the zoom in, hold, and zoom out of title model
 #define INTRO_STEPS_ZOOM_IN 20
@@ -153,11 +155,11 @@ Gfx *geo_fade_transition(s32 sp40, struct GraphNode *sp44, UNUSED void *context)
 }
 
 Gfx *intro_backdrop_one_image(s32 index, s8 *backgroundTable) {
-    Mtx *mtx;                         // sp5c
-    Gfx *displayList;                 // sp58
-    Gfx *displayListIter;             // sp54
-    const u8 *const *vIntroBgTable;   // sp50
-    s32 i;                            // sp4c
+    Mtx *mtx;                       // sp5c
+    Gfx *displayList;               // sp58
+    Gfx *displayListIter;           // sp54
+    const u8 *const *vIntroBgTable; // sp50
+    s32 i;                          // sp4c
     mtx = alloc_display_list(sizeof(*mtx));
     displayList = alloc_display_list(36 * sizeof(*displayList));
     displayListIter = displayList;
@@ -166,15 +168,41 @@ Gfx *intro_backdrop_one_image(s32 index, s8 *backgroundTable) {
     gSPMatrix(displayListIter++, mtx, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
     gSPDisplayList(displayListIter++, &title_screen_bg_dl_0A000118);
     for (i = 0; i < 4; ++i) {
-        gDPLoadTextureBlock(displayListIter++, vIntroBgTable[i], G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, 20, 0, 
-                            G_TX_CLAMP, G_TX_CLAMP, 7, 6, G_TX_NOLOD, G_TX_NOLOD)    
-        gSPDisplayList(displayListIter++, introBackgroundDlRows[i]);
+        gDPLoadTextureBlock(displayListIter++, vIntroBgTable[i], G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, 20, 0,
+                            G_TX_CLAMP, G_TX_CLAMP, 7, 6, G_TX_NOLOD, G_TX_NOLOD)
+            gSPDisplayList(displayListIter++, introBackgroundDlRows[i]);
     }
     gSPPopMatrix(displayListIter++, G_MTX_MODELVIEW);
     gSPEndDisplayList(displayListIter);
     return displayList;
 }
 
+Gfx *intro_render_menu_button(s32 index, s8 *backgroundTable) {
+    Mtx *mtx;                       // sp5c
+    Gfx *displayList;               // sp58
+    Gfx *displayListIter;           // sp54
+    const u8 *const *vIntroBgTable; // sp50
+    s32 i;                          // sp4c
+    mtx = alloc_display_list(sizeof(*mtx));
+    displayList = alloc_display_list(36 * sizeof(*displayList));
+    displayListIter = displayList;
+    vIntroBgTable = segmented_to_virtual(menu_button_table + index);
+    guTranslate(mtx, index * 80.0f + 10.0f, 10.f, 0.0f);
+    gSPMatrix(displayListIter++, mtx, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+    gSPDisplayList(displayListIter++, &title_menu_buttons);
+    gDPLoadTextureBlock(displayListIter++, *((u32 *) vIntroBgTable), G_IM_FMT_RGBA, G_IM_SIZ_16b, 64,
+                        32, 0, G_TX_CLAMP, G_TX_CLAMP, 7, 6, G_TX_NOLOD, G_TX_NOLOD)
+        gSPDisplayList(displayListIter++, introBackgroundDlRows[0]);
+    gSPPopMatrix(displayListIter++, G_MTX_MODELVIEW);
+    gSPEndDisplayList(displayListIter);
+    return displayList;
+}
+
+int toggle = 1;
+/*
+    if (gdctrl->btnAnewPress) {
+        gdctrl->csrXatApress = gdctrl->csrX;
+        gdctrl->csrYatApress = gdctrl->csrY;*/
 Gfx *geo_intro_backdrop(s32 sp48, struct GraphNode *sp4c, UNUSED void *context) {
     struct GraphNodeMore *graphNode; // sp44
     s32 index;                       // sp40
@@ -196,6 +224,18 @@ Gfx *geo_intro_backdrop(s32 sp48, struct GraphNode *sp4c, UNUSED void *context) 
         for (i = 0; i < 12; ++i) {
             gSPDisplayList(displayListIter++, intro_backdrop_one_image(i, backgroundTable));
         }
+        if ((gPlayer1Controller->buttonPressed & L_TRIG)
+            || (gPlayer2Controller->buttonPressed & L_TRIG)) {
+            toggle ^= 1;
+            play_sound(SOUND_MENU_CHANGE_SELECT, gDefaultSoundArgs);
+        }
+        if (toggle) {
+            gSPDisplayList(displayListIter++, intro_render_menu_button(0, backgroundTable));
+            gSPDisplayList(displayListIter++, intro_render_menu_button(1, backgroundTable));
+            gSPDisplayList(displayListIter++, intro_render_menu_button(2, backgroundTable));
+            gSPDisplayList(displayListIter++, intro_render_menu_button(3, backgroundTable));
+        }
+        // render the mode selection textures
         gSPDisplayList(displayListIter++, &title_screen_bg_dl_0A000190);
         gSPEndDisplayList(displayListIter);
     }

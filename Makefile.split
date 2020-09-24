@@ -168,6 +168,10 @@ $(BUILD_DIR)/levels/ending/cake_eu.inc.c: levels/ending/cake_eu.png
 	$(SKYCONV) --type cake-eu --split $^ $(BUILD_DIR)/levels/ending
 $(BUILD_DIR)/levels/ending/cake.inc.c: levels/ending/cake.png
 	$(SKYCONV) --type cake --split $^ $(BUILD_DIR)/levels/ending
+$(BUILD_DIR)/levels/ending/cakeLuigi.inc.c: levels/ending/cakeLuigi.png
+	$(SKYCONV) --type cake2 --split $^ $(BUILD_DIR)/levels/ending
+$(BUILD_DIR)/levels/ending/cakeMario.inc.c: levels/ending/cakeMario.png
+	$(SKYCONV) --type cake3 --split $^ $(BUILD_DIR)/levels/ending
 
 # --------------------------------------
 # Texture Bin Rules

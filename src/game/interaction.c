@@ -25,27 +25,27 @@
 #include "thread6.h"
 
 #define INT_GROUND_POUND_OR_TWIRL (1 << 0) // 0x01
-#define INT_PUNCH                 (1 << 1) // 0x02
-#define INT_KICK                  (1 << 2) // 0x04
-#define INT_TRIP                  (1 << 3) // 0x08
-#define INT_SLIDE_KICK            (1 << 4) // 0x10
-#define INT_FAST_ATTACK_OR_SHELL  (1 << 5) // 0x20
-#define INT_HIT_FROM_ABOVE        (1 << 6) // 0x40
-#define INT_HIT_FROM_BELOW        (1 << 7) // 0x80
+#define INT_PUNCH (1 << 1)                 // 0x02
+#define INT_KICK (1 << 2)                  // 0x04
+#define INT_TRIP (1 << 3)                  // 0x08
+#define INT_SLIDE_KICK (1 << 4)            // 0x10
+#define INT_FAST_ATTACK_OR_SHELL (1 << 5)  // 0x20
+#define INT_HIT_FROM_ABOVE (1 << 6)        // 0x40
+#define INT_HIT_FROM_BELOW (1 << 7)        // 0x80
 
-#define INT_ATTACK_NOT_FROM_BELOW                                                 \
-    (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK \
+#define INT_ATTACK_NOT_FROM_BELOW                                                                      \
+    (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK                      \
      | INT_FAST_ATTACK_OR_SHELL | INT_HIT_FROM_ABOVE)
 
-#define INT_ANY_ATTACK                                                            \
-    (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK \
+#define INT_ANY_ATTACK                                                                                 \
+    (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK                      \
      | INT_FAST_ATTACK_OR_SHELL | INT_HIT_FROM_ABOVE | INT_HIT_FROM_BELOW)
 
-#define INT_ATTACK_NOT_WEAK_FROM_ABOVE                                                \
+#define INT_ATTACK_NOT_WEAK_FROM_ABOVE                                                                 \
     (INT_GROUND_POUND_OR_TWIRL | INT_PUNCH | INT_KICK | INT_TRIP | INT_HIT_FROM_BELOW)
 
-//u8 sDelayInvincTimer;
-//s16 sInvulnerable;
+// u8 sDelayInvincTimer;
+// s16 sInvulnerable;
 u32 interact_coin(struct MarioState *, u32, struct Object *);
 u32 interact_water_ring(struct MarioState *, u32, struct Object *);
 u32 interact_star_or_key(struct MarioState *, u32, struct Object *);
@@ -83,50 +83,50 @@ struct InteractionHandler {
 };
 
 static struct InteractionHandler sInteractionHandlers[] = {
-    { INTERACT_COIN,           interact_coin },
-    { INTERACT_WATER_RING,     interact_water_ring },
-    { INTERACT_STAR_OR_KEY,    interact_star_or_key },
-    { INTERACT_BBH_ENTRANCE,   interact_bbh_entrance },
-    { INTERACT_WARP,           interact_warp },
-    { INTERACT_WARP_DOOR,      interact_warp_door },
-    { INTERACT_DOOR,           interact_door },
-    { INTERACT_CANNON_BASE,    interact_cannon_base },
-    { INTERACT_IGLOO_BARRIER,  interact_igloo_barrier },
-    { INTERACT_TORNADO,        interact_tornado },
-    { INTERACT_WHIRLPOOL,      interact_whirlpool },
-    { INTERACT_STRONG_WIND,    interact_strong_wind },
-    { INTERACT_FLAME,          interact_flame },
-    { INTERACT_SNUFIT_BULLET,  interact_snufit_bullet },
-    { INTERACT_CLAM_OR_BUBBA,  interact_clam_or_bubba },
-    { INTERACT_BULLY,          interact_bully },
-    { INTERACT_SHOCK,          interact_shock },
-    { INTERACT_BOUNCE_TOP2,    interact_bounce_top },
-    { INTERACT_MR_BLIZZARD,    interact_mr_blizzard },
+    { INTERACT_COIN, interact_coin },
+    { INTERACT_WATER_RING, interact_water_ring },
+    { INTERACT_STAR_OR_KEY, interact_star_or_key },
+    { INTERACT_BBH_ENTRANCE, interact_bbh_entrance },
+    { INTERACT_WARP, interact_warp },
+    { INTERACT_WARP_DOOR, interact_warp_door },
+    { INTERACT_DOOR, interact_door },
+    { INTERACT_CANNON_BASE, interact_cannon_base },
+    { INTERACT_IGLOO_BARRIER, interact_igloo_barrier },
+    { INTERACT_TORNADO, interact_tornado },
+    { INTERACT_WHIRLPOOL, interact_whirlpool },
+    { INTERACT_STRONG_WIND, interact_strong_wind },
+    { INTERACT_FLAME, interact_flame },
+    { INTERACT_SNUFIT_BULLET, interact_snufit_bullet },
+    { INTERACT_CLAM_OR_BUBBA, interact_clam_or_bubba },
+    { INTERACT_BULLY, interact_bully },
+    { INTERACT_SHOCK, interact_shock },
+    { INTERACT_BOUNCE_TOP2, interact_bounce_top },
+    { INTERACT_MR_BLIZZARD, interact_mr_blizzard },
     { INTERACT_HIT_FROM_BELOW, interact_hit_from_below },
-    { INTERACT_BOUNCE_TOP,     interact_bounce_top },
-    { INTERACT_DAMAGE,         interact_damage },
-    { INTERACT_POLE,           interact_pole },
-    { INTERACT_HOOT,           interact_hoot },
-    { INTERACT_BREAKABLE,      interact_breakable },
-    { INTERACT_KOOPA,          interact_bounce_top },
-    { INTERACT_KOOPA_SHELL,    interact_koopa_shell },
-    { INTERACT_UNKNOWN_08,     interact_unknown_08 },
-    { INTERACT_CAP,            interact_cap },
-    { INTERACT_GRABBABLE,      interact_grabbable },
-    { INTERACT_TEXT,           interact_text },
+    { INTERACT_BOUNCE_TOP, interact_bounce_top },
+    { INTERACT_DAMAGE, interact_damage },
+    { INTERACT_POLE, interact_pole },
+    { INTERACT_HOOT, interact_hoot },
+    { INTERACT_BREAKABLE, interact_breakable },
+    { INTERACT_KOOPA, interact_bounce_top },
+    { INTERACT_KOOPA_SHELL, interact_koopa_shell },
+    { INTERACT_UNKNOWN_08, interact_unknown_08 },
+    { INTERACT_CAP, interact_cap },
+    { INTERACT_GRABBABLE, interact_grabbable },
+    { INTERACT_TEXT, interact_text },
     { INTERACT_UNKNOWN_31, interact_bounce_top },
 };
 
 static u32 sForwardKnockbackActions[][3] = {
     { ACT_SOFT_FORWARD_GROUND_KB, ACT_FORWARD_GROUND_KB, ACT_HARD_FORWARD_GROUND_KB },
-    { ACT_FORWARD_AIR_KB,         ACT_FORWARD_AIR_KB,    ACT_HARD_FORWARD_AIR_KB },
-    { ACT_FORWARD_WATER_KB,       ACT_FORWARD_WATER_KB,  ACT_FORWARD_WATER_KB },
+    { ACT_FORWARD_AIR_KB, ACT_FORWARD_AIR_KB, ACT_HARD_FORWARD_AIR_KB },
+    { ACT_FORWARD_WATER_KB, ACT_FORWARD_WATER_KB, ACT_FORWARD_WATER_KB },
 };
 
 static u32 sBackwardKnockbackActions[][3] = {
     { ACT_SOFT_BACKWARD_GROUND_KB, ACT_BACKWARD_GROUND_KB, ACT_HARD_BACKWARD_GROUND_KB },
-    { ACT_BACKWARD_AIR_KB,         ACT_BACKWARD_AIR_KB,    ACT_HARD_BACKWARD_AIR_KB },
-    { ACT_BACKWARD_WATER_KB,       ACT_BACKWARD_WATER_KB,  ACT_BACKWARD_WATER_KB },
+    { ACT_BACKWARD_AIR_KB, ACT_BACKWARD_AIR_KB, ACT_HARD_BACKWARD_AIR_KB },
+    { ACT_BACKWARD_WATER_KB, ACT_BACKWARD_WATER_KB, ACT_BACKWARD_WATER_KB },
 };
 
 static u8 sDisplayingDoorText = FALSE;
@@ -879,9 +879,9 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
             }
         }
     } else {
-        //only allow if no other mario is in act disappeared
-        for (i=0; i<gActivePlayers;i++){
-            if (gMarioStates[i].action == ACT_DISAPPEARED){
+        // only allow if no other mario is in act disappeared
+        for (i = 0; i < gActivePlayers; i++) {
+            if (gMarioStates[i].action == ACT_DISAPPEARED) {
                 canWarp = FALSE;
             }
         }
@@ -1522,7 +1522,8 @@ u32 interact_koopa_shell(struct MarioState *m, UNUSED u32 interactType, struct O
 }
 
 u32 check_object_grab_mario(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
-    if ((!(m->action & (ACT_FLAG_AIR | ACT_FLAG_INVULNERABLE | ACT_FLAG_ATTACKING)) || !m->sInvulnerable)
+    if ((!(m->action & (ACT_FLAG_AIR | ACT_FLAG_INVULNERABLE | ACT_FLAG_ATTACKING))
+         || !m->sInvulnerable)
         && (o->oInteractionSubtype & INT_SUBTYPE_GRABS_MARIO)) {
         if (object_facing_mario(m, o, 0x2AAA)) {
             mario_stop_riding_and_holding(m);
@@ -1548,7 +1549,7 @@ u32 check_object_grab_mario(struct MarioState *m, UNUSED u32 interactType, struc
 u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     s32 actionId = m->action & ACT_ID_MASK;
     if (actionId >= 0x080 && actionId < 0x0A0) {
-        if (!(m->prevAction & ACT_FLAG_ON_POLE) || m->marioObj->header.gfx.animInfo.animFrame>8) {
+        if (!(m->prevAction & ACT_FLAG_ON_POLE) || m->marioObj->header.gfx.animInfo.animFrame > 8) {
 #ifdef VERSION_SH
             f32 velConv = m->forwardVel; // conserve the velocity.
             struct Object *marioObj = m->marioObj;
@@ -1778,9 +1779,17 @@ u32 check_npc_talk(struct MarioState *m, struct Object *o) {
 
 u32 interact_text(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     u32 interact = FALSE;
-
-    push_mario_out_of_object(m, o, 2.0f);
-
+    if (gActivePlayers > 1) {
+        push_mario_out_of_object(m, o, 2.0f);
+    } else {
+        if (o->oInteractionSubtype & INT_SUBTYPE_SIGN) {
+            interact = check_read_sign(m, o);
+        } else if (o->oInteractionSubtype & INT_SUBTYPE_NPC) {
+            interact = check_npc_talk(m, o);
+        } else {
+            push_mario_out_of_object(m, o, 2.0f);
+        }
+    }
     return interact;
 }
 
@@ -1820,7 +1829,7 @@ void mario_process_interactions(struct MarioState *m) {
             u32 interactType = sInteractionHandlers[i].interactType;
             if (m->collidedObjInteractTypes & interactType) {
                 struct Object *object = mario_get_collided_object(m, interactType);
-                
+
                 if ((m->marioObj->oPlayerHitbox != object) && (m->marioObj->oPlayerHurtbox != object)) {
                     m->collidedObjInteractTypes &= ~interactType;
 
@@ -1867,7 +1876,8 @@ void check_death_barrier(struct MarioState *m) {
 }
 
 void check_lava_boost(struct MarioState *m) {
-    if (!(m->action & ACT_FLAG_RIDING_SHELL) && (m->pos[1] < m->floorHeight + 10.0f) && !(m->action == ACT_BUBBLED)) {
+    if (!(m->action & ACT_FLAG_RIDING_SHELL) && (m->pos[1] < m->floorHeight + 10.0f)
+        && !(m->action == ACT_BUBBLED)) {
         if (!(m->flags & MARIO_METAL_CAP)) {
             m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18;
         }

@@ -24,7 +24,9 @@ typedef enum {
     Skybox,
     Cake,
     CakeEU,
-    ImageType_MAX
+    Cake2,
+    Cake3,
+    ImageType_MAX,
 } ImageType;
 
 typedef enum {
@@ -54,6 +56,14 @@ static const ImageProps IMAGE_PROPERTIES[ImageType_MAX][2] = {
         {320, 224, 64, 32, 5, 7, false, false},
         {320, 224, 64, 32, 5, 7, false, false},
     },
+    [Cake2] = {
+        {316, 228, 79, 19, 4, 12, false, false},
+        {320, 240, 80, 20, 4, 12, false, false},
+    },
+    [Cake3] = {
+        {316, 228, 79, 19, 4, 12, false, false},
+        {320, 240, 80, 20, 4, 12, false, false},
+    }
 };
 
 typedef struct {
@@ -64,6 +74,8 @@ static const TableDimension TABLE_DIMENSIONS[ImageType_MAX] = {
     [Skybox]   = {8, 10},
     [Cake]     = {4, 12},
     [CakeEU]   = {5,  7},
+    [Cake2]     = {4, 12},
+    [Cake3]     = {4, 12},
 };
 
 TextureTile *tiles;
@@ -240,6 +252,12 @@ void write_tiles() {
         case CakeEU:
             strcat(buffer, "cake_eu");
         break;
+        case Cake2:
+            strcat(buffer, "cakeLuigi");
+        break;
+        case Cake3:
+            strcat(buffer, "cakeMario");
+        break;
         default:
             exit(EXIT_FAILURE);
         break;
@@ -327,8 +345,12 @@ static void write_cake_c() {
     if (type == CakeEU) {
         strcat(buffer, "/cake_eu.inc.c");
     }
-    else {
+    else if (type == Cake){
         strcat(buffer, "/cake.inc.c");
+    } else if (type == Cake2){
+        strcat(buffer, "/cakeLuigi.inc.c");
+    } else if (type == Cake3){
+        strcat(buffer, "/cakeMario.inc.c");
     }
 
     FILE *cFile = fopen(buffer, "w");
@@ -336,6 +358,12 @@ static void write_cake_c() {
     const char *euSuffx = "";
     if (type == CakeEU) {
         euSuffx = "eu_";
+    }
+    if (type == Cake2) {
+        euSuffx = "luigi_";
+    }
+    if (type == Cake3) {
+        euSuffx = "mario_";
     }
 
     int numTiles = TABLE_DIMENSIONS[type].cols * TABLE_DIMENSIONS[type].rows;
@@ -525,6 +553,10 @@ static int parse_arguments(int argc, char *argv[]) {
                 type = CakeEU;
             } else if(strcmp(argv[i], "cake") == 0) {
                 type = Cake;
+            }else if(strcmp(argv[i], "cake2") == 0) {
+                type = Cake2;
+            }else if(strcmp(argv[i], "cake3") == 0) {
+                type = Cake3;
             }
         }
 
@@ -597,6 +629,8 @@ int main(int argc, char *argv[]) {
                     combine_skybox(input, output);
                 break;
                 case Cake:
+                case Cake2:
+                case Cake3:
                     combine_cakeimg(input, output, 0);
                 break;
                 case CakeEU:
@@ -630,12 +664,15 @@ int main(int argc, char *argv[]) {
                     write_skybox_c();
                     break;
                 case Cake:
+                case Cake2:
+                case Cake3:
                 case CakeEU:
                     assign_tile_positions();
                     write_cake_c();
                     break;
                 default:
                     fprintf(stderr, "err: Unknown image type.\n");
+                fprintf(stderr, "err: Could not use type %d\n", type);
                     return EXIT_FAILURE;
                     break;
             }

@@ -58,7 +58,9 @@ struct Controller *gPlayer2Controller = &gControllers[1];
 struct Controller *gPlayer3Controller = &gControllers[2];
 struct DemoInput *gCurrDemoInput = NULL; // demo input sequence
 u16 gDemoInputListID = 0;
-const u8 gActivePlayers = 2;
+u8 gActivePlayers = 2;
+u8 singlePlayerChar = 0;
+u8 coop = 0;
 struct DemoInput gRecordedDemoInput = { 0 }; // possibly removed in EU. TODO: Check
 
 /**
@@ -100,7 +102,8 @@ void my_rdp_init(void) {
  */
 void my_rsp_init(void) {
     gSPClearGeometryMode(gDisplayListHead++, G_SHADE | G_SHADING_SMOOTH | G_CULL_BOTH | G_FOG
-                        | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR | G_LOD);
+                                                 | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR
+                                                 | G_LOD);
 
     gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_SHADING_SMOOTH | G_CULL_BACK | G_LIGHTING);
 
@@ -126,10 +129,9 @@ void clear_z_buffer(void) { // RISKY
     gDPSetDepthImage(gDisplayListHead++, gPhysicalZBuffer);
 
     gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, gPhysicalZBuffer);
-    gDPSetFillColor(gDisplayListHead++,
-                    GPACK_ZDZ(G_MAXFBZ, 0) << 16 | GPACK_ZDZ(G_MAXFBZ, 0));
+    gDPSetFillColor(gDisplayListHead++, GPACK_ZDZ(G_MAXFBZ, 0) << 16 | GPACK_ZDZ(G_MAXFBZ, 0));
 
-    if ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) {
+    if ((gActivePlayers > 1) && ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding)) {
         gDPFillRectangle(gDisplayListHead++, 0, height - height / (luigiCamFirst + 1), SCREEN_WIDTH - 1,
                          height / 2 * (luigiCamFirst + 1) - 1);
     } else {
@@ -151,14 +153,16 @@ void display_frame_buffer(void) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
-    if (!luigiCamFirst) {
+    if ((!luigiCamFirst) || (gActivePlayers < 2)) {
         gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
                          gPhysicalFrameBuffers[frameBufferIndex]);
     } else {
-        gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, gPhysicalFrameBuffers[e]);
+        gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
+                         gPhysicalFrameBuffers[e]);
     }
 
-    if ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) { // RISKY
+    if ((gActivePlayers > 1)
+        && ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding)) { // RISKY
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, d - d / (luigiCamFirst + 1),
                       SCREEN_WIDTH, d / 2 * (luigiCamFirst + 1));
     } else {
@@ -174,8 +178,7 @@ void clear_frame_buffer(s32 color) {
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
 
     gDPSetFillColor(gDisplayListHead++, color);
-    gDPFillRectangle(gDisplayListHead++,
-                     GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), BORDER_HEIGHT,
+    gDPFillRectangle(gDisplayListHead++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), BORDER_HEIGHT,
                      GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1, SCREEN_HEIGHT - BORDER_HEIGHT - 1);
 
     gDPPipeSync(gDisplayListHead++);
@@ -221,9 +224,9 @@ void draw_screen_borders(void) {
 #if BORDER_HEIGHT != 0
     gDPFillRectangle(gDisplayListHead++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), 0,
                      GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1, BORDER_HEIGHT - 1);
-    gDPFillRectangle(gDisplayListHead++,
-                     GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0), SCREEN_HEIGHT - BORDER_HEIGHT,
-                     GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1, SCREEN_HEIGHT - 1);
+    gDPFillRectangle(gDisplayListHead++, GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(0),
+                     SCREEN_HEIGHT - BORDER_HEIGHT, GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(0) - 1,
+                     SCREEN_HEIGHT - 1);
 #endif
 }
 
@@ -258,7 +261,7 @@ void create_task_structure(void) {
     gGfxSPTask->task.t.dram_stack_size = SP_DRAM_STACK_SIZE8;
     gGfxSPTask->task.t.output_buff = gGfxSPTaskOutputBuffer;
     gGfxSPTask->task.t.output_buff_size =
-        (u64 *)((u8 *) gGfxSPTaskOutputBuffer + sizeof(gGfxSPTaskOutputBuffer));
+        (u64 *) ((u8 *) gGfxSPTaskOutputBuffer + sizeof(gGfxSPTaskOutputBuffer));
     gGfxSPTask->task.t.data_ptr = (u64 *) &gGfxPool->buffer;
     gGfxSPTask->task.t.data_size = entries * sizeof(Gfx);
     gGfxSPTask->task.t.yield_data_ptr = (u64 *) gGfxSPTaskYieldBuffer;
@@ -307,7 +310,7 @@ void draw_reset_bars(void) {
             e = fbNum - 1;
         }
 
-        if (!luigiCamFirst) {
+        if ((!luigiCamFirst) || (gActivePlayers < 2)) {
             sp18 = (u64 *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[fbNum]);
         } else {
             sp18 = (u64 *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[e]);
@@ -317,7 +320,8 @@ void draw_reset_bars(void) {
 
         for (sp24 = 0; sp24 < ((SCREEN_HEIGHT / 16) + 1); sp24++) {
             // Loop must be one line to match on -O2
-            for (sp20 = 0; sp20 < (SCREEN_WIDTH / 4); sp20++) *sp18++ = 0;
+            for (sp20 = 0; sp20 < (SCREEN_WIDTH / 4); sp20++)
+                *sp18++ = 0;
             sp18 += ((SCREEN_WIDTH / 4) * 14);
         }
     }
@@ -360,18 +364,25 @@ void display_and_vsync(void) {
     }
     send_display_list(&gGfxPool->spTask);
     profiler_log_thread5_time(AFTER_DISPLAY_LISTS);
-//    osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
+    if (gActivePlayers < 2) {
+        osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
+    }
 
     if ((gCurrLevelNum == LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) {
         osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     }
+    if (gActivePlayers < 2) {
 
-    if ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) {
-        if (!luigiCamFirst) {
+        osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[sCurrFBNum]));
+    } else {
+
+        if ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) {
+            if (!luigiCamFirst) {
+                osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[sCurrFBNum]));
+            }
+        } else {
             osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[sCurrFBNum]));
         }
-    } else {
-        osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[sCurrFBNum]));
     }
 
     profiler_log_thread5_time(THREAD5_END);
@@ -520,10 +531,10 @@ void setup_game_memory(void) {
     gPhysicalFrameBuffers[0] = VIRTUAL_TO_PHYSICAL(gFrameBuffer0);
     gPhysicalFrameBuffers[1] = VIRTUAL_TO_PHYSICAL(gFrameBuffer1);
     gPhysicalFrameBuffers[2] = VIRTUAL_TO_PHYSICAL(gFrameBuffer2);
-    
+
     for (i = 0; i < gActivePlayers; i++) {
         D_80339CF0[i] = main_pool_alloc(0x4000, MEMORY_POOL_LEFT);
-        set_segment_base_addr(17, (void *)D_80339CF0[i]);
+        set_segment_base_addr(17, (void *) D_80339CF0[i]);
         func_80278A78(&D_80339D10[i], gMarioAnims, D_80339CF0[i]);
     }
 
@@ -562,8 +573,6 @@ void thread5_game_loop(UNUSED void *arg) {
         // if the reset timer is active, run the process to reset the game.
         if (gResetTimer) {
             draw_reset_bars();
-           // gCurrLevelNum = LEVEL_MIN;
-           // luigiCamFirst = 0;
             continue;
         }
         profiler_log_thread5_time(THREAD5_START);
@@ -583,12 +592,13 @@ void thread5_game_loop(UNUSED void *arg) {
             osRecvMesg(&gSIEventMesgQueue, &D_80339BEC, OS_MESG_BLOCK);
             osContGetReadData(&gControllerPads[0]);
         }
-        if (!luigiCamFirst) { // dont drop inputs 50% of the time. you also need to put the game to
-                              // 60fps and run object loops every other frame. implement frame skip.
+        if ((gActivePlayers < 2)
+            || (!luigiCamFirst)) { // dont drop inputs 50% of the time. you also need to put the game to
+            // 60fps and run object loops every other frame. implement frame skip.
             read_controller_inputs();
         }
         addr = level_script_execute(addr);
-        
+
         display_and_vsync();
 
         // when debug info is enabled, print the "BUF %d" information.

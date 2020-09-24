@@ -144,7 +144,6 @@ s32 gNumStaticSurfaces;
  */
 struct MemoryPool *gObjectMemoryPool;
 
-
 s16 gCheckingSurfaceCollisionsForCamera;
 s16 gFindFloorIncludeSurfaceIntangible;
 s16 *gEnvironmentRegions;
@@ -181,7 +180,7 @@ s8 sObjectListUpdateOrder[] = { OBJ_LIST_SPAWNER,
                                 OBJ_LIST_DEFAULT,
                                 OBJ_LIST_UNIMPORTANT,
                                 -1 };
-                                
+
 u8 multiplayerHurtboxAnims[] = {
     /* 0x15 */ MARIO_ANIM_AIRBORNE_ON_STOMACH,
     /* 0x3D */ MARIO_ANIM_GROUND_POUND,
@@ -232,24 +231,28 @@ struct ParticleProperties {
  * A table mapping particle flags to various properties use when spawning a particle.
  */
 struct ParticleProperties sParticleTypes[] = {
-    { PARTICLE_DUST,                 ACTIVE_PARTICLE_DUST,                 MODEL_MIST,                 bhvMistParticleSpawner },
-    { PARTICLE_VERTICAL_STAR,        ACTIVE_PARTICLE_V_STAR,               MODEL_NONE,                 bhvVertStarParticleSpawner },
-    { PARTICLE_HORIZONTAL_STAR,      ACTIVE_PARTICLE_H_STAR,               MODEL_NONE,                 bhvHorStarParticleSpawner },
-    { PARTICLE_SPARKLES,             ACTIVE_PARTICLE_SPARKLES,             MODEL_SPARKLES,             bhvSparkleParticleSpawner },
-    { PARTICLE_BUBBLE,               ACTIVE_PARTICLE_BUBBLE,               MODEL_BUBBLE,               bhvBubbleParticleSpawner },
-    { PARTICLE_WATER_SPLASH,         ACTIVE_PARTICLE_WATER_SPLASH,         MODEL_WATER_SPLASH,         bhvWaterSplash },
-    { PARTICLE_IDLE_WATER_WAVE,      ACTIVE_PARTICLE_IDLE_WATER_WAVE,      MODEL_IDLE_WATER_WAVE,      bhvIdleWaterWave },
-    { PARTICLE_PLUNGE_BUBBLE,        ACTIVE_PARTICLE_PLUNGE_BUBBLE,        MODEL_WHITE_PARTICLE_SMALL, bhvPlungeBubble },
-    { PARTICLE_WAVE_TRAIL,           ACTIVE_PARTICLE_WAVE_TRAIL,           MODEL_WAVE_TRAIL,           bhvWaveTrail },
-    { PARTICLE_FIRE,                 ACTIVE_PARTICLE_FIRE,                 MODEL_RED_FLAME,            bhvFireParticleSpawner },
-    { PARTICLE_SHALLOW_WATER_WAVE,   ACTIVE_PARTICLE_SHALLOW_WATER_WAVE,   MODEL_NONE,                 bhvShallowWaterWave },
-    { PARTICLE_SHALLOW_WATER_SPLASH, ACTIVE_PARTICLE_SHALLOW_WATER_SPLASH, MODEL_NONE,                 bhvShallowWaterSplash },
-    { PARTICLE_LEAF,                 ACTIVE_PARTICLE_LEAF,                 MODEL_NONE,                 bhvLeafParticleSpawner },
-    { PARTICLE_SNOW,                 ACTIVE_PARTICLE_SNOW,                 MODEL_NONE,                 bhvSnowParticleSpawner },
-    { PARTICLE_BREATH,               ACTIVE_PARTICLE_BREATH,               MODEL_NONE,                 bhvBreathParticleSpawner },
-    { PARTICLE_DIRT,                 ACTIVE_PARTICLE_DIRT,                 MODEL_NONE,                 bhvDirtParticleSpawner },
-    { PARTICLE_MIST_CIRCLE,          ACTIVE_PARTICLE_MIST_CIRCLE,          MODEL_NONE,                 bhvMistCircParticleSpawner },
-    { PARTICLE_TRIANGLE,             ACTIVE_PARTICLE_TRIANGLE,             MODEL_NONE,                 bhvTriangleParticleSpawner },
+    { PARTICLE_DUST, ACTIVE_PARTICLE_DUST, MODEL_MIST, bhvMistParticleSpawner },
+    { PARTICLE_VERTICAL_STAR, ACTIVE_PARTICLE_V_STAR, MODEL_NONE, bhvVertStarParticleSpawner },
+    { PARTICLE_HORIZONTAL_STAR, ACTIVE_PARTICLE_H_STAR, MODEL_NONE, bhvHorStarParticleSpawner },
+    { PARTICLE_SPARKLES, ACTIVE_PARTICLE_SPARKLES, MODEL_SPARKLES, bhvSparkleParticleSpawner },
+    { PARTICLE_BUBBLE, ACTIVE_PARTICLE_BUBBLE, MODEL_BUBBLE, bhvBubbleParticleSpawner },
+    { PARTICLE_WATER_SPLASH, ACTIVE_PARTICLE_WATER_SPLASH, MODEL_WATER_SPLASH, bhvWaterSplash },
+    { PARTICLE_IDLE_WATER_WAVE, ACTIVE_PARTICLE_IDLE_WATER_WAVE, MODEL_IDLE_WATER_WAVE,
+      bhvIdleWaterWave },
+    { PARTICLE_PLUNGE_BUBBLE, ACTIVE_PARTICLE_PLUNGE_BUBBLE, MODEL_WHITE_PARTICLE_SMALL,
+      bhvPlungeBubble },
+    { PARTICLE_WAVE_TRAIL, ACTIVE_PARTICLE_WAVE_TRAIL, MODEL_WAVE_TRAIL, bhvWaveTrail },
+    { PARTICLE_FIRE, ACTIVE_PARTICLE_FIRE, MODEL_RED_FLAME, bhvFireParticleSpawner },
+    { PARTICLE_SHALLOW_WATER_WAVE, ACTIVE_PARTICLE_SHALLOW_WATER_WAVE, MODEL_NONE,
+      bhvShallowWaterWave },
+    { PARTICLE_SHALLOW_WATER_SPLASH, ACTIVE_PARTICLE_SHALLOW_WATER_SPLASH, MODEL_NONE,
+      bhvShallowWaterSplash },
+    { PARTICLE_LEAF, ACTIVE_PARTICLE_LEAF, MODEL_NONE, bhvLeafParticleSpawner },
+    { PARTICLE_SNOW, ACTIVE_PARTICLE_SNOW, MODEL_NONE, bhvSnowParticleSpawner },
+    { PARTICLE_BREATH, ACTIVE_PARTICLE_BREATH, MODEL_NONE, bhvBreathParticleSpawner },
+    { PARTICLE_DIRT, ACTIVE_PARTICLE_DIRT, MODEL_NONE, bhvDirtParticleSpawner },
+    { PARTICLE_MIST_CIRCLE, ACTIVE_PARTICLE_MIST_CIRCLE, MODEL_NONE, bhvMistCircParticleSpawner },
+    { PARTICLE_TRIANGLE, ACTIVE_PARTICLE_TRIANGLE, MODEL_NONE, bhvTriangleParticleSpawner },
     { 0, 0, MODEL_NONE, NULL },
 };
 
@@ -295,6 +298,13 @@ void spawn_particle(u32 activeParticleFlag, s16 model, const BehaviorScript *beh
 extern void moveOBJ(struct Object *t);
 extern void bounce_off_object(struct MarioState *m, struct Object *o, f32 velY);
 
+
+void bhv_despawnIf2Player(void) {
+    if (gActivePlayers>1){
+        mark_obj_for_deletion(gCurrentObject);
+    }
+}
+
 /**
  * Mario's primary behavior update function.
  */
@@ -310,14 +320,17 @@ void bhv_mario_update(void) {
     if (l) {
         gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_LUIGI];
     }
+    if (gActivePlayers < 2){
+        gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO + singlePlayerChar];
+    }
     gMarioStates[l].numStars =
         save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
-  //      if (gMarioState->controller->buttonPressed & L_TRIG){
-   //         level_trigger_warp(gMarioState, WARP_OP_CREDITS_START);
+          if (gMarioState->controller->buttonPressed & L_TRIG){
+             level_trigger_warp(gMarioState, WARP_OP_CREDITS_START);
     //    }
-    //give stars
-    //debug
-    //get_all_stars();
+    // give stars
+    // debug
+    // get_all_stars();
     //  gCurrentObject->header.gfx.sharedChild = 0;
     gCurrentObject->oAnimState = l;
     gMarioStates[l].marioObj = gCurrentObject;
@@ -376,7 +389,7 @@ void bhv_mario_update(void) {
             if (gMarioStates[l ^ 1].marioObj->header.gfx.animInfo.animID == MARIO_ANIM_CROUCHING) {
                 bounce_off_object(&gMarioStates[l], gMarioStates[l ^ 1].marioObj, 80.0f);
                 gMarioStates[l].vel[1] = 60.f;
-                set_mario_action( &gMarioStates[l], ACT_TWIRLING, 0);
+                set_mario_action(&gMarioStates[l], ACT_TWIRLING, 0);
                 /*if (gMarioStates[l].action == ACT_TWIRLING){
                     gMarioStates[l].marioObj->header.gfx.animInfo.animFrame = 0;
                 }*/
@@ -392,7 +405,6 @@ void bhv_mario_update(void) {
             // play_sound(SOUND_MARIO_WAAAOOOW, gMarioStates[l].marioObj->soundOrigin);
             // bouncething
         }
-
         hitMario = FALSE;
         for (iterate = 0; iterate < hitboxAnimCount; iterate++) {
             if (gCurrentObject->header.gfx.animInfo.animID == multiplayerHurtboxAnims[iterate]) {
@@ -671,8 +683,8 @@ void clear_objects(void) {
 
     gTHIWaterDrained = 0;
     gTimeStopState = 0;
-    gMarioObject = NULL; // also luigi=
-    gLuigiObject = NULL; // also luigi=
+    gMarioObject = NULL;
+    gLuigiObject = NULL;
     gMarioCurrentRoom[0] = 0;
     gMarioCurrentRoom[1] = 0;
 

@@ -32,13 +32,19 @@ s32 detect_object_hitbox_overlap(struct Object *a, struct Object *b) {
     f32 distance = sqrtf(dx * dx + dz * dz);
     struct Object *mObjHurtbox;
     struct Object *lObjHurtbox;
-    mObjHurtbox = gMarioObject->oPlayerHurtbox;
-    lObjHurtbox = gLuigiObject->oPlayerHurtbox;
+    if (gMarioObject) {
+        mObjHurtbox = gMarioObject->oPlayerHurtbox;
+    }
+    if (gLuigiObject) {
+        lObjHurtbox = gLuigiObject->oPlayerHurtbox;
+    }
 
-    if (!(((((a == gLuigiObject) & ((b == gLuigiObject->oPlayerHitbox)|| (b==lObjHurtbox)))
-        || ((b == gLuigiObject) & ((a == gLuigiObject->oPlayerHitbox)|| (a==lObjHurtbox)))))
-        || (((a == gMarioObject) & ((b == gMarioObject->oPlayerHitbox)|| (b==mObjHurtbox)))
-        || ((b == gMarioObject) & ((a == gMarioObject->oPlayerHitbox)|| (a==mObjHurtbox)))))) {
+    if ((gActivePlayers < 2)
+        || (!(((((a == gLuigiObject) & ((b == gLuigiObject->oPlayerHitbox) || (b == lObjHurtbox)))
+                || ((b == gLuigiObject) & ((a == gLuigiObject->oPlayerHitbox) || (a == lObjHurtbox)))))
+              || (((a == gMarioObject) & ((b == gMarioObject->oPlayerHitbox) || (b == mObjHurtbox)))
+                  || ((b == gMarioObject)
+                      & ((a == gMarioObject->oPlayerHitbox) || (a == mObjHurtbox))))))) {
         if (collisionRadius > distance) {
             f32 sp20 = a->hitboxHeight + sp3C;
             f32 sp1C = b->hitboxHeight + sp38;
@@ -131,17 +137,17 @@ void check_player_object_collision(void) {
     while (sp18 != sp1C) {
         check_collision_in_list(sp18, (struct Object *) sp18->header.next, sp1C);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_POLELIKE].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_POLELIKE]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_POLELIKE]);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_LEVEL].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_LEVEL]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_LEVEL]);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_GENACTOR].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_GENACTOR]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_GENACTOR]);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_PUSHABLE].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_PUSHABLE]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_PUSHABLE]);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_SURFACE].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_SURFACE]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_SURFACE]);
         check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_DESTRUCTIVE].next,
-                      (struct Object *) &gObjectLists[OBJ_LIST_DESTRUCTIVE]);
+                                (struct Object *) &gObjectLists[OBJ_LIST_DESTRUCTIVE]);
         sp18 = (struct Object *) sp18->header.next;
     }
 }
@@ -164,11 +170,11 @@ void check_destructive_object_collision(void) {
         if (sp18->oDistanceToMario < 2000.0f && !(sp18->activeFlags & ACTIVE_FLAG_UNK9)) {
             check_collision_in_list(sp18, (struct Object *) sp18->header.next, sp1C);
             check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_GENACTOR].next,
-                          (struct Object *) &gObjectLists[OBJ_LIST_GENACTOR]);
+                                    (struct Object *) &gObjectLists[OBJ_LIST_GENACTOR]);
             check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_PUSHABLE].next,
-                          (struct Object *) &gObjectLists[OBJ_LIST_PUSHABLE]);
+                                    (struct Object *) &gObjectLists[OBJ_LIST_PUSHABLE]);
             check_collision_in_list(sp18, (struct Object *) gObjectLists[OBJ_LIST_SURFACE].next,
-                          (struct Object *) &gObjectLists[OBJ_LIST_SURFACE]);
+                                    (struct Object *) &gObjectLists[OBJ_LIST_SURFACE]);
         }
         sp18 = (struct Object *) sp18->header.next;
     }

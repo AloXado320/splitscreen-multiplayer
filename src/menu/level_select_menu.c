@@ -60,10 +60,11 @@ s32 run_press_start_demo_timer(s32 timer) {
 s16 level_select_input_loop(void) {
 }
 
+int startGame = 0; //set this to 1 if a mode has been selected
+extern int toggle;
 s32 intro_default(void) {
     s32 sp1C = 0;
 
-#ifndef VERSION_JP
     if (D_U_801A7C34 == 1) {
         if (gGlobalTimer < 0x81) {
             play_sound(SOUND_MARIO_HELLO, gDefaultSoundArgs);
@@ -71,16 +72,16 @@ s32 intro_default(void) {
             play_sound(SOUND_MARIO_PRESS_START_TO_PLAY, gDefaultSoundArgs);
         }
         D_U_801A7C34 = 0;
+        startGame = 0;
     }
-#endif
+    if (!toggle){
+        startGame = 0;
+    }
     print_intro_text();
-
-    if ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed) & START_BUTTON) {
+    if (startGame/* || ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed) & START_BUTTON)*/) {
         play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
         sp1C = 100 + gDebugLevelSelect;
-#ifndef VERSION_JP
         D_U_801A7C34 = 1;
-#endif
     }
     return run_press_start_demo_timer(sp1C);
 }

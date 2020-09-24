@@ -8,6 +8,8 @@
 // data
 extern struct ObjGroup *gMarioFaceGrp;
 extern struct ObjShape *D_801A82E4;
+extern struct ObjGroup *gLuigiFaceGrp;
+extern struct ObjShape *D_801A82E4L;
 extern struct ObjShape *gShapeRedSpark;
 extern struct ObjShape *gShapeSilverSpark;
 extern struct ObjShape *gShapeRedStar;
@@ -23,6 +25,7 @@ struct ObjNet *make_netfromshape(struct ObjShape *shape);
 void animate_mario_head_gameover(struct ObjAnimator *self);
 void animate_mario_head_normal(struct ObjAnimator *self);
 s32 load_mario_head(void (*aniFn)(struct ObjAnimator *));
+s32 load_luigi_head(void (*aniFn)(struct ObjAnimator *));
 void load_shapes2(void);
 
 // see bad_declarations.h

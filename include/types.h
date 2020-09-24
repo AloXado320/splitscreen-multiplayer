@@ -7,7 +7,9 @@
 #include <ultra64.h>
 #include "macros.h"
 
-extern const u8 gActivePlayers;
+extern u8 gActivePlayers;
+extern u8 coop;
+extern u8 singlePlayerChar;
 extern u8 luigiCamFirst;
 extern u8 gameLagged;
 extern int gIsGameEnding;

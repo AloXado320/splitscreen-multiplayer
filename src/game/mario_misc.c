@@ -113,11 +113,11 @@ static void toad_message_opaque(void) {
         gCurrentObject->oToadMessageState = TOAD_MESSAGE_FADING;
     } else if (!gCurrentObject->oToadMessageRecentlyTalked) {
         gCurrentObject->oInteractionSubtype = INT_SUBTYPE_NPC;
-        //if (gCurrentObject->oInteractStatus & INT_STATUS_INTERACTED) {
+        if ((gCurrentObject->oInteractStatus & INT_STATUS_INTERACTED) || (gActivePlayers > 1)) {
             gCurrentObject->oInteractStatus = 0;
             gCurrentObject->oToadMessageState = TOAD_MESSAGE_TALKING;
             play_toads_jingle();
-        //}
+        }
     }
 }
 

@@ -39,7 +39,8 @@ Gfx *geo_envfx_main(s32 callContext, struct GraphNode *node, Mat4 mtxf) {
 
                 gfx = alloc_display_list(2 * sizeof(*gfx));
                 mtxf_to_mtx(mtx, mtxf);
-                gSPMatrix(&gfx[0], VIRTUAL_TO_PHYSICAL(mtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+                gSPMatrix(&gfx[0], VIRTUAL_TO_PHYSICAL(mtx),
+                          G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
                 gSPBranchList(&gfx[1], VIRTUAL_TO_PHYSICAL(particleList));
                 execNode->fnNode.node.flags = (execNode->fnNode.node.flags & 0xFF) | 0x400;
             }
@@ -70,10 +71,19 @@ Gfx *geo_skybox_main(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) 
         struct GraphNodeCamera *camNode = (struct GraphNodeCamera *) gCurGraphNodeRoot->views[0];
         struct GraphNodePerspective *camFrustum =
             (struct GraphNodePerspective *) camNode->fnNode.node.parent;
+        if (gActivePlayers > 1) {
 
-        gfx = create_skybox_facing_camera(0, backgroundNode->background, camFrustum->fov, gLakituState[luigiCamFirst].pos[0],
-                            gLakituState[luigiCamFirst].pos[1], gLakituState[luigiCamFirst].pos[2], gLakituState[luigiCamFirst].focus[0],
-                            gLakituState[luigiCamFirst].focus[1], gLakituState[luigiCamFirst].focus[2]);
+            gfx = create_skybox_facing_camera(
+                0, backgroundNode->background, camFrustum->fov, gLakituState[luigiCamFirst].pos[0],
+                gLakituState[luigiCamFirst].pos[1], gLakituState[luigiCamFirst].pos[2],
+                gLakituState[luigiCamFirst].focus[0], gLakituState[luigiCamFirst].focus[1],
+                gLakituState[luigiCamFirst].focus[2]);
+        } else {
+            gfx = create_skybox_facing_camera(0, backgroundNode->background, camFrustum->fov,
+                                              gLakituState[0].pos[0], gLakituState[0].pos[1],
+                                              gLakituState[0].pos[2], gLakituState[0].focus[0],
+                                              gLakituState[0].focus[1], gLakituState[0].focus[2]);
+        }
     }
 
     return gfx;

@@ -109,8 +109,7 @@ static void level_cmd_exit_and_execute(void) {
     main_pool_pop_state();
     main_pool_push_state();
 
-    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8),
-            MEMORY_POOL_LEFT);
+    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8), MEMORY_POOL_LEFT);
 
     sStackTop = sStackBase;
     sCurrentCmd = segmented_to_virtual(targetAddr);
@@ -274,8 +273,7 @@ static void level_cmd_load_to_fixed_address(void) {
 }
 
 static void level_cmd_load_raw(void) {
-    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8),
-            MEMORY_POOL_LEFT);
+    load_segment(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8), MEMORY_POOL_LEFT);
     sCurrentCmd = CMD_NEXT;
 }
 
@@ -289,7 +287,7 @@ static void level_cmd_load_mario_head(void) {
     void *addr = main_pool_alloc(DOUBLE_SIZE_ON_64_BIT(0xE1000), MEMORY_POOL_LEFT);
     if (addr != NULL) {
         gdm_init(addr, DOUBLE_SIZE_ON_64_BIT(0xE1000));
-        gd_add_to_heap(gZBuffer, sizeof(gZBuffer)); // 0x25800
+        gd_add_to_heap(gZBuffer, sizeof(gZBuffer));               // 0x25800
         gd_add_to_heap(gFrameBuffer0, 3 * sizeof(gFrameBuffer0)); // 0x70800
         gdm_setup();
         gdm_maketestdl(CMD_GET(s16, 2));
@@ -654,7 +652,8 @@ static void level_cmd_set_macro_objects(void) {
         while (data[len++] != MACRO_OBJECT_END()) {
             len += 4;
         }
-        gAreas[sCurrAreaIndex].macroObjects = alloc_only_pool_alloc(sLevelPool, len * sizeof(MacroObject));
+        gAreas[sCurrAreaIndex].macroObjects =
+            alloc_only_pool_alloc(sLevelPool, len * sizeof(MacroObject));
         memcpy(gAreas[sCurrAreaIndex].macroObjects, data, len * sizeof(MacroObject));
 #endif
     }
@@ -854,17 +853,20 @@ struct LevelCommand *level_script_execute(struct LevelCommand *cmd) {
         listHead = &gObjectLists[get_object_list_from_behavior(behaviorAddr)];
         obj = (struct Object *) listHead->next;
 
-        while (obj != (struct Object *) listHead) {
-            if (obj->behavior == behaviorAddr) {
-                if (obj->activeFlags != ACTIVE_FLAG_DEACTIVATED) {
-                    if ((gMarioStates[luigiCamFirst].usedObj == obj->parentObj) && (gMarioStates[luigiCamFirst].usedObj->parentObj->oAction == 1)) {
-                        obj->header.gfx.sharedChild = NULL;
-                    } else {
-                        obj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_CANNON_BARREL];
+        if ((gActivePlayers > 1)) {
+            while (obj != (struct Object *) listHead) {
+                if (obj->behavior == behaviorAddr) {
+                    if (obj->activeFlags != ACTIVE_FLAG_DEACTIVATED) {
+                        if ((gMarioStates[luigiCamFirst].usedObj == obj->parentObj)
+                            && (gMarioStates[luigiCamFirst].usedObj->parentObj->oAction == 1)) {
+                            obj->header.gfx.sharedChild = NULL;
+                        } else {
+                            obj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_CANNON_BARREL];
+                        }
                     }
                 }
+                obj = (struct Object *) obj->header.next;
             }
-            obj = (struct Object *) obj->header.next;
         }
     }
 

@@ -59,22 +59,52 @@ const u8 horizontal = 0;
  * from warp behavior.
  * When looping through sWarpBhvSpawnTable, if the behavior function in the table matches
  * the spawn behavior executed, the index of that behavior is used with sSpawnTypeFromWarpBhv
-*/
+ */
 
 const BehaviorScript *sWarpBhvSpawnTable[] = {
-    bhvDoorWarp,                bhvStar,                   bhvExitPodiumWarp,          bhvWarp,
-    bhvWarpPipe,                bhvFadingWarp,             bhvInstantActiveWarp,       bhvAirborneWarp,
-    bhvHardAirKnockBackWarp,    bhvSpinAirborneCircleWarp, bhvDeathWarp,               bhvSpinAirborneWarp,
-    bhvFlyingWarp,              bhvSwimmingWarp,           bhvPaintingStarCollectWarp, bhvPaintingDeathWarp,
-    bhvAirborneStarCollectWarp, bhvAirborneDeathWarp,      bhvLaunchStarCollectWarp,   bhvLaunchDeathWarp,
+    bhvDoorWarp,
+    bhvStar,
+    bhvExitPodiumWarp,
+    bhvWarp,
+    bhvWarpPipe,
+    bhvFadingWarp,
+    bhvInstantActiveWarp,
+    bhvAirborneWarp,
+    bhvHardAirKnockBackWarp,
+    bhvSpinAirborneCircleWarp,
+    bhvDeathWarp,
+    bhvSpinAirborneWarp,
+    bhvFlyingWarp,
+    bhvSwimmingWarp,
+    bhvPaintingStarCollectWarp,
+    bhvPaintingDeathWarp,
+    bhvAirborneStarCollectWarp,
+    bhvAirborneDeathWarp,
+    bhvLaunchStarCollectWarp,
+    bhvLaunchDeathWarp,
 };
 
 u8 sSpawnTypeFromWarpBhv[] = {
-    MARIO_SPAWN_DOOR_WARP,             MARIO_SPAWN_UNKNOWN_02,           MARIO_SPAWN_UNKNOWN_03,            MARIO_SPAWN_UNKNOWN_03,
-    MARIO_SPAWN_UNKNOWN_03,            MARIO_SPAWN_TELEPORT,             MARIO_SPAWN_INSTANT_ACTIVE,        MARIO_SPAWN_AIRBORNE,
-    MARIO_SPAWN_HARD_AIR_KNOCKBACK,    MARIO_SPAWN_SPIN_AIRBORNE_CIRCLE, MARIO_SPAWN_DEATH,                 MARIO_SPAWN_SPIN_AIRBORNE,
-    MARIO_SPAWN_FLYING,                MARIO_SPAWN_SWIMMING,             MARIO_SPAWN_PAINTING_STAR_COLLECT, MARIO_SPAWN_PAINTING_DEATH,
-    MARIO_SPAWN_AIRBORNE_STAR_COLLECT, MARIO_SPAWN_AIRBORNE_DEATH,       MARIO_SPAWN_LAUNCH_STAR_COLLECT,   MARIO_SPAWN_LAUNCH_DEATH,
+    MARIO_SPAWN_DOOR_WARP,
+    MARIO_SPAWN_UNKNOWN_02,
+    MARIO_SPAWN_UNKNOWN_03,
+    MARIO_SPAWN_UNKNOWN_03,
+    MARIO_SPAWN_UNKNOWN_03,
+    MARIO_SPAWN_TELEPORT,
+    MARIO_SPAWN_INSTANT_ACTIVE,
+    MARIO_SPAWN_AIRBORNE,
+    MARIO_SPAWN_HARD_AIR_KNOCKBACK,
+    MARIO_SPAWN_SPIN_AIRBORNE_CIRCLE,
+    MARIO_SPAWN_DEATH,
+    MARIO_SPAWN_SPIN_AIRBORNE,
+    MARIO_SPAWN_FLYING,
+    MARIO_SPAWN_SWIMMING,
+    MARIO_SPAWN_PAINTING_STAR_COLLECT,
+    MARIO_SPAWN_PAINTING_DEATH,
+    MARIO_SPAWN_AIRBORNE_STAR_COLLECT,
+    MARIO_SPAWN_AIRBORNE_DEATH,
+    MARIO_SPAWN_LAUNCH_STAR_COLLECT,
+    MARIO_SPAWN_LAUNCH_DEATH,
 };
 
 Vp D_8032CF00 = { {
@@ -93,9 +123,9 @@ const char *gNoControllerMsg[] = {
 void override_viewport_and_clip(Vp *a, Vp *b, u8 c, u8 d, u8 e) {
     u16 sp6 = ((c >> 3) << 11) | ((d >> 3) << 6) | ((e >> 3) << 1) | 1;
 
-//    gFBSetColor = (sp6 << 16) | sp6;
-//    D_8032CE74 = a;
-//    D_8032CE78 = b;
+    //    gFBSetColor = (sp6 << 16) | sp6;
+    //    D_8032CE74 = a;
+    //    D_8032CE78 = b;
 }
 
 void set_warp_transition_rgb(u8 red, u8 green, u8 blue) {
@@ -108,10 +138,10 @@ void set_warp_transition_rgb(u8 red, u8 green, u8 blue) {
 }
 
 void print_intro_text(void) {
-    print_text_centered(SCREEN_WIDTH / 2, 190, "Super Mario 64");
-    print_text_centered(SCREEN_WIDTH / 2, 160, "Splitscreen Multiplayer");
-    print_text_centered(SCREEN_WIDTH / 2, 130, "By Kaze Emanuar");
-    print_text_centered(SCREEN_WIDTH / 2, 100, "Update by AloXado320");
+    //    print_text_centered(SCREEN_WIDTH / 2, 190, "Super Mario 64");
+    //    print_text_centered(SCREEN_WIDTH / 2, 160, "Splitscreen Multiplayer");
+    //    print_text_centered(SCREEN_WIDTH / 2, 130, "By Kaze Emanuar");
+    //    print_text_centered(SCREEN_WIDTH / 2, 100, "Update by AloXado320");
 
     if ((gGlobalTimer & 0x1F) < 20) {
         if (gPlayer2Controller->controllerData == NULL || gPlayer1Controller->controllerData == NULL) {
@@ -122,7 +152,7 @@ void print_intro_text(void) {
                 print_text_centered(SCREEN_WIDTH / 2, 50, "NO PLAYER 2 CONTROLLER");
             }
         } else {
-            print_text_centered(SCREEN_WIDTH / 2, 40, "PRESS START");
+            //       print_text_centered(SCREEN_WIDTH / 2, 40, "PRESS START");
         }
     }
 }
@@ -371,52 +401,58 @@ void split_screens(void) {
     manip = gCurrentArea->unk04;
     // get_object_list_from_behavior(bhvActSelector);
     // count_objects_with_behavior(bhvActSelector);
-    gIsGameEnding = ((gMarioStates[0].action == ACT_END_PEACH_CUTSCENE)
-             || (gMarioStates[0].action == ACT_CREDITS_CUTSCENE)
-             || (gMarioStates[0].action == ACT_END_WAVING_CUTSCENE)
-            );
-    if ((gCurrLevelNum != LEVEL_MIN) && (count_objects_with_behavior(bhvActSelector) == 0)
-        && !gIsGameEnding) {
-        if (horizontal) {
-            manip->width = SCREEN_WIDTH / 4;
-        } else {
-            manip->height = SCREEN_HEIGHT / 4;
-        }
-         if (luigiCamFirst) {
-            gCurrentArea->camera = gCurrentArea->luigiCamera;
+    if (gActivePlayers > 1) {
+
+        gIsGameEnding = ((gMarioStates[0].action == ACT_END_PEACH_CUTSCENE)
+                         || (gMarioStates[0].action == ACT_CREDITS_CUTSCENE)
+                         || (gMarioStates[0].action == ACT_END_WAVING_CUTSCENE));
+        if ((gCurrLevelNum != LEVEL_MIN) && (count_objects_with_behavior(bhvActSelector) == 0)
+            && !gIsGameEnding) {
             if (horizontal) {
-                manip->x = manip->width * 3;
+                manip->width = SCREEN_WIDTH / 4;
             } else {
-                manip->y = manip->height * 3;
+                manip->height = SCREEN_HEIGHT / 4;
             }
-            geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
-            gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+            if (luigiCamFirst) {
+                gCurrentArea->camera = gCurrentArea->luigiCamera;
+                if (horizontal) {
+                    manip->x = manip->width * 3;
+                } else {
+                    manip->y = manip->height * 3;
+                }
+                geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
+                gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+            } else {
+                gCurrentArea->camera = gCurrentArea->marioCamera;
+                if (horizontal) {
+                    manip->x = manip->width;
+                } else {
+                    manip->y = manip->height;
+                }
+                geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
+                gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+            }
+            // debug
+            luigiCamFirst = luigiCamFirst ^ 1;
         } else {
-            gCurrentArea->camera = gCurrentArea->marioCamera;
             if (horizontal) {
+                manip->width = SCREEN_WIDTH / 2;
                 manip->x = manip->width;
             } else {
+                manip->height = SCREEN_HEIGHT / 2;
                 manip->y = manip->height;
             }
             geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
             gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+            luigiCamFirst = 0;
         }
-        // debug
-        luigiCamFirst = luigiCamFirst ^ 1;
     } else {
-        if (horizontal) {
-            manip->width = SCREEN_WIDTH / 2;
-            manip->x = manip->width;
-        } else {
-            manip->height = SCREEN_HEIGHT / 2;
-            manip->y = manip->height;
-        }
-          geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
-        gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
-        luigiCamFirst = 0;
+            geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
+            gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+            luigiCamFirst = 0;
     }
 }
-   
+
 void render_game(void) {
     if (gCurrentArea != NULL && !gWarpTransition.pauseRendering) {
         split_screens();
@@ -429,7 +465,7 @@ void render_game(void) {
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         render_text_labels();
         do_cutscene_handler();
-        //print_displaying_credits_entry();
+        // print_displaying_credits_entry();
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, BORDER_HEIGHT, SCREEN_WIDTH,
                       SCREEN_HEIGHT - BORDER_HEIGHT);
         gPauseScreenMode = render_menus_and_dialogs();
@@ -446,8 +482,8 @@ void render_game(void) {
 
         if (gWarpTransition.isActive) {
             if (gWarpTransDelay == 0) {
-                gWarpTransition.isActive = !render_screen_transition(0, gWarpTransition.type, gWarpTransition.time,
-                                                                     &gWarpTransition.data);
+                gWarpTransition.isActive = !render_screen_transition(
+                    0, gWarpTransition.type, gWarpTransition.time, &gWarpTransition.data);
                 if (!gWarpTransition.isActive) {
                     if (gWarpTransition.type & 1) {
                         gWarpTransition.pauseRendering = TRUE;

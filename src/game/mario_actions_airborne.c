@@ -456,9 +456,7 @@ s32 act_jump(struct MarioState *m) {
 }
 
 s32 act_double_jump(struct MarioState *m) {
-    s32 animation = (m->vel[1] >= 0.0f)
-        ? MARIO_ANIM_DOUBLE_JUMP_RISE
-        : MARIO_ANIM_DOUBLE_JUMP_FALL;
+    s32 animation = (m->vel[1] >= 0.0f) ? MARIO_ANIM_DOUBLE_JUMP_RISE : MARIO_ANIM_DOUBLE_JUMP_FALL;
 
     if (check_kick_or_dive_in_air(m)) {
         return TRUE;
@@ -500,6 +498,11 @@ s32 act_triple_jump(struct MarioState *m) {
     }
 #endif
     play_flip_sounds(m, 2, 8, 20);
+    if (m->vel[1] < 2.0f) {
+        if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) {
+            return set_mario_action(m, ACT_TWIRLING, 0);
+        }
+    }
     return FALSE;
 }
 
@@ -1334,7 +1337,7 @@ s32 act_air_hit_wall(struct MarioState *m) {
 #ifdef AVOID_UB
     return
 #endif
-    set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
+        set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
 
     //! Missing return statement. The returned value is the result of the call
     // to set_mario_animation. In practice, this value is nonzero.
@@ -1791,8 +1794,7 @@ s32 act_flying(struct MarioState *m) {
                     m->vel[1] = 0.0f;
                 }
 
-                play_sound((m->flags & MARIO_METAL_CAP) ? SOUND_ACTION_METAL_BONK
-                                                        : SOUND_ACTION_BONK,
+                play_sound((m->flags & MARIO_METAL_CAP) ? SOUND_ACTION_METAL_BONK : SOUND_ACTION_BONK,
                            m->marioObj->soundOrigin);
 
                 m->particleFlags |= PARTICLE_VERTICAL_STAR;
@@ -2069,10 +2071,9 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
     f32 z;
     f32 magnitude;
     /*
-    magnitude = sqrtf((m->controller->stickX*m->controller->stickX  + m->controller->stickY*m->controller->stickY));
-    magnitude = magnitude/inertiaDisplacementScale; //16.0f by default
-    x = magnitude * sins(m->intendedYaw);
-    z = magnitude * coss(m->intendedYaw);
+    magnitude = sqrtf((m->controller->stickX*m->controller->stickX  +
+    m->controller->stickY*m->controller->stickY)); magnitude = magnitude/inertiaDisplacementScale;
+    //16.0f by default x = magnitude * sins(m->intendedYaw); z = magnitude * coss(m->intendedYaw);
     //reduce displacement if you arent holding in the direction of it
     m->pos[0]+=m->platformDisplacement[0];
     m->vel[1]+=m->platformDisplacement[1];

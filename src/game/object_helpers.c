@@ -76,20 +76,20 @@ Gfx *geo_update_layer_transparency(s32 callContext, struct GraphNode *node, UNUS
         if (objectOpacity == 0xFF) {
             if (currentGraphNode->parameter == 20) {
                 currentGraphNode->fnNode.node.flags =
-                0x600 | (currentGraphNode->fnNode.node.flags & 0xFF);
+                    0x600 | (currentGraphNode->fnNode.node.flags & 0xFF);
             } else {
                 currentGraphNode->fnNode.node.flags =
-                0x100 | (currentGraphNode->fnNode.node.flags & 0xFF);
+                    0x100 | (currentGraphNode->fnNode.node.flags & 0xFF);
             }
 
             objectGraphNode->oAnimState = 0;
         } else {
             if (currentGraphNode->parameter == 20) {
                 currentGraphNode->fnNode.node.flags =
-                0x600 | (currentGraphNode->fnNode.node.flags & 0xFF);
+                    0x600 | (currentGraphNode->fnNode.node.flags & 0xFF);
             } else {
                 currentGraphNode->fnNode.node.flags =
-                0x500 | (currentGraphNode->fnNode.node.flags & 0xFF);
+                    0x500 | (currentGraphNode->fnNode.node.flags & 0xFF);
             }
 
             objectGraphNode->oAnimState = 1;
@@ -189,7 +189,9 @@ Gfx *geo_switch_area(s32 callContext, struct GraphNode *node) {
         } else {
             gFindFloorIncludeSurfaceIntangible = TRUE;
 
-            find_floor(gMarioStates[gCamera->cameraID].marioObj->oPosX, gMarioStates[gCamera->cameraID].marioObj->oPosY, gMarioStates[gCamera->cameraID].marioObj->oPosZ, &sp20);
+            find_floor(gMarioStates[gCamera->cameraID].marioObj->oPosX,
+                       gMarioStates[gCamera->cameraID].marioObj->oPosY,
+                       gMarioStates[gCamera->cameraID].marioObj->oPosZ, &sp20);
 
             if (sp20) {
                 if (sp20->object == NULL) {
@@ -391,8 +393,10 @@ s16 obj_angle_to_object(struct Object *obj1, struct Object *obj2) {
     f32 z1, x1, z2, x2;
     s16 angle;
 
-    z1 = obj1->oPosZ; z2 = obj2->oPosZ; // ordering of instructions..
-    x1 = obj1->oPosX; x2 = obj2->oPosX;
+    z1 = obj1->oPosZ;
+    z2 = obj2->oPosZ; // ordering of instructions..
+    x1 = obj1->oPosX;
+    x2 = obj2->oPosX;
 
     angle = atan2s(z2 - z1, x2 - x1);
     return angle;
@@ -458,8 +462,8 @@ void obj_set_angle(struct Object *obj, s16 pitch, s16 yaw, s16 roll) {
  * Spawns an object at an absolute location with a specified angle.
  */
 struct Object *spawn_object_abs_with_rot(struct Object *parent, s16 uselessArg, u32 model,
-                                         const BehaviorScript *behavior,
-                                         s16 x, s16 y, s16 z, s16 rx, s16 ry, s16 rz) {
+                                         const BehaviorScript *behavior, s16 x, s16 y, s16 z, s16 rx,
+                                         s16 ry, s16 rz) {
     // 'uselessArg' is unused in the function spawn_object_at_origin()
     struct Object *newObj = spawn_object_at_origin(parent, uselessArg, model, behavior);
     obj_set_pos(newObj, x, y, z);
@@ -473,8 +477,9 @@ struct Object *spawn_object_abs_with_rot(struct Object *parent, s16 uselessArg, 
  * The rz argument is never used, and the z offset is used for z-rotation instead. This is most likely
  * a copy-paste typo by one of the programmers.
  */
-struct Object *spawn_object_rel_with_rot(struct Object *parent, u32 model, const BehaviorScript *behavior,
-                                         s16 xOff, s16 yOff, s16 zOff, s16 rx, s16 ry, UNUSED s16 rz) {
+struct Object *spawn_object_rel_with_rot(struct Object *parent, u32 model,
+                                         const BehaviorScript *behavior, s16 xOff, s16 yOff, s16 zOff,
+                                         s16 rx, s16 ry, UNUSED s16 rz) {
     struct Object *newObj = spawn_object_at_origin(parent, 0, model, behavior);
     newObj->oFlags |= OBJ_FLAG_TRANSFORM_RELATIVE_TO_PARENT;
     obj_set_parent_relative_pos(newObj, xOff, yOff, zOff);
@@ -483,7 +488,8 @@ struct Object *spawn_object_rel_with_rot(struct Object *parent, u32 model, const
     return newObj;
 }
 
-struct Object *spawn_obj_with_transform_flags(struct Object *sp20, s32 model, const BehaviorScript *sp28) {
+struct Object *spawn_obj_with_transform_flags(struct Object *sp20, s32 model,
+                                              const BehaviorScript *sp28) {
     struct Object *sp1C = spawn_object(sp20, model, sp28);
     sp1C->oFlags |= OBJ_FLAG_0020 | OBJ_FLAG_SET_THROW_MATRIX_FROM_TRANSFORM;
     return sp1C;
@@ -568,7 +574,8 @@ struct Object *try_to_spawn_object(s16 offsetY, f32 scale, struct Object *parent
     }
 }
 
-struct Object *spawn_object_with_scale(struct Object *parent, s32 model, const BehaviorScript *behavior, f32 scale) {
+struct Object *spawn_object_with_scale(struct Object *parent, s32 model, const BehaviorScript *behavior,
+                                       f32 scale) {
     struct Object *obj = spawn_object_at_origin(parent, 0, model, behavior);
 
     obj_copy_pos_and_angle(obj, parent);
@@ -582,8 +589,9 @@ static void obj_build_relative_transform(struct Object *obj) {
     obj_translate_local(obj, O_POS_INDEX, O_PARENT_RELATIVE_POS_INDEX);
 }
 
-struct Object *spawn_object_relative(s16 behaviorParam, s16 relativePosX, s16 relativePosY, s16 relativePosZ,
-                                     struct Object *parent, s32 model, const BehaviorScript *behavior) {
+struct Object *spawn_object_relative(s16 behaviorParam, s16 relativePosX, s16 relativePosY,
+                                     s16 relativePosZ, struct Object *parent, s32 model,
+                                     const BehaviorScript *behavior) {
     struct Object *obj = spawn_object_at_origin(parent, 0, model, behavior);
 
     obj_copy_pos_and_angle(obj, parent);
@@ -738,9 +746,10 @@ void cur_obj_init_animation_with_accel_and_sound(s32 animIndex, f32 accel) {
     o->oSoundStateID = animIndex;
 }
 
-void obj_init_animation_with_sound(struct Object *obj, const struct Animation * const* animations, s32 animIndex) {
-    struct Animation **anims = (struct Animation **)animations;
-    obj->oAnimations = (struct Animation **)animations;
+void obj_init_animation_with_sound(struct Object *obj, const struct Animation *const *animations,
+                                   s32 animIndex) {
+    struct Animation **anims = (struct Animation **) animations;
+    obj->oAnimations = (struct Animation **) animations;
     geo_obj_init_animation(&obj->header.gfx, &anims[animIndex]);
     obj->oSoundStateID = animIndex;
 }
@@ -974,7 +983,8 @@ BAD_RETURN(s32) cur_obj_extend_animation_if_at_end(void) {
     s32 sp4 = o->header.gfx.animInfo.animFrame;
     s32 sp0 = o->header.gfx.animInfo.curAnim->loopEnd - 2;
 
-    if (sp4 == sp0) o->header.gfx.animInfo.animFrame--;
+    if (sp4 == sp0)
+        o->header.gfx.animInfo.animFrame--;
 }
 
 s32 cur_obj_check_if_near_animation_end(void) {
@@ -1371,8 +1381,8 @@ void cur_obj_move_y(f32 gravity, f32 bounciness, f32 buoyancy) {
         }
     }
 
-    if (o->oMoveFlags & (OBJ_MOVE_MASK_ON_GROUND | OBJ_MOVE_AT_WATER_SURFACE
-        | OBJ_MOVE_UNDERWATER_OFF_GROUND)) {
+    if (o->oMoveFlags
+        & (OBJ_MOVE_MASK_ON_GROUND | OBJ_MOVE_AT_WATER_SURFACE | OBJ_MOVE_UNDERWATER_OFF_GROUND)) {
         o->oMoveFlags &= ~OBJ_MOVE_IN_AIR;
     } else {
         o->oMoveFlags |= OBJ_MOVE_IN_AIR;
@@ -1598,8 +1608,7 @@ void cur_obj_set_hurtbox_radius_and_height(f32 radius, f32 height) {
 }
 
 static void obj_spawn_loot_coins(struct Object *obj, s32 numCoins, f32 sp30,
-                                    const BehaviorScript *coinBehavior,
-                                    s16 posJitter, s16 model) {
+                                 const BehaviorScript *coinBehavior, s16 posJitter, s16 model) {
     s32 i;
     f32 spawnHeight;
     struct Surface *floor;
@@ -1864,8 +1873,7 @@ void cur_obj_move_using_fvel_and_gravity(void) {
     cur_obj_move_using_vel_and_gravity(); //! No terminal velocity
 }
 
-void obj_set_pos_relative(struct Object *obj, struct Object *other, f32 dleft, f32 dy,
-                             f32 dforward) {
+void obj_set_pos_relative(struct Object *obj, struct Object *other, f32 dleft, f32 dy, f32 dforward) {
     f32 facingZ = coss(other->oMoveAngleYaw);
     f32 facingX = sins(other->oMoveAngleYaw);
 
@@ -2188,15 +2196,18 @@ s32 cur_obj_wait_then_blink(s32 timeUntilBlinking, s32 numBlinks) {
 }
 
 s32 cur_obj_is_mario_ground_pounding_platform(void) {
-    //struct MarioState *m = gMarioObject->collisionData;
+    // struct MarioState *m = gMarioObject->collisionData;
     if (gMarioState->marioObj->platform == o) {
         if (gMarioState->action == ACT_GROUND_POUND_LAND) {
             return TRUE;
         }
     }
-    if (gLuigiState->marioObj->platform == o) {
-        if (gLuigiState->action == ACT_GROUND_POUND_LAND) {
-            return TRUE;
+    if (gActivePlayers > 1) {
+
+        if (gLuigiState->marioObj->platform == o) {
+            if (gLuigiState->action == ACT_GROUND_POUND_LAND) {
+                return TRUE;
+            }
         }
     }
 
@@ -2457,7 +2468,8 @@ void cur_obj_enable_rendering_if_mario_in_room(void) {
     }
 }
 
-s32 cur_obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deathSound, s32 noLootCoins) {
+s32 cur_obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deathSound,
+                                           s32 noLootCoins) {
     s32 interacted = FALSE;
 
     obj_set_hitbox(o, hitbox);
@@ -2480,7 +2492,6 @@ s32 cur_obj_set_hitbox_and_die_if_attacked(struct ObjectHitbox *hitbox, s32 deat
     o->oInteractStatus = 0;
     return interacted;
 }
-
 
 void obj_explode_and_spawn_coins(f32 sp18, s32 sp1C) {
     spawn_mist_particles_variable(0, 0, sp18);
@@ -2579,7 +2590,8 @@ s32 cur_obj_can_mario_activate_textbox(f32 radius, f32 height, UNUSED s32 unused
 }
 
 s32 cur_obj_can_mario_activate_textbox_2(f32 radius, f32 height) {
-    // The last argument here is unused. When this function is called directly the argument is always set to 0x7FFF.
+    // The last argument here is unused. When this function is called directly the argument is always
+    // set to 0x7FFF.
     return cur_obj_can_mario_activate_textbox(radius, height, 0x1000);
 }
 
@@ -2593,11 +2605,140 @@ static void cur_obj_end_dialog(s32 dialogFlags, s32 dialogResult) {
 }
 
 s32 cur_obj_update_dialog(s32 actionArg, s32 dialogFlags, s32 dialogID, UNUSED s32 unused) {
-    return TRUE;
+    s32 dialogResponse = 0;
+    UNUSED s32 doneTurning = TRUE;
+    if (gActivePlayers > 1) {
+        return TRUE;
+    } else {
+        switch (o->oDialogState) {
+            case DIALOG_UNK1_ENABLE_TIME_STOP:
+                // Patched :(
+                // Wait for Mario to be ready to speak, and then enable time stop
+                if (mario_ready_to_speak(gMarioState)
+                    || gMarioState->action == ACT_READING_NPC_DIALOG) {
+                    gTimeStopState |= TIME_STOP_ENABLED;
+                    o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    o->oDialogState++;
+                } else {
+                    break;
+                }
+                // Fall through so that Mario's action is interrupted immediately
+                // after time is stopped
+
+            case DIALOG_UNK1_INTERRUPT_MARIO_ACTION:
+                if (set_mario_npc_dialog(actionArg) == 2) {
+                    o->oDialogState++;
+                }
+                break;
+
+            case DIALOG_UNK1_BEGIN_DIALOG:
+                if (dialogFlags & DIALOG_UNK1_FLAG_RESPONSE) {
+                    create_dialog_box_with_response(dialogID);
+                } else if (dialogFlags & DIALOG_UNK1_FLAG_DEFAULT) {
+                    create_dialog_box(dialogID);
+                }
+                o->oDialogState++;
+                break;
+
+            case DIALOG_UNK1_AWAIT_DIALOG:
+                if (dialogFlags & DIALOG_UNK1_FLAG_RESPONSE) {
+                    if (gDialogResponse != 0) {
+                        cur_obj_end_dialog(dialogFlags, gDialogResponse);
+                    }
+                } else if (dialogFlags & DIALOG_UNK1_FLAG_DEFAULT) {
+                    if (get_dialog_id() == -1) {
+                        cur_obj_end_dialog(dialogFlags, 3);
+                    }
+                } else {
+                    cur_obj_end_dialog(dialogFlags, 3);
+                }
+                break;
+
+            case DIALOG_UNK1_DISABLE_TIME_STOP:
+                if (gMarioState->action != ACT_READING_NPC_DIALOG
+                    || (dialogFlags & DIALOG_UNK1_FLAG_4)) {
+                    gTimeStopState &= ~TIME_STOP_ENABLED;
+                    o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    dialogResponse = o->oDialogResponse;
+                    o->oDialogState = DIALOG_UNK1_ENABLE_TIME_STOP;
+                }
+                break;
+
+            default:
+                o->oDialogState = DIALOG_UNK1_ENABLE_TIME_STOP;
+                break;
+        }
+
+        return dialogResponse;
+    }
 }
 
-s32 cur_obj_update_dialog_with_cutscene(s32 actionArg, s32 dialogFlags, s32 cutsceneTable, s32 dialogID) {
-    return TRUE;
+s32 cur_obj_update_dialog_with_cutscene(s32 actionArg, s32 dialogFlags, s32 cutsceneTable,
+                                        s32 dialogID) {
+    s32 dialogResponse = 0;
+    s32 doneTurning = TRUE;
+    if (gActivePlayers > 1) {
+        return TRUE;
+    } else {
+        switch (o->oDialogState) {
+            case DIALOG_UNK2_ENABLE_TIME_STOP:
+                // Wait for Mario to be ready to speak, and then enable time stop
+                if (mario_ready_to_speak(gMarioState) || gMarioState->action == ACT_READING_NPC_DIALOG) {
+                    gTimeStopState |= TIME_STOP_ENABLED;
+                    o->activeFlags |= ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    o->oDialogState++;
+                    o->oDialogResponse = 0;
+                } else {
+                    break;
+                }
+
+            case DIALOG_UNK2_TURN_AND_INTERRUPT_MARIO_ACTION:
+                if (dialogFlags & DIALOG_UNK2_FLAG_0) {
+                    doneTurning =
+                        cur_obj_rotate_yaw_toward(obj_angle_to_object(o, gMarioObject), 0x800);
+                    if (o->oDialogResponse >= 0x21) {
+                        doneTurning = TRUE;
+                    }
+                }
+
+                if (set_mario_npc_dialog(actionArg) == 2 && doneTurning) {
+                    o->oDialogResponse = 0;
+                    o->oDialogState++;
+                } else {
+                    o->oDialogResponse++;
+                }
+                break;
+
+            case DIALOG_UNK2_AWAIT_DIALOG:
+                if (cutsceneTable == CUTSCENE_CAP_SWITCH_PRESS) {
+                    if ((o->oDialogResponse = cutscene_object_without_dialog(cutsceneTable, o)) != 0) {
+                        o->oDialogState++;
+                    }
+                } else {
+                    if ((o->oDialogResponse = cutscene_object_with_dialog(cutsceneTable, o, dialogID))
+                        != 0) {
+                        o->oDialogState++;
+                    }
+                }
+                break;
+
+            case DIALOG_UNK2_END_DIALOG:
+                if (dialogFlags & DIALOG_UNK2_LEAVE_TIME_STOP_ENABLED) {
+                    dialogResponse = o->oDialogResponse;
+                    o->oDialogState = DIALOG_UNK2_ENABLE_TIME_STOP;
+                } else if (gMarioState->action != ACT_READING_NPC_DIALOG) {
+                    gTimeStopState &= ~TIME_STOP_ENABLED;
+                    o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
+                    dialogResponse = o->oDialogResponse;
+                    o->oDialogState = DIALOG_UNK2_ENABLE_TIME_STOP;
+                } else {
+                    set_mario_npc_dialog(0);
+                }
+                break;
+        }
+
+        return dialogResponse;
+    }
 }
 
 s32 cur_obj_has_model(u16 modelID) {

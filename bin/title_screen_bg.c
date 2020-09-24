@@ -23,6 +23,13 @@ static const Vtx title_screen_bg_vertex_0A000000[] = {
     {{{     0,     20,     -1}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
 };
 
+static const Vtx title_screen_menu_button[] = {
+    {{{     0,     0,     -1}, 0, {     0,    0x400}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    60,     0,     -1}, 0, {  0x800,    0x400}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    60,     30,     -1}, 0, {  0x800,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     30,     -1}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+};
+
 // 0x0A000100 - 0x0A000118
 const Gfx title_screen_bg_dl_0A000100[] = {
     gsDPSetCombineMode(G_CC_DECALRGB, G_CC_DECALRGB),
@@ -34,6 +41,12 @@ const Gfx title_screen_bg_dl_0A000100[] = {
 const Gfx title_screen_bg_dl_0A000118[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsSPVertex(title_screen_bg_vertex_0A000000, 16, 0),
+    gsSPEndDisplayList(),
+};
+
+const Gfx title_menu_buttons[] = {
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPVertex(title_screen_menu_button, 16, 0),
     gsSPEndDisplayList(),
 };
 
@@ -111,6 +124,26 @@ ALIGNED8 static const u8 title_texture_0A005940[] = {
 #include "textures/title_screen_bg/title_screen_bg.05940.rgba16.inc.c"
 };
 
+// 0x0A005940
+ALIGNED8 static const u8 marioOption[] = {
+#include "textures/title_screen_bg/mareo.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 luigiOption[] = {
+#include "textures/title_screen_bg/luigi.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 coopOption[] = {
+#include "textures/title_screen_bg/coop.rgba16.inc.c"
+};
+
+ALIGNED8 static const u8 versusOption[] = {
+#include "textures/title_screen_bg/versus.rgba16.inc.c"
+};
+
+const u8 *const menu_button_table[] = {
+    marioOption, luigiOption, coopOption, versusOption,
+};
 // 0x0A0065C0
 const u8 *const mario_title_texture_table[] = {
     title_texture_0A0001C0, title_texture_0A000E40, title_texture_0A001AC0, title_texture_0A002740,

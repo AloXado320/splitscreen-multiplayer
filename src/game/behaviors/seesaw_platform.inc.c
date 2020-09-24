@@ -39,7 +39,7 @@ void bhv_seesaw_platform_update(void) {
         cur_obj_play_sound_1(SOUND_ENV_BOAT_ROCKING1);
     }
 
-    if ((gMarioStates[0].marioObj->platform == o) || (gMarioStates[1].marioObj->platform == o)) {
+    if ((gMarioStates[0].marioObj->platform == o) || ((gMarioStates[1].marioObj) && (gMarioStates[1].marioObj->platform == o))) {
         for (i = 0; i < gActivePlayers; i++) {
             if (gMarioStates[i].marioObj->platform == o) {
                 o->oDistanceToMario = dist_between_objects(gCurrentObject, gMarioStates[i].marioObj);

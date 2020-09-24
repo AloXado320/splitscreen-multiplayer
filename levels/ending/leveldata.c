@@ -249,6 +249,8 @@ const Gfx dl_cake_end_screen_eu_070297D8[] = {
 #else
 
 #include "levels/ending/cake.inc.c"
+#include "levels/ending/cakeLuigi.inc.c"
+#include "levels/ending/cakeMario.inc.c"
 
 // 0x07025800 - 0x07025840
 static const Vtx cake_end_vertex_07025800[] = {

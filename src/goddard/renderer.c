@@ -127,12 +127,16 @@ static struct ObjGroup *sYoshiSceneGrp; // @ 801BB0A8
 static s32 D_801BB0AC;                  // unused DL number
 static struct ObjGroup *sMarioSceneGrp; // @ 801BB0B0
 static s32 D_801BB0B4;                  // second offset into D_801BAF30
+static struct ObjGroup *sLuigiSceneGrp; // @ 801BB0B0
+static s32 D_801BB0B4L;                  // second offset into D_801BAF30
 static struct ObjGroup *sCarSceneGrp;   // @ 801BB0B8
 static s32 D_801BB0BC; // vtx's to load into RPD? Vtx len in GD Dl and in the lower bank (AF30)
 static struct ObjView *sYoshiSceneView; // @ 801BB0C0
 static s32 D_801BB0C4;                  // first offset into D_801BAF30
 static struct ObjView *sMSceneView;     // @ 801BB0C8; Mario scene view
 static s32 D_801BB0CC;                  // Vtx start in GD Dl
+static struct ObjView *sLSceneView;     // @ 801BB0C8; Mario scene view
+static s32 D_801BB0CCL;                  // Vtx start in GD Dl
 static struct ObjView *sCarSceneView;   // @ 801BB0D0
 static s32 sUpdateYoshiScene;           // @ 801BB0D4; update dl Vtx from ObjVertex?
 static s32 sUpdateMarioScene;           // @ 801BB0D8; update dl Vtx from ObjVertex?
@@ -1153,6 +1157,7 @@ void gdm_setup(void) {
     add_to_stacktrace("gdm_setup");
     sYoshiSceneGrp = NULL;
     sMarioSceneGrp = NULL;
+    sLuigiSceneGrp = NULL;
     sUpdateYoshiScene = FALSE;
     sUpdateMarioScene = FALSE;
     sCarGdDlNum = 0;
@@ -1190,6 +1195,29 @@ struct ObjView *make_view_withgrp(char *name, struct ObjGroup *grp) {
     return view;
 }
 
+/* 24AC80 -> 24AD14; orig name: func_8019C4B0 */
+struct ObjView *make_view_withgrpMario(char *name, struct ObjGroup *grp) {
+    struct ObjView *view;            // 2c
+    UNUSED struct ObjGroup *viewgrp; // 28
+
+    view = make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, -80, -20, 320, 240, grp);
+    viewgrp = make_group(2, grp, view);
+    view->lights = gGdLightGroup;
+
+    return view;
+}
+/* 24AC80 -> 24AD14; orig
+ name: func_8019C4B0 */
+struct ObjView *make_view_withgrpLuigi(char *name, struct ObjGroup *grp) {
+    struct ObjView *view;            // 2c
+    UNUSED struct ObjGroup *viewgrp; // 28
+
+    view = make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, 80, -20, 320, 240, grp);
+    viewgrp = make_group(2, grp, view);
+    view->lights = gGdLightGroup;
+
+    return view;
+}
 /* 24AD14 -> 24AEB8 */
 void gdm_maketestdl(s32 id) {
     UNUSED u32 pad[3];
@@ -1208,7 +1236,13 @@ void gdm_maketestdl(s32 id) {
                 sMarioSceneGrp = gMarioFaceGrp; // gMarioFaceGrp set by load_mario_head
                 gd_setup_cursor(NULL);
             }
-            sMSceneView = make_view_withgrp("mscene", sMarioSceneGrp);
+            if (sLuigiSceneGrp == NULL) {
+               // load_luigi_head(animate_mario_head_normal);
+                sLuigiSceneGrp = gLuigiFaceGrp; // gMarioFaceGrp set by load_mario_head
+               // gd_setup_cursor(NULL);
+            }
+            sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
+            //sLSceneView = make_view_withgrpLuigi("lscene", sLuigiSceneGrp);
             break;
         case 3: // game over Mario head
             if (sMarioSceneGrp == NULL) {
@@ -1216,7 +1250,13 @@ void gdm_maketestdl(s32 id) {
                 sMarioSceneGrp = gMarioFaceGrp;
                 gd_setup_cursor(NULL);
             }
-            sMSceneView = make_view_withgrp("mscene", sMarioSceneGrp);
+            if (sLuigiSceneGrp == NULL) {
+               // load_mario_head(animate_mario_head_gameover);
+                sLuigiSceneGrp = gMarioFaceGrp;
+             //   gd_setup_cursor(NULL);
+            }
+            sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
+            //sLSceneView = make_view_withgrpLuigi("scene", sLuigiSceneGrp);
             break;
         case 4:
             sCarSceneView = make_view_withgrp("car_scene", sCarSceneGrp);
@@ -1249,6 +1289,9 @@ void gd_vblank(void) {
     }
     if (sUpdateMarioScene) {
         apply_to_obj_types_in_group(OBJ_TYPE_NETS, (applyproc_t) convert_net_verts, sMarioSceneGrp);
+    }
+    if (sUpdateMarioScene) {
+        apply_to_obj_types_in_group(OBJ_TYPE_NETS, (applyproc_t) convert_net_verts, sLuigiSceneGrp);
     }
     sUpdateYoshiScene = FALSE;
     sUpdateMarioScene = FALSE;
@@ -1313,6 +1356,7 @@ void *gdm_gettestdl(s32 id) {
         case 3:
             setup_timers();
             update_view_and_dl(sMSceneView);
+            //update_view_and_dl(sLSceneView);
             if (sHandView != NULL) {
                 update_view_and_dl(sHandView);
             }
@@ -2957,6 +3001,21 @@ void Unknown801A4B04(void) {
     sDynamicsTime = get_scaled_timer_total("dynamics");
 }
 
+f32 absf(f32 x);
+u8 handCollission(f32 x, f32 y){
+    f32 xdist = absf(x-gGdCtrl.csrX - 20.f);
+    f32 ydist = absf(y-230.f + gGdCtrl.csrY);
+    if ((xdist < 30.0f) && (ydist < 20.0f)){
+        return 1;
+    }
+    return 0;
+}
+
+extern u8 coop;
+extern u8 singlePlayerChar;
+extern int startGame;
+extern u8 gActivePlayers;
+//kazetodo kazenote this is where you make menu buttons clickable
 /* 2533DC -> 253728; orig name: func_801A4C0C */
 void update_cursor(void) {
     if (sHandView == NULL) {
@@ -2997,6 +3056,35 @@ void update_cursor(void) {
     }
     if (sHandView->upperLeft.y > (sHandView->parent->upperLeft.y + sHandView->parent->lowerRight.y)) {
         sHandView->upperLeft.y = sHandView->parent->upperLeft.y + sHandView->parent->lowerRight.y;
+    }
+    if (gGdCtrl.btnAnewPress){
+        if (handCollission(50.0f, 25.0f)){
+            startGame = 1;
+            singlePlayerChar = 0;
+            gActivePlayers = 1;
+            coop = 1;
+        }
+        if (handCollission(130.0f, 25.0f)){
+            startGame = 1;
+            singlePlayerChar = 1;
+            gActivePlayers = 1;
+            coop = 1;
+        }
+        if (handCollission(210.0f, 25.0f)){
+            startGame = 1;
+            singlePlayerChar = 0;
+            gActivePlayers = 2;
+            coop = 1;
+
+        }
+        if (handCollission(290.0f, 25.0f)){
+            startGame = 1;
+            singlePlayerChar = 0;
+            gActivePlayers = 2;
+            coop = 0;
+
+        }
+
     }
 }
 

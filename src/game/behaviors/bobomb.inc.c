@@ -41,13 +41,10 @@ void bobomb_act_explode(void) {
     }
 }
 
-
 void bobomb_check_interactions(void) {
     obj_set_hitbox(o, &sBobombHitbox);
-    if ((o->oInteractStatus & INT_STATUS_INTERACTED) != 0)
-    {
-        if ((o->oInteractStatus & INT_STATUS_MARIO_UNK1) != 0)
-        {
+    if ((o->oInteractStatus & INT_STATUS_INTERACTED) != 0) {
+        if ((o->oInteractStatus & INT_STATUS_MARIO_UNK1) != 0) {
             o->oMoveAngleYaw = gMarioObject->header.gfx.angle[1];
             o->oForwardVel = 25.0;
             o->oVelY = 30.0;
@@ -301,8 +298,13 @@ void bobomb_buddy_act_idle(void) {
     if (o->oDistanceToMario < 1000.0f)
         o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x140);
 
-    if (o->oDistanceToMario < 200)
-        o->oAction = BOBOMB_BUDDY_ACT_TURN_TO_TALK;
+    if (gActivePlayers > 1) {
+        if (o->oDistanceToMario < 200)
+            o->oAction = BOBOMB_BUDDY_ACT_TURN_TO_TALK;
+    } else {
+        if (o->oInteractStatus == INT_STATUS_INTERACTED)
+            o->oAction = BOBOMB_BUDDY_ACT_TURN_TO_TALK;
+    }
 }
 
 /**
@@ -319,12 +321,12 @@ void bobomb_buddy_cannon_dialog(s16 dialogFirstText, s16 dialogSecondText) {
 
     switch (o->oBobombBuddyCannonStatus) {
         case BOBOMB_BUDDY_CANNON_UNOPENED:
-                save_file_set_cannon_unlocked();
-                cannonClosed = cur_obj_nearest_object_with_behavior(bhvCannonClosed);
-                if (cannonClosed != 0)
-                    o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_OPENING;
-                else
-                    o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_STOP_TALKING;
+            save_file_set_cannon_unlocked();
+            cannonClosed = cur_obj_nearest_object_with_behavior(bhvCannonClosed);
+            if (cannonClosed != 0)
+                o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_OPENING;
+            else
+                o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_STOP_TALKING;
             break;
 
         case BOBOMB_BUDDY_CANNON_OPENING:
@@ -355,9 +357,20 @@ void bobomb_buddy_act_talk(void) {
 
         switch (o->oBobombBuddyRole) {
             case BOBOMB_BUDDY_ROLE_ADVICE:
+                if (gActivePlayers > 1) {
                     set_mario_npc_dialog(0);
-                break;
+                } else {
+                    if (cutscene_object_with_dialog(CUTSCENE_DIALOG, o, o->oBehParams2ndByte)
+                        != BOBOMB_BUDDY_BP_STYPE_GENERIC) {
+                        set_mario_npc_dialog(0);
 
+                        o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
+                        o->oBobombBuddyHasTalkedToMario = BOBOMB_BUDDY_HAS_TALKED;
+                        o->oInteractStatus = 0;
+                        o->oAction = BOBOMB_BUDDY_ACT_IDLE;
+                    }
+                }
+                break;
             case BOBOMB_BUDDY_ROLE_CANNON:
                 if (gCurrCourseNum == COURSE_BOB)
                     bobomb_buddy_cannon_dialog(DIALOG_004, DIALOG_105);

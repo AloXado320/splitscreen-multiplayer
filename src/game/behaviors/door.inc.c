@@ -1,12 +1,13 @@
 // door.c.inc
 
-struct DoorAction
-{
+struct DoorAction {
     u32 flag;
     s32 action;
 };
 
-struct DoorAction D_8032F300[] = { { 0x40000, 3 }, { 0x80000, 4 }, { 0x10000, 1 }, { 0x20000, 2 }, { -1, 0 }, };
+struct DoorAction D_8032F300[] = {
+    { 0x40000, 3 }, { 0x80000, 4 }, { 0x10000, 1 }, { 0x20000, 2 }, { -1, 0 },
+};
 
 s32 D_8032F328[] = { SOUND_GENERAL_OPEN_WOOD_DOOR, SOUND_GENERAL_OPEN_IRON_DOOR };
 
@@ -30,7 +31,9 @@ void play_door_open_noise(void) {
     s32 sp1C = cur_obj_has_model(MODEL_HMC_METAL_DOOR);
     if (o->oTimer == 0) {
         cur_obj_play_sound_2(D_8032F328[sp1C]);
-        //gTimeStopState |= TIME_STOP_MARIO_OPENED_DOOR;
+        if (gActivePlayers < 2) {
+            gTimeStopState |= TIME_STOP_MARIO_OPENED_DOOR;
+        }
     }
     if (o->oTimer == 70) {
         cur_obj_play_sound_2(D_8032F330[sp1C]);
@@ -45,8 +48,8 @@ void play_warp_door_open_noise(void) {
 
 void bhv_door_loop(void) {
     s32 sp1C = 0;
-    
-    while (D_8032F300[sp1C].flag != (u32)~0) {
+
+    while (D_8032F300[sp1C].flag != (u32) ~0) {
         if (cur_obj_clear_interact_status_flag(D_8032F300[sp1C].flag)) {
             set_door_camera_event();
             cur_obj_change_action(D_8032F300[sp1C].action);

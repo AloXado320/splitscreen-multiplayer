@@ -35,20 +35,18 @@ struct CameraHUD {
 // When the HUD is rendered this value is 8, full health.
 static s16 sPowerMeterStoredHealth[2];
 
-static struct PowerMeterHUD sPowerMeterHUD[2] =  { 
-{
-    POWER_METER_HIDDEN,
-    30,
-    100,
-    1.0,
-    },
-    {
-    POWER_METER_HIDDEN,
-    30,
-    100,
-    1.0,
-    } 
-};
+static struct PowerMeterHUD sPowerMeterHUD[2] = { {
+                                                      POWER_METER_HIDDEN,
+                                                      30,
+                                                      100,
+                                                      1.0,
+                                                  },
+                                                  {
+                                                      POWER_METER_HIDDEN,
+                                                      30,
+                                                      100,
+                                                      1.0,
+                                                  } };
 
 // Power Meter timer that keeps counting when it's visible.
 // Gets reset when the health is filled and stops counting
@@ -73,11 +71,13 @@ void render_hud_tex_lut(s32 x, s32 y, u8 *texture) {
  */
 void render_hud_small_tex_lut(s32 x, s32 y, u8 *texture) {
     gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0,
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD);
+               G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR,
+               G_TX_NOMASK, G_TX_NOLOD);
     gDPTileSync(gDisplayListHead++);
-    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 2, 0, G_TX_RENDERTILE, 0,
-                G_TX_CLAMP, 3, G_TX_NOLOD, G_TX_CLAMP, 3, G_TX_NOLOD);
-    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0, (8 - 1) << G_TEXTURE_IMAGE_FRAC, (8 - 1) << G_TEXTURE_IMAGE_FRAC);
+    gDPSetTile(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 2, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 3,
+               G_TX_NOLOD, G_TX_CLAMP, 3, G_TX_NOLOD);
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, 0, 0, (8 - 1) << G_TEXTURE_IMAGE_FRAC,
+                   (8 - 1) << G_TEXTURE_IMAGE_FRAC);
     gDPPipeSync(gDisplayListHead++);
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture);
     gDPLoadSync(gDisplayListHead++);
@@ -98,7 +98,8 @@ void render_power_meter_health_segment(s16 numHealthWedges) {
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1,
                        (*healthLUT)[numHealthWedges - 1]);
     gDPLoadSync(gDisplayListHead++);
-    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES));
+    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, 32 * 32 - 1,
+                 CALC_DXT(32, G_IM_SIZ_16b_BYTES));
     gSP1Triangle(gDisplayListHead++, 0, 1, 2, 0);
     gSP1Triangle(gDisplayListHead++, 0, 2, 3, 0);
 }
@@ -115,12 +116,16 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
     if (mtx == NULL) {
         return;
     }
+    if (gActivePlayers > 1) {
 
-    guTranslate(mtx, GFX_DIMENSIONS_FROM_LEFT_EDGE((f32) sPowerMeterHUD[playerID].x),
-                (f32) sPowerMeterHUD[playerID].y / (1 + playerID) - playerID * 19, 0);
+        guTranslate(mtx, GFX_DIMENSIONS_FROM_LEFT_EDGE((f32) sPowerMeterHUD[playerID].x),
+                    (f32) sPowerMeterHUD[playerID].y / (1 + playerID) - playerID * 19, 0);
+    } else {
 
-    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++),
-              G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
+        guTranslate(mtx, (f32) sPowerMeterHUD[playerID].x + 120.f, (f32) sPowerMeterHUD[playerID].y, 0);
+    }
+
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
     gSPDisplayList(gDisplayListHead++, &dl_power_meter_base);
 
     if (numHealthWedges != 0) {
@@ -230,8 +235,6 @@ void handle_power_meter_actions(s16 numHealthWedges, int playerID) {
  */
 void render_hud_power_meter(int playerID) {
     s16 shownHealthWedges = gMarioStates[playerID].health > 0 ? gMarioStates[playerID].health >> 8 : 0;
-    ;
-
     if (sPowerMeterHUD[playerID].animation != POWER_METER_HIDING) {
         handle_power_meter_actions(shownHealthWedges, playerID);
     }
@@ -267,13 +270,13 @@ s16 move_hud_x_right_pos(s16 num) {
 
     if (num >= 100) {
         x = 0;
-    } else if (num >= 10) { 
+    } else if (num >= 10) {
         x = 12;
-    } else { 
+    } else {
         x = 24;
     }
     return x;
-}   
+}
 
 /**
  * Renders the amount of lives Mario has.
@@ -281,17 +284,31 @@ s16 move_hud_x_right_pos(s16 num) {
 void render_hud_mario_lives(void) {
     int i;
     int c = HUD_TOP_Y;
-    for (i = 0; i < gActivePlayers; i++) {
-        if (i == 0) {
-            print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(8), c / (i + 1) - 8 * i, ","); // 'Mario Head' glyph
-        } else {
-            print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(8), c / (i + 1) - 8 * i, "/"); // 'Luigi Head' glyph - uses beta key symbol
+    if (gActivePlayers > 1) {
+
+        for (i = 0; i < gActivePlayers; i++) {
+            if (i == 0) {
+                print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(8), c / (i + 1) - 8 * i,
+                           ","); // 'Mario Head' glyph
+            } else {
+                print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(8), c / (i + 1) - 8 * i,
+                           "/"); // 'Luigi Head' glyph - uses beta key symbol
+            }
+            print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(24), c / (i + 1) - 8 * i, "*"); // 'X' glyph
+            print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(40), c / (i + 1) - 8 * i, "%d",
+                               gMarioStates[i].numLives);
         }
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(24), c / (i + 1) - 8 * i, "*"); // 'X' glyph
-        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(40), c / (i + 1) - 8 * i, "%d", gMarioStates[i].numLives);
+    } else {
+        if (singlePlayerChar) {
+            print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, "/"); // 'Mario Head' glyph
+        } else {
+            print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, ","); // 'Mario Head' glyph
+        }
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d",
+                           gMarioStates[i].numLives);
     }
 }
-
 
 /**
  * Renders the amount of coins collected.
@@ -299,25 +316,56 @@ void render_hud_mario_lives(void) {
 void render_hud_coins(void) {
     int c = HUD_TOP_Y;
     s16 xAdj = move_hud_x_right_pos(gMarioStates[0].numCoins + gMarioStates[1].numCoins);
-    
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - xAdj), c / 2 - 8, "+"); // 'Coin' glyph
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 16 - xAdj), c / 2 - 8, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 30 - xAdj), c / 2 - 8, "%d", gMarioStates[0].numCoins + gMarioStates[1].numCoins);
+    if (gActivePlayers > 1) {
+
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - xAdj), c / 2 - 8,
+                   "+"); // 'Coin' glyph
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 16 - xAdj), c / 2 - 8,
+                   "*"); // 'X' glyph
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 30 - xAdj), c / 2 - 8,
+                           "%d", gMarioStates[0].numCoins + gMarioStates[1].numCoins);
+    } else {
+        print_text(168, HUD_TOP_Y, "+"); // 'Coin' glyph
+        print_text(184, HUD_TOP_Y, "*"); // 'X' glyph
+        print_text_fmt_int(198, HUD_TOP_Y, "%d", gMarioStates[0].numCoins);
+    }
 }
 
 /**
  * Renders the amount of stars collected.
  */
 void render_hud_stars(void) {
+    s8 showX = 0;
     s16 xAdj = move_hud_x_right_pos(gHudDisplay.stars);
 
-    if (gHudFlash == 1 && gGlobalTimer % 10) {
-        return;
-    }
+    if (gActivePlayers > 1) {
+        if (gHudFlash == 1 && gGlobalTimer % 10) {
+            return;
+        }
 
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - xAdj), HUD_TOP_Y, "-"); // 'Star' glyph
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 16 - xAdj), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 30 - xAdj), HUD_TOP_Y, "%d", gHudDisplay.stars);
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - xAdj), HUD_TOP_Y,
+                   "-"); // 'Star' glyph
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 16 - xAdj), HUD_TOP_Y,
+                   "*"); // 'X' glyph
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - 30 - xAdj), HUD_TOP_Y,
+                           "%d", gHudDisplay.stars);
+    } else {
+        if (gHudFlash == 1 && gGlobalTimer & 0x08) {
+            return;
+        }
+
+        if (gHudDisplay.stars < 100) {
+            showX = 1;
+        }
+
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), HUD_TOP_Y, "-"); // 'Star' glyph
+        if (showX == 1) {
+            print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78) + 16, HUD_TOP_Y,
+                       "*"); // 'X' glyph
+        }
+        print_text_fmt_int((showX * 14) + GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78 - 16), HUD_TOP_Y, "%d",
+                           gHudDisplay.stars);
+    }
 }
 
 /**
@@ -390,27 +438,66 @@ void render_hud_camera_status(void) {
     s32 x;
     s32 y;
     int i;
-    for (i = 0; i < gActivePlayers; i++) {
-        if (gMarioStates[i].thisPlayerCamera == NULL) {
-            return;
-        }
-        cameraLUT = segmented_to_virtual(&main_hud_camera_lut);
-        x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(40);
-        y = 88 + 8 - BORDER_HEIGHT + 120 * i;
+    if (gActivePlayers > 1) {
 
-        if (gMarioStates[i].thisPlayerCamera->hudStatus == CAM_STATUS_NONE) {
+        for (i = 0; i < gActivePlayers; i++) {
+            if (gMarioStates[i].thisPlayerCamera == NULL) {
+                return;
+            }
+            cameraLUT = segmented_to_virtual(&main_hud_camera_lut);
+            x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(40);
+            y = 88 + 8 - BORDER_HEIGHT + 120 * i;
+
+            if (gMarioStates[i].thisPlayerCamera->hudStatus == CAM_STATUS_NONE) {
+                return;
+            }
+
+            gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
+            render_hud_tex_lut(x, y, (*cameraLUT)[GLYPH_CAM_CAMERA]);
+
+            switch (gMarioStates[i].thisPlayerCamera->hudStatus & CAM_STATUS_MODE_GROUP) {
+                case CAM_STATUS_MARIO:
+                    if (i == 0) {
+                        render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_MARIO_HEAD]);
+                    } else {
+                        render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_LUIGI_HEAD]);
+                    }
+                    break;
+                case CAM_STATUS_LAKITU:
+                    render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_LAKITU_HEAD]);
+                    break;
+                case CAM_STATUS_FIXED:
+                    render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_FIXED]);
+                    break;
+            }
+
+            switch (gMarioStates[i].thisPlayerCamera->hudStatus & CAM_STATUS_C_MODE_GROUP) {
+                case CAM_STATUS_C_DOWN:
+                    render_hud_small_tex_lut(x + 4, y + 16, (*cameraLUT)[GLYPH_CAM_ARROW_DOWN]);
+                    break;
+                case CAM_STATUS_C_UP:
+                    render_hud_small_tex_lut(x + 4, y - 8, (*cameraLUT)[GLYPH_CAM_ARROW_UP]);
+                    break;
+            }
+        }
+    } else {
+        cameraLUT = segmented_to_virtual(&main_hud_camera_lut);
+        x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(54);
+        y = 205;
+
+        if (sCameraHUD.status == CAM_STATUS_NONE) {
             return;
         }
 
         gSPDisplayList(gDisplayListHead++, dl_hud_img_begin);
         render_hud_tex_lut(x, y, (*cameraLUT)[GLYPH_CAM_CAMERA]);
 
-        switch (gMarioStates[i].thisPlayerCamera->hudStatus & CAM_STATUS_MODE_GROUP) {
+        switch (sCameraHUD.status & CAM_STATUS_MODE_GROUP) {
             case CAM_STATUS_MARIO:
-                if (i == 0) {
-                    render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_MARIO_HEAD]);
-                } else {
+                if (singlePlayerChar) {
                     render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_LUIGI_HEAD]);
+                } else {
+                    render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_MARIO_HEAD]);
                 }
                 break;
             case CAM_STATUS_LAKITU:
@@ -421,7 +508,7 @@ void render_hud_camera_status(void) {
                 break;
         }
 
-        switch (gMarioStates[i].thisPlayerCamera->hudStatus & CAM_STATUS_C_MODE_GROUP) {
+        switch (sCameraHUD.status & CAM_STATUS_C_MODE_GROUP) {
             case CAM_STATUS_C_DOWN:
                 render_hud_small_tex_lut(x + 4, y + 16, (*cameraLUT)[GLYPH_CAM_ARROW_DOWN]);
                 break;
@@ -433,12 +520,14 @@ void render_hud_camera_status(void) {
     gSPDisplayList(gDisplayListHead++, dl_hud_img_end);
 }
 
+// kazetodo make this show up in the right spot
 /**
  * Render HUD strings using hudDisplayFlags with it's render functions,
  * excluding the cannon reticle which detects a camera preset for it.
  */
 void render_hud(void) {
     s16 hudDisplayFlags;
+    int i;
 
     hudDisplayFlags = gHudDisplay.flags;
 
@@ -451,7 +540,7 @@ void render_hud(void) {
         sPowerMeterVisibleTimer[1] = 0;
     } else {
         create_dl_ortho_matrix();
-        
+
         if (gCurrentArea != NULL && gCurrentArea->camera->mode == CAMERA_MODE_INSIDE_CANNON) {
             render_hud_cannon_reticle();
         }
@@ -473,8 +562,9 @@ void render_hud(void) {
         }
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
-            render_hud_power_meter(0);
-            render_hud_power_meter(1);
+            for (i = 0; i < gActivePlayers; i++) {
+                render_hud_power_meter(i);
+            }
             render_hud_camera_status();
         }
 

@@ -1904,7 +1904,7 @@ void init_mario(void) {
 
 void init_mario_from_save_file(void) {
     int i = 0;
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < gActivePlayers; i++) { //setting this to 2 lets the first frame load again restoreactiveplayers
         gMarioStates[i].unk00 = 0;
         gMarioStates[i].flags = 0;
         gMarioStates[i].action = 0;
