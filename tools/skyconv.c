@@ -253,10 +253,10 @@ void write_tiles() {
             strcat(buffer, "cake_eu");
         break;
         case Cake2:
-            strcat(buffer, "cakeLuigi");
+            strcat(buffer, "cakeLuigicustom");
         break;
         case Cake3:
-            strcat(buffer, "cakeMario");
+            strcat(buffer, "cakeMariocustom");
         break;
         default:
             exit(EXIT_FAILURE);
@@ -348,9 +348,9 @@ static void write_cake_c() {
     else if (type == Cake){
         strcat(buffer, "/cake.inc.c");
     } else if (type == Cake2){
-        strcat(buffer, "/cakeLuigi.inc.c");
+        strcat(buffer, "/cakeLuigicustom.inc.c");
     } else if (type == Cake3){
-        strcat(buffer, "/cakeMario.inc.c");
+        strcat(buffer, "/cakeMariocustom.inc.c");
     }
 
     FILE *cFile = fopen(buffer, "w");
@@ -368,7 +368,7 @@ static void write_cake_c() {
 
     int numTiles = TABLE_DIMENSIONS[type].cols * TABLE_DIMENSIONS[type].rows;
     for (int i = 0; i < numTiles; ++i) {
-        fprintf(cFile, "ALIGNED8 static u8 cake_end_texture_%s%d[] = {\n", euSuffx, i);
+        fprintf(cFile, "ALIGNED8 u8 cake_end_texture_%s%d[] = {\n", euSuffx, i);
         print_raw_data(cFile, &tiles[i]);
         fputs("};\n\n", cFile);
     }

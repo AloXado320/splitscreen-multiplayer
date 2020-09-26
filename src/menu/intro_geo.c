@@ -66,6 +66,7 @@ s8 gameOverBackgroundTable[] = {
     INTRO_BACKGROUND_GAME_OVER, INTRO_BACKGROUND_GAME_OVER, INTRO_BACKGROUND_GAME_OVER,
 };
 
+extern Gfx logo_Logo_008_mesh[];
 // order of tiles that are flipped from "Game Over" to "Super Mario 64"
 s8 gameOverBackgroundFlipOrder[] = { 0x00, 0x01, 0x02, 0x03, 0x07, 0x0B,
                                      0x0a, 0x09, 0x08, 0x04, 0x05, 0x06 };
@@ -112,7 +113,7 @@ Gfx *geo_title_screen(s32 sp50, struct GraphNode *sp54, UNUSED void *context) {
         }
         guScale(scaleMat, scaleX, scaleY, scaleZ);
         gSPMatrix(displayListIter++, scaleMat, G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-        gSPDisplayList(displayListIter++, &intro_seg7_dl_0700B3A0);
+        gSPDisplayList(displayListIter++, &logo_Logo_008_mesh);
         gSPPopMatrix(displayListIter++, G_MTX_MODELVIEW);
         gSPEndDisplayList(displayListIter);
         gTitleZoomCounter++;

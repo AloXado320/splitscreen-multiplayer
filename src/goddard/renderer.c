@@ -20,6 +20,7 @@
 #include "sfx.h"
 #include "shape_helper.h"
 #include "skin.h"
+#include "game/ingame_menu.h"
 
 #define MAX_GD_DLS 1000
 #define OS_MESG_SI_COMPLETE 0x33333333
@@ -128,7 +129,7 @@ static s32 D_801BB0AC;                  // unused DL number
 static struct ObjGroup *sMarioSceneGrp; // @ 801BB0B0
 static s32 D_801BB0B4;                  // second offset into D_801BAF30
 static struct ObjGroup *sLuigiSceneGrp; // @ 801BB0B0
-static s32 D_801BB0B4L;                  // second offset into D_801BAF30
+static s32 D_801BB0B4L;                 // second offset into D_801BAF30
 static struct ObjGroup *sCarSceneGrp;   // @ 801BB0B8
 static s32 D_801BB0BC; // vtx's to load into RPD? Vtx len in GD Dl and in the lower bank (AF30)
 static struct ObjView *sYoshiSceneView; // @ 801BB0C0
@@ -136,7 +137,7 @@ static s32 D_801BB0C4;                  // first offset into D_801BAF30
 static struct ObjView *sMSceneView;     // @ 801BB0C8; Mario scene view
 static s32 D_801BB0CC;                  // Vtx start in GD Dl
 static struct ObjView *sLSceneView;     // @ 801BB0C8; Mario scene view
-static s32 D_801BB0CCL;                  // Vtx start in GD Dl
+static s32 D_801BB0CCL;                 // Vtx start in GD Dl
 static struct ObjView *sCarSceneView;   // @ 801BB0D0
 static s32 sUpdateYoshiScene;           // @ 801BB0D4; update dl Vtx from ObjVertex?
 static s32 sUpdateMarioScene;           // @ 801BB0D8; update dl Vtx from ObjVertex?
@@ -230,7 +231,8 @@ static struct DynListBankInfo sDynLists[] = {     // @ 801A8704
 };
 
 // textures and display list data
-static Gfx gd_texture1_dummy_aligner1[] = { // @ 801A8728
+static Gfx gd_texture1_dummy_aligner1[] = {
+    // @ 801A8728
     gsSPEndDisplayList(),
 };
 
@@ -238,9 +240,7 @@ ALIGNED8 static u8 gd_texture_hand_open[] = {
 #include "textures/intro_raw/hand_open.rgba16.inc.c"
 };
 
-static Gfx gd_texture2_dummy_aligner1[] = {
-    gsSPEndDisplayList()
-};
+static Gfx gd_texture2_dummy_aligner1[] = { gsSPEndDisplayList() };
 
 ALIGNED8 static u8 gd_texture_hand_closed[] = {
 #include "textures/intro_raw/hand_closed.rgba16.inc.c"
@@ -311,18 +311,18 @@ ALIGNED8 static u8 gd_texture_white_star_7[] = {
 };
 
 static Vtx_t gd_vertex_star[] = {
-    {{-64,   0, 0}, 0, {  0, 992}, {0x00, 0x00, 0x7F}},
-    {{ 64,   0, 0}, 0, {992, 992}, {0x00, 0x00, 0x7F}},
-    {{ 64, 128, 0}, 0, {992,   0}, {0x00, 0x00, 0x7F}},
-    {{-64, 128, 0}, 0, {  0,   0}, {0x00, 0x00, 0x7F}},
+    { { -64, 0, 0 }, 0, { 0, 992 }, { 0x00, 0x00, 0x7F } },
+    { { 64, 0, 0 }, 0, { 992, 992 }, { 0x00, 0x00, 0x7F } },
+    { { 64, 128, 0 }, 0, { 992, 0 }, { 0x00, 0x00, 0x7F } },
+    { { -64, 128, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x7F } },
 };
 
 //! no references to these vertices
 UNUSED static Vtx_t gd_unused_vertex[] = {
-    {{16384, 0,     0}, 0, {0, 16384}, {0x00, 0x00, 0x00}},
-    {{    0, 0, 16384}, 0, {0,     0}, {0x00, 0x00, 0x40}},
-    {{    0, 0,     0}, 0, {0,     0}, {0x00, 0x00, 0x00}},
-    {{    0, 0,     0}, 0, {0,     0}, {0x00, 0x00, 0x00}},
+    { { 16384, 0, 0 }, 0, { 0, 16384 }, { 0x00, 0x00, 0x00 } },
+    { { 0, 0, 16384 }, 0, { 0, 0 }, { 0x00, 0x00, 0x40 } },
+    { { 0, 0, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00 } },
+    { { 0, 0, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00 } },
 };
 
 static Gfx gd_dl_star[] = {
@@ -330,13 +330,15 @@ static Gfx gd_dl_star[] = {
     gsSPClearGeometryMode(G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_NOOP2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD,
+                G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD,
+                G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
     gsSPVertex(gd_vertex_star, 4, 0),
-    gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
+    gsSP2Triangles(0, 1, 2, 0x0, 0, 2, 3, 0x0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_INTER, G_RM_NOOP2),
@@ -440,41 +442,17 @@ static Gfx gd_dl_silver_star_7[] = {
 };
 
 static Gfx *gd_red_star_dl_array[] = {
-    gd_dl_red_star_0,
-    gd_dl_red_star_0,
-    gd_dl_red_star_1,
-    gd_dl_red_star_1,
-    gd_dl_red_star_2,
-    gd_dl_red_star_2,
-    gd_dl_red_star_3,
-    gd_dl_red_star_3,
-    gd_dl_red_star_4,
-    gd_dl_red_star_4,
-    gd_dl_red_star_5,
-    gd_dl_red_star_5,
-    gd_dl_red_star_6,
-    gd_dl_red_star_6,
-    gd_dl_red_star_7,
-    gd_dl_red_star_7,
+    gd_dl_red_star_0, gd_dl_red_star_0, gd_dl_red_star_1, gd_dl_red_star_1,
+    gd_dl_red_star_2, gd_dl_red_star_2, gd_dl_red_star_3, gd_dl_red_star_3,
+    gd_dl_red_star_4, gd_dl_red_star_4, gd_dl_red_star_5, gd_dl_red_star_5,
+    gd_dl_red_star_6, gd_dl_red_star_6, gd_dl_red_star_7, gd_dl_red_star_7,
 };
 
 static Gfx *gd_silver_star_dl_array[] = {
-    gd_dl_silver_star_0,
-    gd_dl_silver_star_0,
-    gd_dl_silver_star_1,
-    gd_dl_silver_star_1,
-    gd_dl_silver_star_2,
-    gd_dl_silver_star_2,
-    gd_dl_silver_star_3,
-    gd_dl_silver_star_3,
-    gd_dl_silver_star_4,
-    gd_dl_silver_star_4,
-    gd_dl_silver_star_5,
-    gd_dl_silver_star_5,
-    gd_dl_silver_star_6,
-    gd_dl_silver_star_6,
-    gd_dl_silver_star_7,
-    gd_dl_silver_star_7,
+    gd_dl_silver_star_0, gd_dl_silver_star_0, gd_dl_silver_star_1, gd_dl_silver_star_1,
+    gd_dl_silver_star_2, gd_dl_silver_star_2, gd_dl_silver_star_3, gd_dl_silver_star_3,
+    gd_dl_silver_star_4, gd_dl_silver_star_4, gd_dl_silver_star_5, gd_dl_silver_star_5,
+    gd_dl_silver_star_6, gd_dl_silver_star_6, gd_dl_silver_star_7, gd_dl_silver_star_7,
 };
 
 ALIGNED8 static u8 gd_texture_sparkle_0[] = {
@@ -504,10 +482,10 @@ ALIGNED8 static u8 gd_texture_sparkle_5[] = {
 };
 
 static Vtx_t gd_vertex_sparkle[] = {
-    {{   -32,      0,      0}, 0, {      0,   1984}, {  0x00, 0x00, 0x7F, 0x00}},
-    {{    32,      0,      0}, 0, {   1984,   1984}, {  0x00, 0x00, 0x7F, 0x00}},
-    {{    32,     64,      0}, 0, {   1984,      0}, {  0x00, 0x00, 0x7F, 0x00}},
-    {{   -32,     64,      0}, 0, {      0,      0}, {  0x00, 0x00, 0x7F, 0x00}},
+    { { -32, 0, 0 }, 0, { 0, 1984 }, { 0x00, 0x00, 0x7F, 0x00 } },
+    { { 32, 0, 0 }, 0, { 1984, 1984 }, { 0x00, 0x00, 0x7F, 0x00 } },
+    { { 32, 64, 0 }, 0, { 1984, 0 }, { 0x00, 0x00, 0x7F, 0x00 } },
+    { { -32, 64, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x7F, 0x00 } },
 };
 
 static Gfx gd_dl_sparkle[] = {
@@ -515,15 +493,15 @@ static Gfx gd_dl_sparkle[] = {
     gsSPClearGeometryMode(G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR),
     gsDPSetRenderMode(G_RM_AA_ZB_TEX_EDGE, G_RM_NOOP2),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, 
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR,
+                G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, 
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR,
+                G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
     gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
     gsSPVertex(gd_vertex_sparkle, 4, 0),
-    gsSP2Triangles(0,  1,  2, 0x0,  0,  2,  3, 0x0),
+    gsSP2Triangles(0, 1, 2, 0x0, 0, 2, 3, 0x0),
     gsSPTexture(0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_INTER, G_RM_NOOP2),
@@ -575,10 +553,11 @@ static Gfx gd_dl_red_sparkle_4[] = {
     gsSPBranchList(gd_dl_sparkle),
 };
 
-static Gfx gd_dl_red_sparkle_4_dup[] ={
+static Gfx gd_dl_red_sparkle_4_dup[] = {
     gsDPPipeSync(),
     gsSPDisplayList(gd_dl_sparkle_red_color),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gd_texture_sparkle_4), // 4 again, correct texture would be 5
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1,
+                        gd_texture_sparkle_4), // 4 again, correct texture would be 5
     gsSPBranchList(gd_dl_sparkle),
 };
 
@@ -620,38 +599,22 @@ static Gfx gd_dl_silver_sparkle_4[] = {
 static Gfx gd_dl_silver_sparkle_4_dup[] = {
     gsDPPipeSync(),
     gsSPDisplayList(gd_dl_sparkle_white_color),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gd_texture_sparkle_4), // 4 again, correct texture would be 5
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1,
+                        gd_texture_sparkle_4), // 4 again, correct texture would be 5
     gsSPBranchList(gd_dl_sparkle),
 };
 
 static Gfx *gd_red_sparkle_dl_array[] = {
-    gd_dl_red_sparkle_4,
-    gd_dl_red_sparkle_4,
-    gd_dl_red_sparkle_3,
-    gd_dl_red_sparkle_3,
-    gd_dl_red_sparkle_2,
-    gd_dl_red_sparkle_2,
-    gd_dl_red_sparkle_1,
-    gd_dl_red_sparkle_1,
-    gd_dl_red_sparkle_0,
-    gd_dl_red_sparkle_0,
-    gd_dl_red_sparkle_4_dup,
-    gd_dl_red_sparkle_4_dup,
+    gd_dl_red_sparkle_4, gd_dl_red_sparkle_4, gd_dl_red_sparkle_3,     gd_dl_red_sparkle_3,
+    gd_dl_red_sparkle_2, gd_dl_red_sparkle_2, gd_dl_red_sparkle_1,     gd_dl_red_sparkle_1,
+    gd_dl_red_sparkle_0, gd_dl_red_sparkle_0, gd_dl_red_sparkle_4_dup, gd_dl_red_sparkle_4_dup,
 };
 
 static Gfx *gd_silver_sparkle_dl_array[] = {
-    gd_dl_silver_sparkle_4,
-    gd_dl_silver_sparkle_4,
-    gd_dl_silver_sparkle_3,
-    gd_dl_silver_sparkle_3,
-    gd_dl_silver_sparkle_2,
-    gd_dl_silver_sparkle_2,
-    gd_dl_silver_sparkle_1,
-    gd_dl_silver_sparkle_1,
-    gd_dl_silver_sparkle_0,
-    gd_dl_silver_sparkle_0,
-    gd_dl_silver_sparkle_4_dup,
-    gd_dl_silver_sparkle_4_dup,
+    gd_dl_silver_sparkle_4, gd_dl_silver_sparkle_4,     gd_dl_silver_sparkle_3,
+    gd_dl_silver_sparkle_3, gd_dl_silver_sparkle_2,     gd_dl_silver_sparkle_2,
+    gd_dl_silver_sparkle_1, gd_dl_silver_sparkle_1,     gd_dl_silver_sparkle_0,
+    gd_dl_silver_sparkle_0, gd_dl_silver_sparkle_4_dup, gd_dl_silver_sparkle_4_dup,
 };
 
 static Gfx gd_texture3_dummy_aligner1[] = {
@@ -668,8 +631,9 @@ static Gfx gd_dl_mario_face_shine[] = {
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetCombineMode(G_CC_HILITERGBA, G_CC_HILITERGBA),
-    gsDPLoadTextureBlock(gd_texture_mario_face_shine, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 32, 0, 
-                        G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
+    gsDPLoadTextureBlock(gd_texture_mario_face_shine, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 32, 0,
+                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, 5, 5, G_TX_NOLOD,
+                         G_TX_NOLOD),
     gsDPPipeSync(),
     gsSPEndDisplayList(),
 };
@@ -711,15 +675,15 @@ static Gfx gd_texture4_dummy_aligner1[] = {
 };
 
 static Vtx_t gd_unused_mesh_vertex_group1[] = {
-    {{-8,  8,  0}, 0, {  0,  0}, {  0x00, 0x00, 0x00, 0xFF}},
-    {{ 8, -2,  0}, 0, {  0,  0}, {  0x00, 0x00, 0x00, 0xFF}},
-    {{ 2, -8,  0}, 0, {  0,  0}, {  0x00, 0x00, 0x00, 0xFF}},
+    { { -8, 8, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00, 0xFF } },
+    { { 8, -2, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00, 0xFF } },
+    { { 2, -8, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00, 0xFF } },
 };
 
 static Vtx_t gd_unused_mesh_vertex_group2[] = {
-    {{-6,  6,  0}, 0, {  0,  0}, {  0xFF, 0xFF, 0xFF, 0xFF}},
-    {{ 7, -3,  0}, 0, {  0,  0}, {  0xFF, 0x00, 0x00, 0xFF}},
-    {{ 3, -7,  0}, 0, {  0,  0}, {  0xFF, 0x00, 0x00, 0xFF}},
+    { { -6, 6, 0 }, 0, { 0, 0 }, { 0xFF, 0xFF, 0xFF, 0xFF } },
+    { { 7, -3, 0 }, 0, { 0, 0 }, { 0xFF, 0x00, 0x00, 0xFF } },
+    { { 3, -7, 0 }, 0, { 0, 0 }, { 0xFF, 0x00, 0x00, 0xFF } },
 };
 
 static Gfx gd_dl_unused_mesh[] = {
@@ -729,9 +693,9 @@ static Gfx gd_dl_unused_mesh[] = {
     gsSPSetGeometryMode(G_SHADING_SMOOTH | G_SHADE),
     gsDPPipeSync(),
     gsSPVertex(gd_unused_mesh_vertex_group1, 3, 0),
-    gsSP1Triangle(0,  1,  2, 0x0),
+    gsSP1Triangle(0, 1, 2, 0x0),
     gsSPVertex(gd_unused_mesh_vertex_group2, 3, 0),
-    gsSP1Triangle(0,  1,  2, 0x0),
+    gsSP1Triangle(0, 1, 2, 0x0),
     gsSPEndDisplayList(),
 };
 
@@ -1237,12 +1201,12 @@ void gdm_maketestdl(s32 id) {
                 gd_setup_cursor(NULL);
             }
             if (sLuigiSceneGrp == NULL) {
-               // load_luigi_head(animate_mario_head_normal);
+                // load_luigi_head(animate_mario_head_normal);
                 sLuigiSceneGrp = gLuigiFaceGrp; // gMarioFaceGrp set by load_mario_head
-               // gd_setup_cursor(NULL);
+                                                // gd_setup_cursor(NULL);
             }
             sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
-            //sLSceneView = make_view_withgrpLuigi("lscene", sLuigiSceneGrp);
+            // sLSceneView = make_view_withgrpLuigi("lscene", sLuigiSceneGrp);
             break;
         case 3: // game over Mario head
             if (sMarioSceneGrp == NULL) {
@@ -1251,12 +1215,12 @@ void gdm_maketestdl(s32 id) {
                 gd_setup_cursor(NULL);
             }
             if (sLuigiSceneGrp == NULL) {
-               // load_mario_head(animate_mario_head_gameover);
+                // load_mario_head(animate_mario_head_gameover);
                 sLuigiSceneGrp = gMarioFaceGrp;
-             //   gd_setup_cursor(NULL);
+                //   gd_setup_cursor(NULL);
             }
             sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
-            //sLSceneView = make_view_withgrpLuigi("scene", sLuigiSceneGrp);
+            // sLSceneView = make_view_withgrpLuigi("scene", sLuigiSceneGrp);
             break;
         case 4:
             sCarSceneView = make_view_withgrp("car_scene", sCarSceneGrp);
@@ -1356,7 +1320,7 @@ void *gdm_gettestdl(s32 id) {
         case 3:
             setup_timers();
             update_view_and_dl(sMSceneView);
-            //update_view_and_dl(sLSceneView);
+            // update_view_and_dl(sLSceneView);
             if (sHandView != NULL) {
                 update_view_and_dl(sHandView);
             }
@@ -1758,7 +1722,8 @@ void mat4_to_mtx(Mat4f *src, Mtx *dst) {
 /* 24D63C -> 24D6E4; orig name: func_8019EE6C */
 void add_mat4_to_dl(Mat4f *mtx) {
     mat4_to_mtx(mtx, &DL_CURRENT_MTX(sCurrentGdDl));
-    gSPMatrix(next_gfx(), osVirtualToPhysical(&DL_CURRENT_MTX(sCurrentGdDl)), sMtxParamType | G_MTX_MUL | G_MTX_NOPUSH);
+    gSPMatrix(next_gfx(), osVirtualToPhysical(&DL_CURRENT_MTX(sCurrentGdDl)),
+              sMtxParamType | G_MTX_MUL | G_MTX_NOPUSH);
     next_mtx();
 }
 
@@ -1788,7 +1753,8 @@ void pop_mtx_gddl(void) {
 /* 24D8B4 -> 24D96C; orig name: func_8019F0E4 */
 void translate_mtx_gddl(f32 x, f32 y, f32 z) {
     guTranslate(&DL_CURRENT_MTX(sCurrentGdDl), x, y, z);
-    gSPMatrix(next_gfx(), osVirtualToPhysical(&DL_CURRENT_MTX(sCurrentGdDl)), sMtxParamType | G_MTX_MUL | G_MTX_NOPUSH);
+    gSPMatrix(next_gfx(), osVirtualToPhysical(&DL_CURRENT_MTX(sCurrentGdDl)),
+              sMtxParamType | G_MTX_MUL | G_MTX_NOPUSH);
     next_mtx();
 }
 
@@ -1823,17 +1789,18 @@ void func_8019F2C4(f32 arg0, s8 arg1) {
 }
 
 /* 24DAE8 -> 24E1A8 */
-void func_8019F318(struct ObjCamera *cam, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
+void func_8019F318(struct ObjCamera *cam, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6,
+                   f32 arg7) {
     LookAt *lookat; // 5c
 
     arg7 *= RAD_PER_DEG;
 
     gd_mat4f_lookat(&cam->unkE8, arg1, arg2, arg3, arg4, arg5, arg6, gd_sin_d(arg7), gd_cos_d(arg7),
-                  0.0f);
+                    0.0f);
     // 8019F3C8
     mat4_to_mtx(&cam->unkE8, &DL_CURRENT_MTX(sCurrentGdDl));
     gSPMatrix(next_gfx(), osVirtualToPhysical(&DL_CURRENT_MTX(sCurrentGdDl)),
-            G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH);
+              G_MTX_PROJECTION | G_MTX_MUL | G_MTX_NOPUSH);
     // 8019F434
     /*  col           colc          dir
         0  1  2   3   4  5  6   7   8  9  10  11
@@ -2189,9 +2156,9 @@ s32 func_801A086C(s32 id, struct GdColour *colour, s32 material) {
         DL_CURRENT_LIGHT(sCurrentGdDl).l[i].l.colc[2] = scaledColours[2];
 
         // 801A13B0
-        lightDir[0] = (s8)sLightDirections[i].x;
-        lightDir[1] = (s8)sLightDirections[i].y;
-        lightDir[2] = (s8)sLightDirections[i].z;
+        lightDir[0] = (s8) sLightDirections[i].x;
+        lightDir[1] = (s8) sLightDirections[i].y;
+        lightDir[2] = (s8) sLightDirections[i].z;
         // 801A141C
         DL_CURRENT_LIGHT(sCurrentGdDl).l[i].l.dir[0] = lightDir[0];
         DL_CURRENT_LIGHT(sCurrentGdDl).l[i].l.dir[1] = lightDir[1];
@@ -3002,22 +2969,27 @@ void Unknown801A4B04(void) {
 }
 
 f32 absf(f32 x);
-u8 handCollission(f32 x, f32 y){
-    f32 xdist = absf(x-gGdCtrl.csrX - 20.f);
-    f32 ydist = absf(y-230.f + gGdCtrl.csrY);
-    if ((xdist < 30.0f) && (ydist < 20.0f)){
+u8 handCollission(f32 x, f32 y) {
+    f32 xdist = absf(x - gGdCtrl.csrX - 20.f);
+    f32 ydist = absf(y - 230.f + gGdCtrl.csrY);
+    if ((xdist < 30.0f) && (ydist < 20.0f)) {
         return 1;
     }
     return 0;
 }
 
+extern void *seg2_dialog_table[];
 extern u8 coop;
 extern u8 singlePlayerChar;
 extern int startGame;
 extern u8 gActivePlayers;
-//kazetodo kazenote this is where you make menu buttons clickable
+// kazetodo kazenote this is where you make menu buttons clickable
 /* 2533DC -> 253728; orig name: func_801A4C0C */
 void update_cursor(void) {
+    struct DialogEntry *dialog;
+    void **dialogTable;
+    u8 *str;
+    int i;
     if (sHandView == NULL) {
         return;
     }
@@ -3038,9 +3010,11 @@ void update_cursor(void) {
     reset_dlnum_indices(sHandShape->gdDls[gGdFrameBuf]);
 
     if (gGdCtrl.btnApressed) {
-        gd_put_sprite((u16 *) gd_texture_hand_closed, sHandView->upperLeft.x, sHandView->upperLeft.y, 0x20, 0x20);
+        gd_put_sprite((u16 *) gd_texture_hand_closed, sHandView->upperLeft.x, sHandView->upperLeft.y,
+                      0x20, 0x20);
     } else {
-        gd_put_sprite((u16 *) gd_texture_hand_open, sHandView->upperLeft.x, sHandView->upperLeft.y, 0x20, 0x20);
+        gd_put_sprite((u16 *) gd_texture_hand_open, sHandView->upperLeft.x, sHandView->upperLeft.y,
+                      0x20, 0x20);
     }
     gd_enddlsplist_parent();
 
@@ -3057,34 +3031,68 @@ void update_cursor(void) {
     if (sHandView->upperLeft.y > (sHandView->parent->upperLeft.y + sHandView->parent->lowerRight.y)) {
         sHandView->upperLeft.y = sHandView->parent->upperLeft.y + sHandView->parent->lowerRight.y;
     }
-    if (gGdCtrl.btnAnewPress){
-        if (handCollission(50.0f, 25.0f)){
+    if (gGdCtrl.btnAnewPress) {
+        if (handCollission(50.0f, 25.0f)) {
             startGame = 1;
             singlePlayerChar = 0;
             gActivePlayers = 1;
             coop = 1;
+            dialogTable = segmented_to_virtual(seg2_dialog_table);
+            dialog = (struct DialogEntry *) segmented_to_virtual(dialogTable[20]);
+            str = segmented_to_virtual(dialog->str);
+            // edit peach letter
+            str[10] = 0xe6;
+            for (i = 0; i < 10; i++) {
+                str[11 + i] = 0x9e;
+            }
         }
-        if (handCollission(130.0f, 25.0f)){
+        if (handCollission(130.0f, 25.0f)) {
             startGame = 1;
             singlePlayerChar = 1;
             gActivePlayers = 1;
             coop = 1;
+            dialogTable = segmented_to_virtual(seg2_dialog_table);
+            dialog = (struct DialogEntry *) segmented_to_virtual(dialogTable[20]);
+            str = segmented_to_virtual(dialog->str);
+            // edit peach letter
+            str[10] = 0xe6;
+            for (i = 0; i < 10; i++) {
+                str[11 + i] = 0x9e;
+            }
+            #define TEXTBLOCKSIZE 0x7F00
+            // replace mario references with luigi
+            dialog = (struct DialogEntry *) segmented_to_virtual(dialogTable[0]);
+            str = segmented_to_virtual(dialog->str);
+            for (i = 0; i < TEXTBLOCKSIZE; i++) {
+                if (str[i] == 0x16) {
+                    if (str[i + 1] == 0x24) {
+                        if (str[i + 2] == 0x35) {
+                            if (str[i + 3] == 0x2c) {
+                                if (str[i + 4] == 0x32) {
+                                    str[i] = 0x15;
+                                    str[i+1] = 0x38;
+                                    str[i+2] = 0x2c;
+                                    str[i+3] = 0x2a;
+                                    str[i+4] = 0x2c;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-        if (handCollission(210.0f, 25.0f)){
+        if (handCollission(210.0f, 25.0f)) {
             startGame = 1;
             singlePlayerChar = 0;
             gActivePlayers = 2;
             coop = 1;
-
         }
-        if (handCollission(290.0f, 25.0f)){
+        if (handCollission(290.0f, 25.0f)) {
             startGame = 1;
             singlePlayerChar = 0;
             gActivePlayers = 2;
             coop = 0;
-
         }
-
     }
 }
 
@@ -3528,10 +3536,11 @@ void gd_put_sprite(u16 *sprite, s32 x, s32 y, s32 wx, s32 wy) {
     gSPDisplayList(next_gfx(), osVirtualToPhysical(gd_dl_sprite_start_tex_block));
     for (r = 0; r < wy; r += 32) {
         for (c = 0; c < wx; c += 32) {
-             gDPLoadTextureBlock(next_gfx(), (r * 32) + sprite + c, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
-                G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)
-             gSPTextureRectangle(next_gfx(), x << 2, (y + r) << 2, (x + 32) << 2, (y + r + 32) << 2,
-                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gDPLoadTextureBlock(next_gfx(), (r * 32) + sprite + c, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32,
+                                0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK,
+                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD)
+                gSPTextureRectangle(next_gfx(), x << 2, (y + r) << 2, (x + 32) << 2, (y + r + 32) << 2,
+                                    G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
     }
 
@@ -3778,7 +3787,7 @@ struct GdObj *load_dynlist(struct DynList *dynlist) {
     }
 
     for (i = 0; i < sp34; i++) {
-        osMapTLB(i, OS_PM_64K, (void *) (uintptr_t) (0x04000000 + (i * 2 * 0x10000)),
+        osMapTLB(i, OS_PM_64K, (void *) (uintptr_t)(0x04000000 + (i * 2 * 0x10000)),
                  GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * 0x10000)),
                  GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * 0x10000) + 0x10000), -1);
     }

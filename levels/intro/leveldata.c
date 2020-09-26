@@ -6,6 +6,7 @@
 #include "macro_preset_names.h"
 #include "special_preset_names.h"
 #include "textures.h"
+#include "logo/model.inc.c"
 
 #include "make_const_nonconst.h"
 

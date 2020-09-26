@@ -126,19 +126,19 @@ ALIGNED8 static const u8 title_texture_0A005940[] = {
 
 // 0x0A005940
 ALIGNED8 static const u8 marioOption[] = {
-#include "textures/title_screen_bg/mareo.rgba16.inc.c"
+#include "textures/title_screen_bg/mareo_custom.rgba16.inc.c"
 };
 
 ALIGNED8 static const u8 luigiOption[] = {
-#include "textures/title_screen_bg/luigi.rgba16.inc.c"
+#include "textures/title_screen_bg/luigi_custom.rgba16.inc.c"
 };
 
 ALIGNED8 static const u8 coopOption[] = {
-#include "textures/title_screen_bg/coop.rgba16.inc.c"
+#include "textures/title_screen_bg/coop_custom.rgba16.inc.c"
 };
 
 ALIGNED8 static const u8 versusOption[] = {
-#include "textures/title_screen_bg/versus.rgba16.inc.c"
+#include "textures/title_screen_bg/versus_custom.rgba16.inc.c"
 };
 
 const u8 *const menu_button_table[] = {
