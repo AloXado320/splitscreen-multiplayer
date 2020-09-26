@@ -649,14 +649,14 @@ const BehaviorScript bhvCannonBarrel[] = {
 
 const BehaviorScript bhvCannonBaseUnused[] = {
     BEGIN(OBJ_LIST_DEFAULT),
-    OR_INT(oFlags, (OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+  /*  OR_INT(oFlags, (OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_MOVE_XZ_USING_FVEL | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     BILLBOARD(),
     SET_INT(oAnimState, -1),
     BEGIN_REPEAT(8),
         CALL_NATIVE(bhv_cannon_base_unused_loop),
         ADD_INT(oAnimState, 1),
     END_REPEAT(),
-    DEACTIVATE(),
+    DEACTIVATE(),*/
 };
 
 const BehaviorScript bhvChuckya[] = {
@@ -1263,7 +1263,7 @@ const BehaviorScript bhvWaterMist2[] = {
 
 const BehaviorScript bhvUnused0DFC[] = {
     BEGIN(OBJ_LIST_DEFAULT),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+  /*  OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_INT(oAnimState, -1),
     SET_FLOAT(oFaceAnglePitch, 0),
     SET_FLOAT(oFaceAngleYaw, 0),
@@ -1271,7 +1271,7 @@ const BehaviorScript bhvUnused0DFC[] = {
     BEGIN_REPEAT(6),
         ADD_INT(oAnimState, 1),
     END_REPEAT(),
-    DEACTIVATE(),
+    DEACTIVATE(),*/
 };
 
 const BehaviorScript bhvMistCircParticleSpawner[] = {
@@ -1329,13 +1329,13 @@ const BehaviorScript bhvEndPeach[] = {
 
 const BehaviorScript bhvUnusedParticleSpawn[] = {
     BEGIN(OBJ_LIST_GENACTOR),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
-    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 30, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
-    SET_INT(oIntangibleTimer, 0),
-    SET_HITBOX(/*Radius*/ 40, /*Height*/ 40),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_unused_particle_spawn_loop),
-    END_LOOP(),
+  //  OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+  //  SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 30, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
+  //  SET_INT(oIntangibleTimer, 0),
+  //  SET_HITBOX(/*Radius*/ 40, /*Height*/ 40),
+  //  BEGIN_LOOP(),
+  //      CALL_NATIVE(bhv_unused_particle_spawn_loop),
+  //  END_LOOP(),
 };
 
 const BehaviorScript bhvUkiki[] = {
@@ -6126,3 +6126,20 @@ const BehaviorScript bhvBubbleJail[] = {
     END_LOOP(),
 };
  
+
+const BehaviorScript bhvBlargg[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 100, /*Gravity*/ 0, /*Bounciness*/ -10, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
+    SET_INTERACT_TYPE(INTERACT_FLAME),
+    DROP_TO_FLOOR(),
+    SET_HITBOX(/*Radius*/ 240, /*Height*/ 250),
+    SET_HOME(),
+    LOAD_ANIMATIONS(oAnimations, blargg_seg5_anims_0500616C),
+    ANIMATE(0),
+        SET_INT(oIntangibleTimer, 0),
+    BEGIN_LOOP(),
+        SET_INT(oInteractStatus, 0),
+        CALL_NATIVE(bhv_blargg),
+    END_LOOP(),
+};

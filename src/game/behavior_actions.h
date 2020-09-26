@@ -543,6 +543,7 @@ void bhv_ddd_pole_update(void);
 void bhv_red_coin_star_marker_init(void);
 void bhv_triplet_butterfly_update(void);
 void bhv_bubba_loop(void);
+void bhv_blargg(void);
 void bhv_intro_lakitu_loop(void);
 void bhv_intro_peach_loop(void);
 void bhv_end_birds_1_loop(void);

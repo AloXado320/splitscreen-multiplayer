@@ -69,8 +69,10 @@ s16 set_mario_animation(struct MarioState *m, s32 targetAnimID) {
     struct Animation *targetAnim = m->animation->targetAnim;
 
     if (load_patchable_table(m->animation, targetAnimID)) {
-        targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
-        targetAnim->index = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
+        targetAnim->values =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
+        targetAnim->index =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
     }
 
     if (o->header.gfx.animInfo.animID != targetAnimID) {
@@ -102,8 +104,10 @@ s16 set_mario_anim_with_accel(struct MarioState *m, s32 targetAnimID, s32 accel)
     struct Animation *targetAnim = m->animation->targetAnim;
 
     if (load_patchable_table(m->animation, targetAnimID)) {
-        targetAnim->values = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
-        targetAnim->index = (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
+        targetAnim->values =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->values);
+        targetAnim->index =
+            (void *) VIRTUAL_TO_PHYSICAL((u8 *) targetAnim + (uintptr_t) targetAnim->index);
     }
 
     if (o->header.gfx.animInfo.animID != targetAnimID) {
@@ -258,8 +262,7 @@ void play_mario_jump_sound(struct MarioState *m) {
                        m->marioObj->soundOrigin);
         } else {
 #endif
-            play_sound(SOUND_MARIO_YAH_WAH_HOO + ((gAudioRandom % 3) << 16),
-                       m->marioObj->soundOrigin);
+            play_sound(SOUND_MARIO_YAH_WAH_HOO + ((gAudioRandom % 3) << 16), m->marioObj->soundOrigin);
 #ifndef VERSION_JP
         }
 #endif
@@ -325,8 +328,8 @@ void play_mario_landing_sound(struct MarioState *m, u32 soundBits) {
  * played once per action.
  */
 void play_mario_landing_sound_once(struct MarioState *m, u32 soundBits) {
-    play_mario_action_sound(
-        m, (m->flags & MARIO_METAL_CAP) ? SOUND_ACTION_METAL_LANDING : soundBits, 1);
+    play_mario_action_sound(m, (m->flags & MARIO_METAL_CAP) ? SOUND_ACTION_METAL_LANDING : soundBits,
+                            1);
 }
 
 /**
@@ -352,8 +355,10 @@ void play_mario_heavy_landing_sound_once(struct MarioState *m, u32 soundBits) {
  */
 void play_mario_sound(struct MarioState *m, s32 actionSound, s32 marioSound) {
     if (actionSound == SOUND_ACTION_TERRAIN_JUMP) {
-        play_mario_action_sound(m, (m->flags & MARIO_METAL_CAP) ? (s32) SOUND_ACTION_METAL_JUMP
-                                                                : (s32) SOUND_ACTION_TERRAIN_JUMP, 1);
+        play_mario_action_sound(m,
+                                (m->flags & MARIO_METAL_CAP) ? (s32) SOUND_ACTION_METAL_JUMP
+                                                             : (s32) SOUND_ACTION_TERRAIN_JUMP,
+                                1);
     } else {
         play_sound_if_no_flag(m, actionSound, MARIO_ACTION_SOUND_PLAYED);
     }
@@ -537,7 +542,7 @@ struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 ra
     collisionData.offsetY = offset;
 
     if (find_wall_collisions(&collisionData)) {
-        //wall = collisionData.walls[collisionData.numWalls - 1];
+        // wall = collisionData.walls[collisionData.numWalls - 1];
         for (i = 0; i < collisionData.numWalls; i++) {
             v = atan2s(collisionData.walls[i]->normal.z, collisionData.walls[i]->normal.x);
             d = absi((((s16)(gCurrentObject->oMoveAngleYaw) - (v + 0x8000)) << 0x10) / 65536);
@@ -745,7 +750,7 @@ void update_mario_sound_and_camera(struct MarioState *m) {
         // Go back to the last camera mode
         set_camera_mode(m->thisPlayerCamera, -1, 1);
     } else if (action == ACT_SLEEPING) {
-        //raise_background_noise(2);
+        // raise_background_noise(2);
     }
 
     if (!(action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER))) {
@@ -1275,39 +1280,42 @@ void debug_print_speed_action_normal(struct MarioState *m) {
  * Update the button inputs for Mario.
  */
 void update_mario_button_inputs(struct MarioState *m) {
-    if (m->controller->buttonPressed & A_BUTTON) {
-        m->input |= INPUT_A_PRESSED;
-    }
+    if (m->controller) {
 
-    if (m->controller->buttonDown & A_BUTTON) {
-        m->input |= INPUT_A_DOWN;
-    }
-
-    // Don't update for these buttons if squished.
-    if (m->squishTimer == 0) {
-        if (m->controller->buttonPressed & B_BUTTON) {
-            m->input |= INPUT_B_PRESSED;
+        if (m->controller->buttonPressed & A_BUTTON) {
+            m->input |= INPUT_A_PRESSED;
         }
 
-        if (m->controller->buttonDown & Z_TRIG) {
-            m->input |= INPUT_Z_DOWN;
+        if (m->controller->buttonDown & A_BUTTON) {
+            m->input |= INPUT_A_DOWN;
         }
 
-        if (m->controller->buttonPressed & Z_TRIG) {
-            m->input |= INPUT_Z_PRESSED;
+        // Don't update for these buttons if squished.
+        if (m->squishTimer == 0) {
+            if (m->controller->buttonPressed & B_BUTTON) {
+                m->input |= INPUT_B_PRESSED;
+            }
+
+            if (m->controller->buttonDown & Z_TRIG) {
+                m->input |= INPUT_Z_DOWN;
+            }
+
+            if (m->controller->buttonPressed & Z_TRIG) {
+                m->input |= INPUT_Z_PRESSED;
+            }
         }
-    }
 
-    if (m->input & INPUT_A_PRESSED) {
-        m->framesSinceA = 0;
-    } else if (m->framesSinceA < 0xFF) {
-        m->framesSinceA += 1;
-    }
+        if (m->input & INPUT_A_PRESSED) {
+            m->framesSinceA = 0;
+        } else if (m->framesSinceA < 0xFF) {
+            m->framesSinceA += 1;
+        }
 
-    if (m->input & INPUT_B_PRESSED) {
-        m->framesSinceB = 0;
-    } else if (m->framesSinceB < 0xFF) {
-        m->framesSinceB += 1;
+        if (m->input & INPUT_B_PRESSED) {
+            m->framesSinceB = 0;
+        } else if (m->framesSinceB < 0xFF) {
+            m->framesSinceB += 1;
+        }
     }
 }
 
@@ -1326,8 +1334,7 @@ void update_mario_joystick_inputs(struct MarioState *m) {
 
     if (m->intendedMag > 0.0f) {
         if (m->thisPlayerCamera != NULL) {
-            m->intendedYaw =
-                atan2s(-controller->stickY, controller->stickX) + m->thisPlayerCamera->yaw;
+            m->intendedYaw = atan2s(-controller->stickY, controller->stickX) + m->thisPlayerCamera->yaw;
         }
         m->input |= INPUT_NONZERO_ANALOG;
     } else {
@@ -1399,46 +1406,50 @@ void update_mario_geometry_inputs(struct MarioState *m) {
  * Handles Mario's input flags as well as a couple timers.
  */
 void update_mario_inputs(struct MarioState *m) {
-    m->particleFlags = 0;
-    m->input = 0;
-    m->collidedObjInteractTypes = m->marioObj->collidedObjInteractTypes;
-    m->flags &= 0xFFFFFF;
+    if (m->controller) {
 
-    update_mario_button_inputs(m);
-    update_mario_joystick_inputs(m);
-    update_mario_geometry_inputs(m);
+        m->particleFlags = 0;
+        m->input = 0;
+        m->collidedObjInteractTypes = m->marioObj->collidedObjInteractTypes;
+        m->flags &= 0xFFFFFF;
 
-    debug_print_speed_action_normal(m);
-    
-    if (m->thisPlayerCamera != NULL) {
-        if (gCameraMovementFlags[m->thisPlayerCamera->cameraID] & CAM_MOVE_C_UP_MODE) {
-            if (m->action & ACT_FLAG_ALLOW_FIRST_PERSON) {
-                m->input |= INPUT_FIRST_PERSON;
-            } else {
-                gCameraMovementFlags[m->thisPlayerCamera->cameraID] &= ~CAM_MOVE_C_UP_MODE;
+        update_mario_button_inputs(m);
+        update_mario_joystick_inputs(m);
+        update_mario_geometry_inputs(m);
+
+        debug_print_speed_action_normal(m);
+
+        if (m->thisPlayerCamera != NULL) {
+            if (gCameraMovementFlags[m->thisPlayerCamera->cameraID] & CAM_MOVE_C_UP_MODE) {
+                if (m->action & ACT_FLAG_ALLOW_FIRST_PERSON) {
+                    m->input |= INPUT_FIRST_PERSON;
+                } else {
+                    gCameraMovementFlags[m->thisPlayerCamera->cameraID] &= ~CAM_MOVE_C_UP_MODE;
+                }
             }
         }
-    }
 
-    if (!(m->input & (INPUT_NONZERO_ANALOG | INPUT_A_PRESSED))) {
-        m->input |= INPUT_UNKNOWN_5;
-    }
+        if (!(m->input & (INPUT_NONZERO_ANALOG | INPUT_A_PRESSED))) {
+            m->input |= INPUT_UNKNOWN_5;
+        }
 
-    if (m->marioObj->oInteractStatus
-        & (INT_STATUS_HOOT_GRABBED_BY_MARIO | INT_STATUS_MARIO_UNK1 | INT_STATUS_HIT_BY_SHOCKWAVE)) {
-        m->input |= INPUT_UNKNOWN_10;
-    }
+        if (m->marioObj->oInteractStatus
+            & (INT_STATUS_HOOT_GRABBED_BY_MARIO | INT_STATUS_MARIO_UNK1
+               | INT_STATUS_HIT_BY_SHOCKWAVE)) {
+            m->input |= INPUT_UNKNOWN_10;
+        }
 
-    // This function is located near other unused trampoline functions,
-    // perhaps logically grouped here with the timers.
-    stub_mario_step_1(m);
+        // This function is located near other unused trampoline functions,
+        // perhaps logically grouped here with the timers.
+        stub_mario_step_1(m);
 
-    if (m->wallKickTimer > 0) {
-        m->wallKickTimer--;
-    }
+        if (m->wallKickTimer > 0) {
+            m->wallKickTimer--;
+        }
 
-    if (m->doubleJumpTimer > 0) {
-        m->doubleJumpTimer--;
+        if (m->doubleJumpTimer > 0) {
+            m->doubleJumpTimer--;
+        }
     }
 }
 
@@ -1558,14 +1569,16 @@ void update_mario_info_for_cam(struct MarioState *m) {
  */
 void mario_reset_bodystate(struct MarioState *m) {
     struct MarioBodyState *bodyState = m->marioBodyState;
+    if (m->marioBodyState) {
 
-    bodyState->capState = MARIO_HAS_DEFAULT_CAP_OFF;
-    bodyState->eyeState = MARIO_EYES_BLINK;
-    bodyState->handState = MARIO_HAND_FISTS;
-    bodyState->modelState = 0;
-    bodyState->wingFlutter = FALSE;
+        bodyState->capState = MARIO_HAS_DEFAULT_CAP_OFF;
+        bodyState->eyeState = MARIO_EYES_BLINK;
+        bodyState->handState = MARIO_HAND_FISTS;
+        bodyState->modelState = 0;
+        bodyState->wingFlutter = FALSE;
 
-    m->flags &= ~MARIO_METAL_SHOCK;
+        m->flags &= ~MARIO_METAL_SHOCK;
+    }
 }
 
 /**
@@ -1703,7 +1716,7 @@ void func_sh_8025574C(void) {
     } else if (gMarioState->particleFlags & PARTICLE_TRIANGLE) {
         queue_rumble_data(5, 80);
     }
-    if(gMarioState->heldObj && gMarioState->heldObj->behavior == segmented_to_virtual(bhvBobomb)) {
+    if (gMarioState->heldObj && gMarioState->heldObj->behavior == segmented_to_virtual(bhvBobomb)) {
         reset_rumble_timers();
     }
 }
@@ -1865,11 +1878,9 @@ void init_mario(void) {
         }
 
         gMarioStates[i].marioObj->header.gfx.pos[1] = gMarioStates[i].pos[1];
-                                                                                             
 
         gMarioStates[i].action =
             (gMarioStates[i].pos[1] <= (gMarioStates[i].waterLevel - 100)) ? ACT_WATER_IDLE : ACT_IDLE;
-                                           
 
         mario_reset_bodystate(&gMarioStates[i]);
         update_mario_info_for_cam(&gMarioStates[i]);
@@ -1894,7 +1905,6 @@ void init_mario(void) {
             capObject->oPosY = capPos[1];
             capObject->oPosZ = capPos[2];
 
-                                        
             capObject->oForwardVelS32 = 0;
 
             capObject->oMoveAngleYaw = 0;
@@ -1904,7 +1914,8 @@ void init_mario(void) {
 
 void init_mario_from_save_file(void) {
     int i = 0;
-    for (i = 0; i < gActivePlayers; i++) { //setting this to 2 lets the first frame load again restoreactiveplayers
+    for (i = 0; i < gActivePlayers;
+         i++) { // setting this to 2 lets the first frame load again restoreactiveplayers
         gMarioStates[i].unk00 = 0;
         gMarioStates[i].flags = 0;
         gMarioStates[i].action = 0;

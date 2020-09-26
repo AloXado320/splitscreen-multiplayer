@@ -972,3 +972,4 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/reds_star_marker.inc.c"
 #include "behaviors/triplet_butterfly.inc.c"
 #include "behaviors/bubba.inc.c"
+#include "behaviors/blargg_custom.inc.c"

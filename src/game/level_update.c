@@ -391,18 +391,24 @@ void init_mario_after_warp(void) {
 
         init_mario();
         set_mario_initial_action(gMarioState, marioSpawnType, sWarpDest.arg);
-        set_mario_initial_action(gLuigiState, marioSpawnType, sWarpDest.arg);
+        if (gActivePlayers > 1) {
+            set_mario_initial_action(gLuigiState, marioSpawnType, sWarpDest.arg);
+        }
 
         gMarioStates[0].interactObj = spawnNode->object;
         gMarioStates[0].usedObj = spawnNode->object;
-        gMarioStates[1].interactObj = spawnNode->object;
-        gMarioStates[1].usedObj = spawnNode->object;
+        if (gActivePlayers > 1) {
+            gMarioStates[1].interactObj = spawnNode->object;
+            gMarioStates[1].usedObj = spawnNode->object;
+        }
     }
 
     gCurrentArea->marioCamera->cameraID = 0;
     reset_camera(gCurrentArea->marioCamera);
-    gCurrentArea->luigiCamera->cameraID = 1;
-    reset_camera(gCurrentArea->luigiCamera);
+    if (gActivePlayers > 1) {
+        gCurrentArea->luigiCamera->cameraID = 1;
+        reset_camera(gCurrentArea->luigiCamera);
+    }
     sWarpDest.type = WARP_TYPE_NOT_WARPING;
     sDelayedWarpOp = WARP_OP_NONE;
 
@@ -1493,6 +1499,6 @@ s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
  * Play the "thank you so much for to playing my game" sound.
  */
 s32 lvl_play_the_end_screen_sound(UNUSED s16 arg0, UNUSED s32 arg1) {
-   // print_text_centered(160, 210, "By Kaze Emanuar");
+    // print_text_centered(160, 210, "By Kaze Emanuar");
     return 1;
 }

@@ -19,13 +19,13 @@
 #include "object_helpers.h"
 #include "level_update.h"
 
-#define POLE_NONE          0
+#define POLE_NONE 0
 #define POLE_TOUCHED_FLOOR 1
-#define POLE_FELL_OFF      2
+#define POLE_FELL_OFF 2
 
-#define HANG_NONE            0
+#define HANG_NONE 0
 #define HANG_HIT_CEIL_OR_OOB 1
-#define HANG_LEFT_CEIL       2
+#define HANG_LEFT_CEIL 2
 
 void add_tree_leaf_particles(struct MarioState *m) {
     f32 leafHeight;
@@ -846,17 +846,20 @@ s32 act_bubbled(struct MarioState *m) {
     backupPos[2] = m->pos[2];
     // get dragged towards other player relative to how far away you are, give it a max speed so you
     // cant go through walls
-    if ((oMar = cur_obj_nearest_object_with_behavior(segmented_to_virtual(bhvMario))) == NULL) {
-        oMar = gMarioStates[(m->thisPlayerCamera->cameraID) ^ 1].marioObj;
-    }
-    dist = dist_between_objects(oMar, m->marioObj);
-    if (dist > 2000.f) {
-        m->pos[0] += ((oMar->oPosX - m->pos[0]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
-                      + 80.f * (oMar->oPosX - m->pos[0]) / dist * (dist > 4000.f));
-        m->pos[1] += ((oMar->oPosY - m->pos[1]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
-                      + 80.f * (oMar->oPosY - m->pos[1]) / dist * (dist > 4000.f));
-        m->pos[2] += ((oMar->oPosZ - m->pos[2]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
-                      + 80.f * (oMar->oPosZ - m->pos[2]) / dist * (dist > 4000.f));
+    if (gActivePlayers > 1) {
+
+        if ((oMar = cur_obj_nearest_object_with_behavior(segmented_to_virtual(bhvMario))) == NULL) {
+            oMar = gMarioStates[(m->thisPlayerCamera->cameraID) ^ 1].marioObj;
+        }
+        dist = dist_between_objects(oMar, m->marioObj);
+        if (dist > 2000.f) {
+            m->pos[0] += ((oMar->oPosX - m->pos[0]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
+                          + 80.f * (oMar->oPosX - m->pos[0]) / dist * (dist > 4000.f));
+            m->pos[1] += ((oMar->oPosY - m->pos[1]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
+                          + 80.f * (oMar->oPosY - m->pos[1]) / dist * (dist > 4000.f));
+            m->pos[2] += ((oMar->oPosZ - m->pos[2]) / dist * (dist - 2000.f) / 25.f * (dist < 4000.f)
+                          + 80.f * (oMar->oPosZ - m->pos[2]) / dist * (dist > 4000.f));
+        }
     }
 
     // do this again so no moving through walls

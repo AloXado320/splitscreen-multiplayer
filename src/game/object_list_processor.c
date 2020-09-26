@@ -298,9 +298,8 @@ void spawn_particle(u32 activeParticleFlag, s16 model, const BehaviorScript *beh
 extern void moveOBJ(struct Object *t);
 extern void bounce_off_object(struct MarioState *m, struct Object *o, f32 velY);
 
-
 void bhv_despawnIf2Player(void) {
-    if (gActivePlayers>1){
+    if (gActivePlayers > 1) {
         mark_obj_for_deletion(gCurrentObject);
     }
 }
@@ -320,14 +319,14 @@ void bhv_mario_update(void) {
     if (l) {
         gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_LUIGI];
     }
-    if (gActivePlayers < 2){
+    if (gActivePlayers < 2) {
         gCurrentObject->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO + singlePlayerChar];
     }
     gMarioStates[l].numStars =
         save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
-          if (gMarioState->controller->buttonPressed & L_TRIG){
-             level_trigger_warp(gMarioState, WARP_OP_CREDITS_START);
-        }
+    if (gMarioState->controller->buttonPressed & L_TRIG) {
+        level_trigger_warp(gMarioState, WARP_OP_CREDITS_START);
+    }
     // give stars
     // debug
     // get_all_stars();
@@ -640,16 +639,27 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
             // Record death/collection in the SpawnInfo
             object->respawnInfoType = RESPAWN_INFO_TYPE_32;
             object->respawnInfo = &spawnInfo->behaviorArg;
+            if (gActivePlayers > 1) {
 
-            if (spawnInfo->behaviorArg & 0x01) {
-                if (gMarioObject == NULL) {
-                    gMarioObject = object;
-                    gMarioObject->collisionData = &gMarioStates[0];
-                    geo_make_first_child(&object->header.gfx.node);
-                } else {
-                    gLuigiObject = object;
-                    gLuigiObject->collisionData = &gMarioStates[1];
-                    geo_make_first_child(&object->header.gfx.node);
+                if (spawnInfo->behaviorArg & 0x01) {
+                    if (gMarioObject == NULL) {
+                        gMarioObject = object;
+                        gMarioObject->collisionData = &gMarioStates[0];
+                        geo_make_first_child(&object->header.gfx.node);
+                    } else {
+                        gLuigiObject = object;
+                        gLuigiObject->collisionData = &gMarioStates[1];
+                        geo_make_first_child(&object->header.gfx.node);
+                    }
+                }
+            } else {
+
+                if (spawnInfo->behaviorArg & 0x01) {
+                    if (gMarioObject == NULL) {
+                        gMarioObject = object;
+                        gMarioObject->collisionData = &gMarioStates[0];
+                        geo_make_first_child(&object->header.gfx.node);
+                    }
                 }
             }
 
