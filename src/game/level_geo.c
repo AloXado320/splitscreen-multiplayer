@@ -71,7 +71,7 @@ Gfx *geo_skybox_main(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) 
         struct GraphNodeCamera *camNode = (struct GraphNodeCamera *) gCurGraphNodeRoot->views[0];
         struct GraphNodePerspective *camFrustum =
             (struct GraphNodePerspective *) camNode->fnNode.node.parent;
-        if (gActivePlayers > 1) {
+        if (PLAYERCOUNTAGAIN > 1) {
 
             gfx = create_skybox_facing_camera(
                 0, backgroundNode->background, camFrustum->fov, gLakituState[luigiCamFirst].pos[0],

@@ -31,7 +31,7 @@ void play_door_open_noise(void) {
     s32 sp1C = cur_obj_has_model(MODEL_HMC_METAL_DOOR);
     if (o->oTimer == 0) {
         cur_obj_play_sound_2(D_8032F328[sp1C]);
-        if (gActivePlayers < 2) {
+        if (ASSUMELOW < 2) {
             gTimeStopState |= TIME_STOP_MARIO_OPENED_DOOR;
         }
     }

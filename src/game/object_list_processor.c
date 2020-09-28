@@ -335,8 +335,8 @@ void bhv_mario_update(void) {
     gMarioStates[l].marioObj = gCurrentObject;
     gMarioStates[l].marioObj->collisionData = &gMarioStates[l];
     gCurrentObject->oInteractType = INTERACT_IGLOO_BARRIER;
-    if (gActivePlayers>1){
-        if (l){
+    if (gActivePlayers > 1) {
+        if (l) {
             gCurrentArea->camera = gCurrentArea->luigiCamera;
         } else {
             gCurrentArea->camera = gCurrentArea->marioCamera;

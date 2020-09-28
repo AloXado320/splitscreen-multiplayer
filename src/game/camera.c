@@ -6846,7 +6846,7 @@ s16 cutscene_object_with_dialog(u8 cutscene, struct Object *o, s16 dialogID) {
     s16 response = 0;
     int i;
     
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         if ((gMarioStates[i].thisPlayerCamera->cutscene == 0) && (sObjectCutscene[i] == 0)) {
             if (gRecentCutscene[i] != cutscene) {
                 start_object_cutscene(cutscene, o, gMarioStates[i].thisPlayerCamera);
@@ -6877,7 +6877,7 @@ s16 cutscene_object(u8 cutscene, struct Object *o) {
     s16 status = 0;
     int i;
 
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         if ((gMarioStates[i].thisPlayerCamera->cutscene == 0)
             && (sObjectCutscene[i]
                 == 0)) { // luigi fucks this up when he walks through a door while this is happening
@@ -11140,7 +11140,7 @@ void set_fov_shake_from_point(s16 amplitude, s16 decay, s16 shakeSpeed, f32 maxD
  */
 void shake_camera_fov(struct GraphNodePerspective *perspective) {
     int i;
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         if (sFOVState[i].shakeAmplitude != 0.f) {
             sFOVState[i].fovOffset = coss(sFOVState[i].shakePhase) * sFOVState[i].shakeAmplitude / 0x100;
             sFOVState[i].shakePhase += sFOVState[i].shakeSpeed;

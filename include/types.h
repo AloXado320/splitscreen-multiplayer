@@ -8,6 +8,9 @@
 #include "macros.h"
 
 extern u8 gActivePlayers;
+#define PLAYERCOUNT gActivePlayers
+#define PLAYERCOUNTAGAIN gActivePlayers
+#define ASSUMELOW gActivePlayers
 extern u8 coop;
 extern u8 singlePlayerChar;
 extern u8 luigiCamFirst;

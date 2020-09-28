@@ -116,7 +116,7 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
     if (mtx == NULL) {
         return;
     }
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
 
         guTranslate(mtx, GFX_DIMENSIONS_FROM_LEFT_EDGE((f32) sPowerMeterHUD[playerID].x),
                     (f32) sPowerMeterHUD[playerID].y / (1 + playerID) - playerID * 19, 0);
@@ -284,9 +284,9 @@ s16 move_hud_x_right_pos(s16 num) {
 void render_hud_mario_lives(void) {
     int i;
     int c = HUD_TOP_Y;
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
 
-        for (i = 0; i < gActivePlayers; i++) {
+        for (i = 0; i < PLAYERCOUNT; i++) {
             if (i == 0) {
                 print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(8), c / (i + 1) - 8 * i,
                            ","); // 'Mario Head' glyph
@@ -306,7 +306,7 @@ void render_hud_mario_lives(void) {
         }
         print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
         print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d",
-                           gMarioStates[i].numLives);
+                           gMarioStates[0].numLives);
     }
 }
 
@@ -316,7 +316,7 @@ void render_hud_mario_lives(void) {
 void render_hud_coins(void) {
     int c = HUD_TOP_Y;
     s16 xAdj = move_hud_x_right_pos(gMarioStates[0].numCoins + gMarioStates[1].numCoins);
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
 
         print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_RIGHT_X - xAdj), c / 2 - 8,
                    "+"); // 'Coin' glyph
@@ -338,7 +338,7 @@ void render_hud_stars(void) {
     s8 showX = 0;
     s16 xAdj = move_hud_x_right_pos(gHudDisplay.stars);
 
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
         if (gHudFlash == 1 && gGlobalTimer % 10) {
             return;
         }
@@ -438,9 +438,9 @@ void render_hud_camera_status(void) {
     s32 x;
     s32 y;
     int i;
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
 
-        for (i = 0; i < gActivePlayers; i++) {
+        for (i = 0; i < PLAYERCOUNT; i++) {
             if (gMarioStates[i].thisPlayerCamera == NULL) {
                 return;
             }
@@ -562,7 +562,7 @@ void render_hud(void) {
         }
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {
-            for (i = 0; i < gActivePlayers; i++) {
+            for (i = 0; i < PLAYERCOUNT; i++) {
                 render_hud_power_meter(i);
             }
             render_hud_camera_status();

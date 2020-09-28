@@ -846,8 +846,7 @@ s32 act_bubbled(struct MarioState *m) {
     backupPos[2] = m->pos[2];
     // get dragged towards other player relative to how far away you are, give it a max speed so you
     // cant go through walls
-    if (gActivePlayers > 1) {
-
+    if (ASSUMELOW > 1) {
         if ((oMar = cur_obj_nearest_object_with_behavior(segmented_to_virtual(bhvMario))) == NULL) {
             oMar = gMarioStates[(m->thisPlayerCamera->cameraID) ^ 1].marioObj;
         }

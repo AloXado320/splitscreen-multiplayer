@@ -289,7 +289,7 @@ void load_mario_area(void) {
 
     if (gCurrentArea->index == gMarioSpawnInfo->areaIndex) {
         gCurrentArea->flags |= 0x01;
-        for (i = 0; i < gActivePlayers; i++) {
+        for (i = 0; i < PLAYERCOUNT; i++) {
             spawn_objects_from_info(0, gMarioSpawnInfo);
         }
     }
@@ -401,7 +401,7 @@ void split_screens(void) {
     manip = gCurrentArea->unk04;
     // get_object_list_from_behavior(bhvActSelector);
     // count_objects_with_behavior(bhvActSelector);
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNT > 1) {
 
         gIsGameEnding = ((gMarioStates[0].action == ACT_END_PEACH_CUTSCENE)
                          || (gMarioStates[0].action == ACT_CREDITS_CUTSCENE)

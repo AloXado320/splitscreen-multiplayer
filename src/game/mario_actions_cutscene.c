@@ -323,7 +323,7 @@ void cutscene_put_cap_on(struct MarioState *m) {
 s32 mario_ready_to_speak(struct MarioState *m) {
     u32 actionGroup = m->action & ACT_GROUP_MASK;
     s32 isReadyToSpeak = FALSE;
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
         return TRUE;
     } else {
         if ((gMarioState->action == ACT_WAITING_FOR_DIALOG || actionGroup == ACT_GROUP_STATIONARY
@@ -344,7 +344,7 @@ s32 mario_ready_to_speak(struct MarioState *m) {
 // 2 = speaking
 s32 set_mario_npc_dialog(s32 actionArg) {
     s32 dialogState = 0;
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
         // in dialog
         return 2;
     } else {

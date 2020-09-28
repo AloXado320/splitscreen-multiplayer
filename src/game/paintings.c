@@ -1304,7 +1304,7 @@ Gfx *geo_painting_update(s32 callContext, UNUSED struct GraphNode *node, UNUSED 
     } else {
         gLastPaintingUpdateCounter = gPaintingUpdateCounter;
         gPaintingUpdateCounter = gAreaUpdateCounter;
-        if (gActivePlayers > 1) {
+        if (ASSUMELOW > 1) {
             alternateFloor ^= 1;
         }
         if (alternateFloor) {

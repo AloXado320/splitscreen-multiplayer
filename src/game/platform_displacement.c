@@ -28,7 +28,7 @@ void update_mario_platform(void) {
     f32 floorHeight;
     u32 awayFromFloor;
     int i;
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         if (gMarioObject != NULL) {
         marioX = gMarioStates[i].marioObj->oPosX;
         marioY = gMarioStates[i].marioObj->oPosY;
@@ -170,7 +170,7 @@ void apply_platform_displacement(u32 isMario, struct Object *platform) {
 void apply_mario_platform_displacement(void) {
     struct Object *platform;
     int i;
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         platform = gMarioPlatform[i];
         if (gMarioStates[i].pos[1] == gMarioStates[i].floorHeight) {
             gMarioStates[i].platformDisplacement[0] = 0.0f;
