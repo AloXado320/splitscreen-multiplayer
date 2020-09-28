@@ -181,7 +181,7 @@ void play_infinite_stairs_music(void) {
     u8 shouldPlay = FALSE;
 
     /* Infinite stairs? */
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         if (gCurrLevelNum == LEVEL_CASTLE && gCurrAreaIndex == 2 && gMarioStates[i].numStars < 70) {
             if (gMarioStates[i].floor != NULL && gMarioStates[i].floor->room == 6) {
                 if (gMarioStates[i].pos[2] < 2540.0f) {

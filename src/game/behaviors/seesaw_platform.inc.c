@@ -40,7 +40,7 @@ void bhv_seesaw_platform_update(void) {
     }
 
     if ((gMarioStates[0].marioObj->platform == o) || ((gMarioStates[1].marioObj) && (gMarioStates[1].marioObj->platform == o))) {
-        for (i = 0; i < gActivePlayers; i++) {
+        for (i = 0; i < ASSUMELOW; i++) {
             if (gMarioStates[i].marioObj->platform == o) {
                 o->oDistanceToMario = dist_between_objects(gCurrentObject, gMarioStates[i].marioObj);
                 o->oAngleToMario = obj_angle_to_object(gCurrentObject, gMarioStates[i].marioObj);

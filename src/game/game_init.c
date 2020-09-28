@@ -131,7 +131,7 @@ void clear_z_buffer(void) { // RISKY
     gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH, gPhysicalZBuffer);
     gDPSetFillColor(gDisplayListHead++, GPACK_ZDZ(G_MAXFBZ, 0) << 16 | GPACK_ZDZ(G_MAXFBZ, 0));
 
-    if ((gActivePlayers > 1) && ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding)) {
+    if ((PLAYERCOUNT > 1) && ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding)) {
         gDPFillRectangle(gDisplayListHead++, 0, height - height / (luigiCamFirst + 1), SCREEN_WIDTH - 1,
                          height / 2 * (luigiCamFirst + 1) - 1);
     } else {
@@ -153,7 +153,7 @@ void display_frame_buffer(void) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
-    if ((!luigiCamFirst) || (gActivePlayers < 2)) {
+    if ((!luigiCamFirst) || (PLAYERCOUNT < 2)) {
         gDPSetColorImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, SCREEN_WIDTH,
                          gPhysicalFrameBuffers[frameBufferIndex]);
     } else {
@@ -161,7 +161,7 @@ void display_frame_buffer(void) {
                          gPhysicalFrameBuffers[e]);
     }
 
-    if ((gActivePlayers > 1)
+    if ((PLAYERCOUNT > 1)
         && ((gCurrLevelNum != LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding)) { // RISKY
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, d - d / (luigiCamFirst + 1),
                       SCREEN_WIDTH, d / 2 * (luigiCamFirst + 1));
@@ -310,7 +310,7 @@ void draw_reset_bars(void) {
             e = fbNum - 1;
         }
 
-        if ((!luigiCamFirst) || (gActivePlayers < 2)) {
+        if ((!luigiCamFirst) || (PLAYERCOUNT < 2)) {
             sp18 = (u64 *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[fbNum]);
         } else {
             sp18 = (u64 *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[e]);
@@ -364,14 +364,14 @@ void display_and_vsync(void) {
     }
     send_display_list(&gGfxPool->spTask);
     profiler_log_thread5_time(AFTER_DISPLAY_LISTS);
-    if (gActivePlayers < 2) {
+    if (PLAYERCOUNT < 2) {
         osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     }
 
     if ((gCurrLevelNum == LEVEL_MIN) && !gIsInStarSelect && !gIsGameEnding) {
         osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     }
-    if (gActivePlayers < 2) {
+    if (PLAYERCOUNT < 2) {
 
         osViSwapBuffer((void *) PHYSICAL_TO_VIRTUAL(gPhysicalFrameBuffers[sCurrFBNum]));
     } else {
@@ -449,7 +449,7 @@ void run_demo_inputs(void) {
 void read_controller_inputs(void) {
     s32 i;
 
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < PLAYERCOUNT; i++) {
         struct Controller *controller = &gControllers[i];
 
         // if we're receiving inputs, update the controller struct
@@ -532,7 +532,7 @@ void setup_game_memory(void) {
     gPhysicalFrameBuffers[1] = VIRTUAL_TO_PHYSICAL(gFrameBuffer1);
     gPhysicalFrameBuffers[2] = VIRTUAL_TO_PHYSICAL(gFrameBuffer2);
 
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < PLAYERCOUNT; i++) {
         D_80339CF0[i] = main_pool_alloc(0x4000, MEMORY_POOL_LEFT);
         set_segment_base_addr(17, (void *) D_80339CF0[i]);
         func_80278A78(&D_80339D10[i], gMarioAnims, D_80339CF0[i]);
@@ -592,7 +592,7 @@ void thread5_game_loop(UNUSED void *arg) {
             osRecvMesg(&gSIEventMesgQueue, &D_80339BEC, OS_MESG_BLOCK);
             osContGetReadData(&gControllerPads[0]);
         }
-        if ((gActivePlayers < 2)
+        if ((PLAYERCOUNT < 2)
             || (!luigiCamFirst)) { // dont drop inputs 50% of the time. you also need to put the game to
             // 60fps and run object loops every other frame. implement frame skip.
             read_controller_inputs();

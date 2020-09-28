@@ -29,7 +29,7 @@ void bhv_pushable_loop(void) {
     s16 sp1C;
     int i;
     obj_set_hitbox(o, &sMetalBoxHitbox);
-    for (i = 0; i < gActivePlayers; i++) {
+    for (i = 0; i < ASSUMELOW; i++) {
         o->oForwardVel = 0.0f;
         if (obj_check_if_collided_with_object(o, gMarioStates[i].marioObj) && gMarioStates[i].flags & MARIO_UNKNOWN_31) {
             sp1C = obj_angle_to_object(o, gMarioStates[i].marioObj);

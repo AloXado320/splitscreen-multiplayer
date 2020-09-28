@@ -298,7 +298,7 @@ void bobomb_buddy_act_idle(void) {
     if (o->oDistanceToMario < 1000.0f)
         o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x140);
 
-    if (gActivePlayers > 1) {
+    if (ASSUMELOW > 1) {
         if (o->oDistanceToMario < 200)
             o->oAction = BOBOMB_BUDDY_ACT_TURN_TO_TALK;
     } else {
@@ -357,7 +357,7 @@ void bobomb_buddy_act_talk(void) {
 
         switch (o->oBobombBuddyRole) {
             case BOBOMB_BUDDY_ROLE_ADVICE:
-                if (gActivePlayers > 1) {
+                if (ASSUMELOW > 1) {
                     set_mario_npc_dialog(0);
                 } else {
                     if (cutscene_object_with_dialog(CUTSCENE_DIALOG, o, o->oBehParams2ndByte)

@@ -853,7 +853,7 @@ struct LevelCommand *level_script_execute(struct LevelCommand *cmd) {
         listHead = &gObjectLists[get_object_list_from_behavior(behaviorAddr)];
         obj = (struct Object *) listHead->next;
 
-        if ((gActivePlayers > 1)) {
+        if ((PLAYERCOUNTAGAIN > 1)) {
             while (obj != (struct Object *) listHead) {
                 if (obj->behavior == behaviorAddr) {
                     if (obj->activeFlags != ACTIVE_FLAG_DEACTIVATED) {

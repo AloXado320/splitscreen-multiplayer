@@ -2088,7 +2088,7 @@ void print_peach_letter_message(void) {
  */
 void render_hud_cannon_reticle(void) {
     f32 displacement = ((gCamera->cameraID * 2) - 1) * -50.0f;
-    if (gActivePlayers > 1) {
+    if (PLAYERCOUNTAGAIN > 1) {
         create_dl_translation_matrix(MENU_MTX_PUSH, 160.0f, 120.0f, 0);
         gDPSetEnvColor(gDisplayListHead++, 50, 50, 50, 180);
         create_dl_translation_matrix(MENU_MTX_PUSH, -20.0f, -8.0f + displacement, 0);

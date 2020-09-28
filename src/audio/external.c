@@ -733,7 +733,7 @@ void play_sound(s32 soundBits, f32 *pos) {
     if (((soundBits >> 16) >= 0x2400) && ((soundBits >> 16) < 0x2440)) {
         if ((gMarioStates[1].marioObj != NULL) && (pos == gMarioStates[1].marioObj->soundOrigin)) {
             soundBits += 0x400000;
-        } else if (singlePlayerChar && (gActivePlayers<2)){
+        } else if (singlePlayerChar && (PLAYERCOUNTAGAIN < 2)) {
             soundBits += 0x400000;
         }
     }

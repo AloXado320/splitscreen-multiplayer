@@ -209,7 +209,7 @@ Gfx *geo_exec_cake_end_screen(s32 callContext, struct GraphNode *node, UNUSED f3
     Gfx *displayList = NULL;
     Gfx *displayListHead = NULL;
     //overwrite texture with other texture if not in coop mode
-    if (gActivePlayers == 1){
+    if (ASSUMELOW == 1){
         if (singlePlayerChar){  
             copyData(segmented_to_virtual(cake_end_texture_0), segmented_to_virtual(cake_end_texture_luigi_0), 0xc80 * 12);
         } else {
