@@ -1040,7 +1040,6 @@ void basic_update(UNUSED s16 *arg) {
 
     if (gCurrentArea != NULL) {
         if (gActivePlayers > 1) {
-
             if (luigiCamFirst) {
                 gCurrentArea->luigiCamera->controller = (gMarioStates[1].controller);
                 gCurrentArea->luigiCamera->cameraID = 1;
@@ -1056,12 +1055,12 @@ void basic_update(UNUSED s16 *arg) {
                 update_camera(gCurrentArea->marioCamera);
                 //}
             }
+        } else {
+            gCurrentArea->marioCamera->controller = (gMarioStates[0].controller);
+            gCurrentArea->marioCamera->cameraID = 0;
+            sMarioCamState = &gPlayerCameraState[0];
+            update_camera(gCurrentArea->marioCamera);
         }
-    } else {
-        gCurrentArea->marioCamera->controller = (gMarioStates[0].controller);
-        gCurrentArea->marioCamera->cameraID = 0;
-        sMarioCamState = &gPlayerCameraState[0];
-        update_camera(gCurrentArea->marioCamera);
     }
 }
 

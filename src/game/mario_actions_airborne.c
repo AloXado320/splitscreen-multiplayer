@@ -473,6 +473,7 @@ s32 act_double_jump(struct MarioState *m) {
 }
 
 s32 act_triple_jump(struct MarioState *m) {
+
     if (gSpecialTripleJump) {
         return set_mario_action(m, ACT_SPECIAL_TRIPLE_JUMP, 0);
     }
@@ -491,7 +492,14 @@ s32 act_triple_jump(struct MarioState *m) {
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, SOUND_MARIO_YAHOO);
 #endif
 
-    common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP, 0);
+    if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) {
+        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_DOUBLE_JUMP_RISE, 0);
+        m->angleVel[1] = approach_s32(m->angleVel[1], 0x1800, 0x200, 0x200);
+        m->twirlYaw += m->angleVel[1];
+        vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1] + m->twirlYaw, 0);
+    } else {
+        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP, 0);
+    }
 #ifdef VERSION_SH
     if (m->action == ACT_TRIPLE_JUMP_LAND) {
         queue_rumble_data(5, 40);
