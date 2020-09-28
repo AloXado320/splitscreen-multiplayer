@@ -25,7 +25,7 @@
 #endif
 
 #define SEG_POOL_START   _framebuffersSegmentNoloadEnd // 0x0165000 in size
-#define SEG_GODDARD      SEG_POOL_START + 0x113000
+#define SEG_GODDARD      SEG_POOL_START + 0x120000 // Ugly hardcoded value
 
 #define POOL_SIZE        RAM_END - SEG_POOL_START
 
