@@ -85,9 +85,9 @@ struct RenderModeContainer renderModeTable_1Cycle[2] = { { {
     { {
     /* z-buffered */
     G_RM_ZB_OPA_SURF,
-    G_RM_AA_ZB_OPA_SURF,
-    G_RM_AA_ZB_OPA_DECAL,
-    G_RM_AA_ZB_OPA_INTER,
+    G_RM_RA_ZB_OPA_SURF,
+    G_RM_RA_ZB_OPA_DECAL,
+    G_RM_RA_ZB_OPA_INTER,
     G_RM_AA_ZB_TEX_EDGE,
     G_RM_AA_ZB_XLU_SURF,
     G_RM_AA_ZB_XLU_DECAL,
@@ -108,9 +108,9 @@ struct RenderModeContainer renderModeTable_2Cycle[2] = { { {
     { {
     /* z-buffered */
     G_RM_ZB_OPA_SURF2,
-    G_RM_AA_ZB_OPA_SURF2,
-    G_RM_AA_ZB_OPA_DECAL2,
-    G_RM_AA_ZB_OPA_INTER2,
+    G_RM_RA_ZB_OPA_SURF2,
+    G_RM_RA_ZB_OPA_DECAL2,
+    G_RM_RA_ZB_OPA_INTER2,
     G_RM_AA_ZB_TEX_EDGE2,
     G_RM_AA_ZB_XLU_SURF2,
     G_RM_AA_ZB_XLU_DECAL2,
@@ -755,7 +755,9 @@ static s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
     // ! @bug The aspect ratio is not accounted for. When the fov value is 45,
     // the horizontal effective fov is actually 60 degrees, so you can see objects
     // visibly pop in or out at the edge of the screen.
-    halfFov = (gCurGraphNodeCamFrustum->fov / 2.0f + 1.0f) * 32768.0f / 180.0f + 0.5f;
+    halfFov = ((gCurGraphNodeCamFrustum->fov / 2.0f + 1.0f) * 32768.0f / 180.0f + 0.5f)
+              * 1.85f; // KAZENOZE the last 1.6 is added to make the ultrawidescreen work. its 1.0
+                       // usually. youd expect this to have to be 2.0*7/8 though.
 
     hScreenEdge = -matrix[3][2] * sins(halfFov) / coss(halfFov);
     hScreenEdge *= 1.5f;
@@ -804,10 +806,12 @@ static s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
  */
 static void geo_process_object(struct Object *node) {
     Mat4 mtxf;
+    f32 dist;
+    f32 dist2;
     s32 hasAnimation = (node->header.gfx.node.flags & GRAPH_RENDER_HAS_ANIMATION) != 0;
 
     if (node->header.gfx.areaIndex == gCurGraphNodeRoot->areaIndex) {
-        if (node->header.gfx.throwMatrix != NULL) {
+       if (FALSE) {        //KAZE NOTE maybe put this back to the original code and fix the bug properly
             mtxf_mul(gMatStack[gMatStackIndex + 1], *node->header.gfx.throwMatrix,
                      gMatStack[gMatStackIndex]);
         } else if (node->header.gfx.node.flags & GRAPH_RENDER_BILLBOARD) {
@@ -824,7 +828,24 @@ static void geo_process_object(struct Object *node) {
         node->header.gfx.cameraToObject[0] = gMatStack[gMatStackIndex][3][0];
         node->header.gfx.cameraToObject[1] = gMatStack[gMatStackIndex][3][1];
         node->header.gfx.cameraToObject[2] = gMatStack[gMatStackIndex][3][2];
+        if ((gCurrentArea->luigiCamera != NULL) && (gCurrentArea->marioCamera != NULL)) {
 
+            node->soundOrigin[0] = 0;
+            node->soundOrigin[1] = 0;
+            dist = sqrtf((gCurrentArea->marioCamera->pos[0] - node->oPosX)
+                             * (gCurrentArea->marioCamera->pos[0] - node->oPosX)
+                         + (gCurrentArea->marioCamera->pos[1] - node->oPosY)
+                               * (gCurrentArea->marioCamera->pos[1] - node->oPosY)
+                         + (gCurrentArea->marioCamera->pos[2] - node->oPosZ)
+                               * (gCurrentArea->marioCamera->pos[2] - node->oPosZ));
+            dist2 = sqrtf((gCurrentArea->luigiCamera->pos[0] - node->oPosX)
+                              * (gCurrentArea->luigiCamera->pos[0] - node->oPosX)
+                          + (gCurrentArea->luigiCamera->pos[1] - node->oPosY)
+                                * (gCurrentArea->luigiCamera->pos[1] - node->oPosY)
+                          + (gCurrentArea->luigiCamera->pos[2] - node->oPosZ)
+                                * (gCurrentArea->luigiCamera->pos[2] - node->oPosZ));
+            node->soundOrigin[2] = (dist < dist2) * dist + (dist >= dist2) * dist2;
+        }
         // FIXME: correct types
         if (node->header.gfx.animInfo.curAnim != NULL) {
             geo_set_animation_globals(&node->header.gfx.animInfo, hasAnimation);
@@ -951,7 +972,6 @@ void geo_process_node_and_siblings(struct GraphNode *firstNode) {
     s16 iterateChildren = TRUE;
     struct GraphNode *curGraphNode = firstNode;
     struct GraphNode *parent = curGraphNode->parent;
-
     // In the case of a switch node, exactly one of the children of the node is
     // processed instead of all children like usual
     if (parent != NULL) {
@@ -1076,7 +1096,7 @@ void geo_process_root(struct GraphNodeRoot *node, Vp *b, Vp *c, s32 clearColor) 
             geo_process_node_and_siblings(node->node.children);
         }
         gCurGraphNodeRoot = NULL;
-        if (gShowDebugText) {
+        if (FALSE) {
             print_text_fmt_int(180, 36, "MEM %d",
                                gDisplayListHeap->totalSpace - gDisplayListHeap->usedSpace);
         }
