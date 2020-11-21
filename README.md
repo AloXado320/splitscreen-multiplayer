@@ -1,6 +1,6 @@
-# Ultra 64 Mario Bros
+# Project Ultra 64 Mario Bros.
 
-- This repo aims to combine the ability to have Splitscreen or Single Player with the ability to select Mario or Luigi on the same N64 cart.
+- This repo aims to combine Splitscreen and Single Player with the ability to select Mario or Luigi.
 
 # Super Mario 64
 
@@ -20,7 +20,7 @@ A prior copy of the game is required to extract the assets.
 ## Quick Start (for Ubuntu)
 
 1. Install prerequisites: `sudo apt install -y build-essential git binutils-mips-linux-gnu python3 libaudiofile-dev`
-2. Clone the repo from within Linux: `git clone https://github.com/n64decomp/sm64.git`
+2. Clone the repo from within Linux: `git clone https://github.com/AloXado320/splitscreen-multiplayer.git`
 3. Place a Super Mario 64 ROM called `baserom.<VERSION>.z64` into the project folder for asset extraction, where `VERSION` can be `us`, `jp`, or `eu`.
 4. Run `make` to build. Qualify the version through `make VERSION=<VERSION>`. Add `-j4` to improve build speed (hardware dependent).
 
@@ -36,7 +36,7 @@ We recommend either Debian or Ubuntu 18.04 Linux distributions under WSL.
 Note: WSL1 does not currently support Ubuntu 20.04.
 
 Next, clone the SM64 repo from within the Linux shell:
-`git clone https://github.com/n64decomp/sm64.git`
+`git clone https://github.com/AloXado320/splitscreen-multiplayer.git`
 
 Then continue following the directions in the [Linux](#linux) installation section below.
 
