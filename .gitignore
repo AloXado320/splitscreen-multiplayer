@@ -50,6 +50,7 @@ build/*
 *.z64
 *.map
 .assets-local.txt
+*zone.identifier
 
 # Crash Screen Textures
 !/textures/crash_screen/*
