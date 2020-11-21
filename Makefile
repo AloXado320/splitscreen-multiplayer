@@ -53,7 +53,7 @@ endif
 endif
 endif
 
-TARGET := sm64.$(VERSION)
+TARGET := u64mb.$(VERSION)
 VERSION_CFLAGS := -D$(VERSION_DEF)
 VERSION_ASFLAGS := --defsym $(VERSION_DEF)=1
 
@@ -283,7 +283,7 @@ ASFLAGS := -march=vr4300 -mabi=32 -I include -I $(BUILD_DIR) $(VERSION_ASFLAGS) 
 CFLAGS = -Wab,-r4300_mul -non_shared -G 0 -Xcpluscomm -Xfullwarn -signed $(COMMON_CFLAGS) $(MIPSBIT)
 OBJCOPYFLAGS := --pad-to=0x800000 --gap-fill=0xFF
 SYMBOL_LINKING_FLAGS := $(addprefix -R ,$(SEG_FILES))
-LDFLAGS := -T undefined_syms.txt -T $(BUILD_DIR)/$(LD_SCRIPT) -Map $(BUILD_DIR)/sm64.$(VERSION).map --no-check-sections $(SYMBOL_LINKING_FLAGS)
+LDFLAGS := -T undefined_syms.txt -T $(BUILD_DIR)/$(LD_SCRIPT) -Map $(BUILD_DIR)/u64mb.$(VERSION).map --no-check-sections $(SYMBOL_LINKING_FLAGS)
 ENDIAN_BITWIDTH := $(BUILD_DIR)/endian-and-bitwidth
 
 ifeq ($(COMPILER),gcc)
