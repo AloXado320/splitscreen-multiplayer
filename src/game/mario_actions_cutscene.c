@@ -538,6 +538,57 @@ s32 act_reading_sign(struct MarioState *m) {
 }
 
 s32 act_debug_free_move(struct MarioState *m) {
+    struct Surface *surf;
+    f32 floorHeight;
+    Vec3f pos;
+    f32 speed;
+    u32 action;
+
+    // integer immediates, generates convert instructions for some reason
+    speed = gPlayer1Controller->buttonDown & B_BUTTON ? 4 : 1;
+    if (gPlayer1Controller->buttonDown & L_TRIG) {
+        speed = 0.01f;
+    }
+
+    set_mario_animation(m, MARIO_ANIM_A_POSE);
+    vec3f_copy(pos, m->pos);
+
+    if (gPlayer1Controller->buttonDown & U_JPAD) {
+        pos[1] += 16.0f * speed;
+    }
+    if (gPlayer1Controller->buttonDown & D_JPAD) {
+        pos[1] -= 16.0f * speed;
+    }
+
+    if (m->intendedMag > 0) {
+        pos[0] += 32.0f * speed * sins(m->intendedYaw);
+        pos[2] += 32.0f * speed * coss(m->intendedYaw);
+    }
+
+    resolve_and_return_wall_collisions(pos, 60.0f, 50.0f);
+
+    floorHeight = find_floor(pos[0], pos[1], pos[2], &surf);
+    if (surf != NULL) {
+        if (pos[1] < floorHeight) {
+            pos[1] = floorHeight;
+        }
+        vec3f_copy(m->pos, pos);
+    }
+
+    m->faceAngle[1] = m->intendedYaw;
+    vec3f_copy(m->marioObj->header.gfx.pos, m->pos);
+    vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
+
+    if (gPlayer1Controller->buttonPressed == A_BUTTON) {
+        if (m->pos[1] <= m->waterLevel - 100) {
+            action = ACT_WATER_IDLE;
+        } else {
+            action = ACT_IDLE;
+        }
+        set_mario_action(m, action, 0);
+    }
+
+    return FALSE;
 }
 
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {

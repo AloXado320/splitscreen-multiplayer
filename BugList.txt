@@ -38,28 +38,28 @@ U64MB Bug List
 28. Various Co-op teleports weren't disabled for 1P mode and thus crash the game.
 29. In the ending cutscene where it shows all the stages, the player can pause and exit out of them.
 30. You can pause and exit anytime in any given stage.
+31. Mario/Luigi should not go into a bubble after death.
 
 Single Player Ending Bugs
-Single Player Mario - mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
-Single Player Luigi - no voices at all, when luigi strikes a pose after being kissed, the camera switches too early to the next angle too, also no music as well
+Single Player mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
 
-*** -2. Motos's and Ice Motos's models are broken, fix it
+*** -2. Fix Motos not sinking into the lava/freezing ice when dying
 ***-1. level select: when Co-Op is selected, incrementing the level counter does it twice instead of once, meaning only odd numbered levels can be selected.
 *0. Player 2 can no longer press buttons to skip dialogue, only player 1.
 *1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
 ***2. Hurtbox feels *huge* - but in case it's enemies having seemingly huge hitboxes, Piranha Plants, Goombas, Clams, Scuttlebugs, Skeeters, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopas. Lakitus. Moneybags. Spindrifts. (this list is almost guaranteed to be incomplete sadly)
 *3. King Bob-omb Boss Music does not play
-*4. Kuromame, Shy Guys, and single shot Bowser breath won't burn Luigi
+*4. FIXED  Kuromame, Shy Guys, and single shot Bowser breath won't burn Luigi
 5. "let's-a go!" voice clip does not have enough time to play to completion
 6. Hoot the Owl still generates dialogue.
 7. Dialogue does not freeze players in place.
-8. Amps won't shock Luigi.
+8. FIXED Amps won't shock Luigi.
 9. Luigi doesn't say "So long gay bowser!" **would it work if we added a sound specifically for Luigi?
 10. When both players die, Bowser's laugh doesn't seem to play the entire duration?
 11. Standing on Dorrie's head as either player will not raise her head up.
 12. Unsure if volcano explosion hurts either player...
 13. Ring detection is extremely off in The Manta Ray's Reward
-*14. Big Boo's Balcony; Big Boo will not come onto the balcony forcing you to ground pound all the way back to the ground every time you want to hit him. Makes it easier overall since you never have to worry about being hit. ***fixed***
+*14. FIXED  Boo's Balcony; Big Boo will not come onto the balcony forcing you to ground pound all the way back to the ground every time you want to hit him. Makes it easier overall since you never have to worry about being hit. ***fixed***
 15. Cool Cool Mountain's Snowman Head still produces dialogue.
 *16. Swimming camera on Jolly Roger Bay and outside the castle is all screwed up. 
 17. (from Inky) entering another room while one player dies at the point where the transition would happen makes both players receive death eject knockback when entering the room (or knocked out of the painting if during a level transition such as finishing the Secret Slide as one player while the other player dies)
@@ -67,22 +67,22 @@ Single Player Luigi - no voices at all, when luigi strikes a pose after being ki
 19. Monkey bugs; after the monkey takes your hat and you catch him, he becomes invisible. When you put him down, he becomes visible again but you can't put your hat back on. Monkey and anyone who takes your hat, always the Mario hat (which it's OK, it can be Mario's hat, it's the same way it works in Odyssey for some reason)
 20. Dialogue still exists for the monkey at the top of the mountain in the Monkey Cage star. (that may be just so you can free him, nevermind)
 21. Sides of cannon do not rotate properly with cannon.
-*22. Crashes when I try to go to the mirror room. ***fixed***
+*22. FIXED Crashes when I try to go to the mirror room. ***fixed***
 23. Bowser level 1: Painting does not transition from Peach to Bowser as you get closer. Is simply Bowser. (may be a gfx plugin issue)
 *24. Crashes during the ending.*******************
-*25. Bully type enemies are unable to collide with Luigi.
+*25. FIXED Bully type enemies are unable to collide with Luigi.
 **26. Since the Snowman's Land painting can't be seen in the mirror room as the Mirror is removed, why not place the painting on the wall????
 **27. Why don't we make the 2nd Bowser fight take two bombs to win?
 *28. Flying speed is way too high
 *29. Tilting platforms such as those in BiTFS and LLL Tilt, however the visual model does not tilt with it.
 *30. We should disable the L button triggering the ending. It's annoying.
-***31 & 32. entering Eyerok's room in SSL and the loading zone to the submarine area in DDD crash
+***31 & 32. entering Eyerok's room in SSL and the loading zone to the submarine area in DDD crashes
 ***33. Power meter is too small in singleplayer mode
 ****34. If you crouch under a player who just collected the star and is still in mid-air, he won't do the star animation and you'll be able to still play the level after collecting a star, which would make you go back to the castle.
 
 Newest Bugs
 1. Mario and Luigi lose their voices after starting the race with Koopa the Quick in THI. 
-2. if Bubba eats either of them, that respective player cannot respawn properly. After their respawn bubble is popped, they respawn as a glitchy "invisible" character that eventually becomes frozen.
+2. if Big Bubba (Big fish in THI) eats either of them, that respective player cannot respawn properly. After their respawn bubble is popped, they respawn as a glitchy "invisible" character that eventually becomes frozen.
 
 3. [BUG FIXED]
 

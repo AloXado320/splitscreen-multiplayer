@@ -75,6 +75,17 @@ cur_obj_play_sound_2(SOUND_OBJ_BULLY_WALKING);
 	 	o->oMotosUnk88 = 1;
 	}
 
+	if (o->oFloor->type == SURFACE_BURNING) {
+		cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
+		o->oHealth--;
+		//o->oPosY = o->oHomeY;
+		//o->oPosX = o->oHomeX;
+		//o->oPosZ = o->oHomeZ;
+		if (o->oHealth) 
+            o->oAction = 8;
+        if (o->oHealth == 0) 
+            o->oAction = 10;
+	}
 
 }
 
@@ -140,14 +151,14 @@ void motos_pitch(void)
 
 void motos_fly(void)
 {
-//   o->oForwardVel = 5.0f;
+   o->oForwardVel = 5.0f;
 	cur_obj_init_animation_with_sound(5);
 		if ((gCurrLevelNum == LEVEL_SL) & (o->oPosY < 1050.0f)) {
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;
-			o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			o->oPosX = o->oHomeX;
-			o->oPosZ = o->oHomeZ;
+			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
+			//o->oPosX = o->oHomeX;
+			//o->oPosZ = o->oHomeZ;
 			if (o->oHealth) 
                 o->oAction = 8;
             if (o->oHealth == 0) 
@@ -156,9 +167,9 @@ void motos_fly(void)
 		if (o->oFloor->type == SURFACE_BURNING) {
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;
-			o->oPosY = o->oHomeY;
-			o->oPosX = o->oHomeX;
-			o->oPosZ = o->oHomeZ;
+			//o->oPosY = o->oHomeY;
+			//o->oPosX = o->oHomeX;
+			//o->oPosZ = o->oHomeZ;
 			if (o->oHealth) 
                 o->oAction = 8;
             if (o->oHealth == 0) 
@@ -191,9 +202,9 @@ void motos_recover2(void) {
 			if ((gCurrLevelNum == LEVEL_SL) & (o->oPosY < 1050.0f)) { //Repeat for good measure
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;
-			o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			o->oPosX = o->oHomeX;
-			o->oPosZ = o->oHomeZ;
+			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
+			//o->oPosX = o->oHomeX;
+			//o->oPosZ = o->oHomeZ;
 			if (o->oHealth) 
                 o->oAction = 1;
             if (o->oHealth == 0) 
@@ -202,9 +213,9 @@ void motos_recover2(void) {
 		if (o->oFloor->type == SURFACE_BURNING) {
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;
-			o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			o->oPosX = o->oHomeX;
-			o->oPosZ = o->oHomeZ;
+			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
+			//o->oPosX = o->oHomeX;
+			//o->oPosZ = o->oHomeZ;
 			if (o->oHealth) 
                 o->oAction = 1;
             if (o->oHealth == 0) 
@@ -216,28 +227,29 @@ o->oAction = 1;
 }
 
 void motos_death(void) { 
-
-        create_sound_spawner(SOUND_OBJ_KING_WHOMP_DEATH);
-
-        spawn_mist_particles_variable(0, 0, 200.0f);
-        spawn_triangle_break_particles(20, 138, 3.0f, 4);
-        cur_obj_shake_screen(SHAKE_POS_SMALL);
-		cur_obj_hide();
-        cur_obj_become_intangible();
-		if (gCurrLevelNum == LEVEL_SL) {
-        spawn_default_star(300.0f, 1500.0f, -5335.0f);
-		o->oAction = 8;
+			o->oHomeY = o->oPosY;
+			o->oHomeX = o->oPosX;
+			o->oHomeZ = o->oPosZ;
+		if (obj_lava_death() == 1) {
+			o->oPosY = o->oHomeY;
+			o->oPosX = o->oHomeX;
+			o->oPosZ = o->oHomeZ;
+        	create_sound_spawner(SOUND_OBJ_KING_WHOMP_DEATH);
+        	cur_obj_hide();
+        	cur_obj_become_intangible();
+			bully_spawn_coin();
+        	spawn_mist_particles_variable(0, 0, 200.0f);
+        	spawn_triangle_break_particles(20, 138, 3.0f, 4);
+        	cur_obj_shake_screen(SHAKE_POS_SMALL);
+			o->oInteractStatus &= ~(INT_STATUS_GRABBED_MARIO);
 		}
-		else 
-        spawn_default_star(3700.0f, 600.0f, -5500.0f);
-        o->oAction = 8;
-		}
+	}
 void (*sMotosActions[])(void) = { motos_wait, motos_player_search, motos_player_carry, motos_player_pitch, motos_carry_start, motos_carry_run, motos_pitch, motos_fly, motos_recover, motos_recover2, motos_death};
 
 void motos_main(void)
 {
     cur_obj_update_floor_and_walls();
-//cur_obj_move_using_fvel_and_gravity();	
+	//cur_obj_move_using_fvel_and_gravity();	
 	
 
 //	default: rmonpf(("Error objmode motos\n")); }
