@@ -37,14 +37,14 @@ static s16 sPowerMeterStoredHealth[2];
 
 static struct PowerMeterHUD sPowerMeterHUD[2] = { {
 POWER_METER_HIDDEN,
-35,
-100,
+30,
+181,
 1.0,
 },
 {
 POWER_METER_HIDDEN,
-35,
-100,
+30,
+181,
 1.0,
 } };
 
@@ -137,6 +137,7 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
+
 /**
  * Power meter animation called when there's less than 8 health segments
  * Checks its timer to later change into deemphasizing mode.
@@ -161,22 +162,22 @@ void animate_power_meter_emphasized(int playerID) {
 static void animate_power_meter_deemphasizing(int playerID) {
     s16 speed = 5;
 
-    if (sPowerMeterHUD[playerID].y >= 140) {
+    if (sPowerMeterHUD[playerID].y >= 181) {
         speed = 3;
     }
 
-    if (sPowerMeterHUD[playerID].y >= 140) {
+    if (sPowerMeterHUD[playerID].y >= 191) {
         speed = 2;
     }
 
-    if (sPowerMeterHUD[playerID].y >= 140) {
+    if (sPowerMeterHUD[playerID].y >= 196) {
         speed = 1;
     }
 
     sPowerMeterHUD[playerID].y += speed;
 
-    if (sPowerMeterHUD[playerID].y >= 140) {
-        sPowerMeterHUD[playerID].y = 140;
+    if (sPowerMeterHUD[playerID].y >= 201) {
+        sPowerMeterHUD[playerID].y = 200;
         sPowerMeterHUD[playerID].animation = POWER_METER_VISIBLE;
     }
 }

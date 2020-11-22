@@ -815,6 +815,7 @@ s32 UNUSED debug_sequence_tracker(s16 debugInputSequence[]) {
 #include "behaviors/boulder.inc.c"
 #include "behaviors/cap.inc.c"
 #include "behaviors/spawn_star.inc.c"
+#include "behaviors/motos.inc.c"
 #include "behaviors/red_coin.inc.c"
 #include "behaviors/hidden_star.inc.c"
 #include "behaviors/rolling_log.inc.c"

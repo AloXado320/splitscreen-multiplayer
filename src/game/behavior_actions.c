@@ -211,6 +211,7 @@ void spawn_sparkle_particles(s32 n, s32 a1, s32 a2, s32 r) {
 #include "behaviors/bowser_key.inc.c"
 #include "behaviors/bullet_bill.inc.c"
 #include "behaviors/bowser.inc.c"
+//#include "behaviors/motos.inc.c"
 #include "behaviors/blue_fish.inc.c"
 
 // Not in behavior file, duplicate of vec3f_copy except without bad return.

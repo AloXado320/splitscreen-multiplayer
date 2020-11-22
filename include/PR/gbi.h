@@ -16,10 +16,10 @@
  *  $Source: /exdisk2/cvs/N64OS/Master/cvsmdev2/PR/include/gbi.h,v $
  *
  **************************************************************************/
-
 #ifndef _GBI_H_
 #define _GBI_H_
-
+#include "gex.h"
+#include "convert_hms_to_geo_layouts.h"
 #include <PR/ultratypes.h>
 
 /*
