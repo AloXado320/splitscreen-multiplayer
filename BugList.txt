@@ -4,6 +4,7 @@ U64MB Bug List
 * = Introduced in the current update (or unable to be duplicated in Kaze's original splitscreen release)
 ** = Improvement for splitscreen
 *** = IMPORTANT
+**** = This bug could be kept in, doesn't break gameplay in any way
 
 
 *** -2. Motos's and Ice Motos's models is broken, fix it
@@ -41,5 +42,7 @@ U64MB Bug List
 *30. We should disable the L button triggering the ending. It's annoying.
 ***31 & 32. entering Eyerok's room in SSL and the loading zone to the submarine area in DDD crash
 ***33. Power meter is too small in singleplayer mode
+****34. If you crouch under a player who just collected the star and is still in mid-air, he won't do the star animation and you'll be able to still play the level after collecting a star, which would make you go back to the castle.
+
 
 
