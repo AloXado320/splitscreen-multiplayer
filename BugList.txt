@@ -4,15 +4,16 @@ Splitscreen Bug List
 * = Introduced in the current update (or unable to be duplicated in Kaze's original splitscreen release)
 ** = Improvement for splitscreen
 
+*-1. level select: incrementing the level counter does it twice instead of once
 *0. Player 2 can no longer press buttons to skip dialogue, only player 1.
 *1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
-2. Hurtbox feels *huge* - but in case it's enemies having huge hitboxes, Piranha Plant, Goomba, Oyster / clam shells, Orange bug dudes from Hazy Maze Cave, Skeeters, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopa. Lakitu. Moneybag Spindrift (this list is almost guaranteed to be incomplete sadly)
+2. Hurtbox feels *huge* - but in case it's enemies having huge hitboxes, Piranha Plant, Goomba, Oyster / clam shells, Orange bug dudes from Hazy Maze Cave, Skeeters, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopa. Lakitu. Moneybag. Spindrift. (this list is almost guaranteed to be incomplete sadly)
 *3. King Bob-omb Boss Music does not play
 *4. Kuromame, Shy Guys, and single shot Bowser breath won't burn Luigi
 5. "lets eh go!" voice clip does not have enough time to play to completion
 6. Owl still generates dialogue.
 7. Dialogue does not freeze players in place.
-8. Electric Orbi's won't shock Luigi.
+8. Amps won't shock Luigi.
 9. Luigi doesn't say "So long gay bowser!" **would it work if we added a sound specifically for Luigi?
 10. When both players die, Bowser's laugh doesn't seem to play the entire duration?
 11. Standing on Dorrie's head as either player will not raise her head up.
