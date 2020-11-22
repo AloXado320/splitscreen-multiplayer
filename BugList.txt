@@ -39,12 +39,14 @@ U64MB Bug List
 29. In the ending cutscene where it shows all the stages, the player can pause and exit out of them.
 30. You can pause and exit anytime in any given stage.
 31. Mario/Luigi should not go into a bubble after death.
+32. Luigi should use MARIO_ANIM_WINDEMOAOLD for his star dance
 
 Single Player Ending Bugs
 Single Player mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
 
+*** -3. Can we reinstate the mirror room and endless stairs in Co-op and Singleplayer?
 *** -2. Fix Motos not sinking into the lava/freezing ice when dying
-***-1. level select: when Co-Op is selected, incrementing the level counter does it twice instead of once, meaning only odd numbered levels can be selected.
+*** -1. level select: when Co-Op is selected, incrementing the level counter does it twice instead of once, meaning only odd numbered levels can be selected.
 *0. Player 2 can no longer press buttons to skip dialogue, only player 1.
 *1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
 ***2. Hurtbox feels *huge* - but in case it's enemies having seemingly huge hitboxes, Piranha Plants, Goombas, Clams, Scuttlebugs, Skeeters, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopas. Lakitus. Moneybags. Spindrifts. (this list is almost guaranteed to be incomplete sadly)
