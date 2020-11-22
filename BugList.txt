@@ -40,5 +40,6 @@ U64MB Bug List
 *29. Tilting platforms such as those in BiTFS and LLL Tilt, however the visual model does not tilt with it.
 *30. We should disable the L button triggering the ending. It's annoying.
 ***31 & 32. entering Eyerok's room in SSL and the loading zone to the submarine area in DDD crash
+***33. Power meter is too small in singleplayer mode
 
 
