@@ -66,14 +66,14 @@ const u8 *const power_meter_health_segments_lut[] = {
 
 // 0x03029400
 static const Vtx vertex_power_meter_base[] = {
-    {{{   -22,    -22,      0}, 0, {     0,   2016}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     0,    -22,      0}, 0, {   992,   2016}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     0,     22,      0}, 0, {   992,      0}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{   -22,     22,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     0,    -22,      0}, 0, {     1,   2016}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{    22,    -22,      0}, 0, {  1024,   2016}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{    22,     22,      0}, 0, {  1024,      0}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{     0,     22,      0}, 0, {     1,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{   -32,    -32,      0}, 0, {     0,   2016}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,    -32,      0}, 0, {   992,   2016}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     32,      0}, 0, {   992,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{   -32,     32,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,    -32,      0}, 0, {     1,   2016}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    32,    -32,      0}, 0, {  1024,   2016}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    32,     32,      0}, 0, {  1024,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{     0,     32,      0}, 0, {     1,      0}, {0xff, 0xff, 0xff, 0xff}}},
 };
 
 // 0x03029480 - 0x03029530
@@ -102,10 +102,10 @@ const Gfx dl_power_meter_base[] = {
 
 // 0x03029530
 static const Vtx vertex_power_meter_health_segments[] = {
-    {{{   -12,    -12,      0}, 0, {     0,    992}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{    11,    -12,      0}, 0, {   992,    992}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{    11,     11,      0}, 0, {   992,      0}, {0xff, 0xff, 0xff, 0xff}}},
-    {{{   -12,     11,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{   -16,    -16,      0}, 0, {     0,    992}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    15,    -16,      0}, 0, {   992,    992}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{    15,     16,      0}, 0, {   992,      0}, {0xff, 0xff, 0xff, 0xff}}},
+    {{{   -16,     16,      0}, 0, {     0,      0}, {0xff, 0xff, 0xff, 0xff}}},
 };
 
 // 0x03029570 - 0x030295A0

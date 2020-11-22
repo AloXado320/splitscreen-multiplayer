@@ -36,17 +36,17 @@ struct CameraHUD {
 static s16 sPowerMeterStoredHealth[2];
 
 static struct PowerMeterHUD sPowerMeterHUD[2] = { {
-                                                      POWER_METER_HIDDEN,
-                                                      30,
-                                                      100,
-                                                      1.0,
-                                                  },
-                                                  {
-                                                      POWER_METER_HIDDEN,
-                                                      30,
-                                                      100,
-                                                      1.0,
-                                                  } };
+POWER_METER_HIDDEN,
+35,
+100,
+1.0,
+},
+{
+POWER_METER_HIDDEN,
+35,
+100,
+1.0,
+} };
 
 // Power Meter timer that keeps counting when it's visible.
 // Gets reset when the health is filled and stops counting
@@ -161,22 +161,22 @@ void animate_power_meter_emphasized(int playerID) {
 static void animate_power_meter_deemphasizing(int playerID) {
     s16 speed = 5;
 
-    if (sPowerMeterHUD[playerID].y >= 181) {
+    if (sPowerMeterHUD[playerID].y >= 140) {
         speed = 3;
     }
 
-    if (sPowerMeterHUD[playerID].y >= 191) {
+    if (sPowerMeterHUD[playerID].y >= 140) {
         speed = 2;
     }
 
-    if (sPowerMeterHUD[playerID].y >= 196) {
+    if (sPowerMeterHUD[playerID].y >= 140) {
         speed = 1;
     }
 
     sPowerMeterHUD[playerID].y += speed;
 
-    if (sPowerMeterHUD[playerID].y >= 201) {
-        sPowerMeterHUD[playerID].y = 200;
+    if (sPowerMeterHUD[playerID].y >= 140) {
+        sPowerMeterHUD[playerID].y = 140;
         sPowerMeterHUD[playerID].animation = POWER_METER_VISIBLE;
     }
 }
@@ -262,7 +262,7 @@ void render_hud_power_meter(int playerID) {
     sPowerMeterVisibleTimer[playerID] += 1;
 }
 
-#define HUD_TOP_Y 204 + 16 - BORDER_HEIGHT * 2
+#define HUD_TOP_Y 209
 #define HUD_RIGHT_X 78
 
 s16 move_hud_x_right_pos(s16 num) {
@@ -445,8 +445,8 @@ void render_hud_camera_status(void) {
                 return;
             }
             cameraLUT = segmented_to_virtual(&main_hud_camera_lut);
-            x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(40);
-            y = 88 + 8 - BORDER_HEIGHT + 120 * i;
+            x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(54);
+            y = 80 + 8 - BORDER_HEIGHT + 120 * i;
 
             if (gMarioStates[i].thisPlayerCamera->hudStatus == CAM_STATUS_NONE) {
                 return;
