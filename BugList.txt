@@ -25,7 +25,7 @@ U64MB Bug List
 15. Peach is muted in Luigi's ending.
 16. Speaking to Yoshi softlocks the game.
 17. Dying in single player turns you into a bubble after death animation before Bowser laugh screen exits the level. (low priority, if it can't be fixed due to needing the bubble for Co Op, not a big deal)
-18. File select screen is really laggy
+18. Framerate on File Select screen is very choppy. Likely frameskip's fault.
 19. Game crashes (on hardware for some, and emulator for all) when loading new areas of levels. For example; SSL's boss fight, Bowser Sub Area in DDD, and WDW's underwater town.
 20. Koopa the Quick has Bob-Omb buddy dialogue and voice before he gives you his star.
 21. If a player triple jumps with Luigi near the edge of a building (Example: Shifting Sand Land Koopa Shell building), Luigi gets stuck in the edge basically T-posing, just like Mario constantly falling off the edge without really falling. However, Luigi just gets stuck in a frame of the animation doing nothing.
@@ -43,7 +43,7 @@ Single Player Ending Bugs
 Single Player Mario - mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
 Single Player Luigi - no voices at all, when luigi strikes a pose after being kissed, the camera switches too early to the next angle too, also no music as well
 
-*** -2. Motos's and Ice Motos's models is broken, fix it
+*** -2. Motos's and Ice Motos's models are broken, fix it
 ***-1. level select: when Co-Op is selected, incrementing the level counter does it twice instead of once, meaning only odd numbered levels can be selected.
 *0. Player 2 can no longer press buttons to skip dialogue, only player 1.
 *1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
