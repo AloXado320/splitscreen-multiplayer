@@ -58,6 +58,63 @@ s32 run_press_start_demo_timer(s32 timer) {
 // pressed.
 //also allow player 2 inputs
 s16 level_select_input_loop(void) {
+    s32 stageChanged = FALSE;
+
+    // perform the ID updates per each button press.
+    if (gPlayer1Controller->buttonPressed & A_BUTTON) {
+        ++gCurrLevelNum, stageChanged = TRUE;
+    }
+    if (gPlayer1Controller->buttonPressed & B_BUTTON) {
+        --gCurrLevelNum, stageChanged = TRUE;
+    }
+    if (gPlayer1Controller->buttonPressed & U_JPAD) {
+        --gCurrLevelNum, stageChanged = TRUE;
+    }
+    if (gPlayer1Controller->buttonPressed & D_JPAD) {
+        ++gCurrLevelNum, stageChanged = TRUE;
+    }
+    if (gPlayer1Controller->buttonPressed & L_JPAD) {
+        gCurrLevelNum -= 10, stageChanged = TRUE;
+    }
+    if (gPlayer1Controller->buttonPressed & R_JPAD) {
+        gCurrLevelNum += 10, stageChanged = TRUE;
+    }
+
+    // if the stage was changed, play the sound for changing a stage.
+    if (stageChanged) {
+        play_sound(SOUND_GENERAL_LEVEL_SELECT_CHANGE, gDefaultSoundArgs);
+    }
+
+    // TODO: enum counts for the stage lists
+    if (gCurrLevelNum > LEVEL_MAX) {
+        gCurrLevelNum = LEVEL_MIN; // exceeded max. set to min.
+    }
+
+    if (gCurrLevelNum < LEVEL_MIN) {
+        gCurrLevelNum = LEVEL_MAX; // exceeded min. set to max.
+    }
+
+    gCurrSaveFileNum = 4; // file 4 is used for level select tests
+    gCurrActNum = 6;
+    print_text_centered(160, 80, "SELECT STAGE");
+    print_text_centered(160, 30, "PRESS START BUTTON");
+    print_text_fmt_int(40, 60, "%2d", gCurrLevelNum);
+    print_text(80, 60, gLevelSelect_StageNamesText[gCurrLevelNum - 1]); // print stage name
+
+#define QUIT_LEVEL_SELECT_COMBO (Z_TRIG | START_BUTTON | L_CBUTTONS | R_CBUTTONS)
+
+    // start being pressed signals the stage to be started. that is, unless...
+    if (gPlayer1Controller->buttonPressed & START_BUTTON) {
+        // ... the level select quit combo is being pressed, which uses START. If this
+        // is the case, quit the menu instead.
+        if (gPlayer1Controller->buttonDown == QUIT_LEVEL_SELECT_COMBO) {
+            gDebugLevelSelect = FALSE;
+            return -1;
+        }
+        play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
+        return gCurrLevelNum;
+    }
+    return 0;
 }
 
 int startGame = 0; //set this to 1 if a mode has been selected

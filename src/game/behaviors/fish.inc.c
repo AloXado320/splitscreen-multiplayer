@@ -258,7 +258,7 @@ void bhv_fish_loop(void)
     cur_obj_resolve_wall_collisions();
     
     // Delete fish below the water depth bounds of -10000.0f.
-    if (gCurrLevelNum != LEVEL_UNKNOWN_32) {
+    if (gCurrLevelNum != LEVEL_YAJIMA_TEST) {
         if (o->oFishWaterLevel < -10000.0f) {
             obj_mark_for_deletion(o);
             return;

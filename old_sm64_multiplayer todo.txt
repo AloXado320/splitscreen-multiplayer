@@ -8,9 +8,7 @@ file select copy erase and erase buttons look fucked
 maybe fixed?:
 check if monkey is fixed
 unmapped load address PC 801914f8, RA 801814CC
-if you touch king bob omb and the other player in the same frame, you can hold the wrong person
-
-
+if you touch king bob-omb and the other player in the same frame, you can hold the wrong person
 
 fixed:
 cannons are fucky somehow
@@ -20,11 +18,11 @@ make hitting a wall from the bubble movement force reset the force so you can mo
 fast flying spin can be triggered while in level doing normal stuff. bubble related?
 ktq and penguin lost concept of cheating for clarity
 the big boos hitbox is way too big
-	most of the hitboxs are too big yeah !
+most of the hitboxes are too big
 Star 1, Luigi drowning (bubble state). Mario entering sunken boat kills both players (exits with bowser screen).
 make mario drop item when being bubbled
 I went to DDD and single pressing A to swim does like a double swim thing? Can't fast swim properly.
-	- reset controller buttonpressed during frameskip
+- reset controller buttonpressed during frameskip
 slow stars in star select down
 slide tiemr is twice as fast
 p1 only has to read texts after stars, sometimes p2
@@ -35,10 +33,10 @@ i couldnt GP spindrift
 penguin race doesnt give star (not a bug, melon cheated)
 100c are individually split
 talking to bowser crashes, mario 2 is not in a cutscene
-big boos haunt is fucked camera wise
+big boos haunt is fucked camera-wise
 sometimes its getting p2 mario instead of p1
 mario 1 went invis when entering area 3 SSL
-no bubble when dying at 0 hp from fallign off
+no bubble when dying at 0 hp from falling off
 crash when p1 talks to penguin?			
 camera stuck in ssl
 game froze when p2 died in volcano
@@ -71,21 +69,17 @@ end cutscene crashes in CCM
 end cutscene is FUCKED on luigis screen (disable splitscreen)
 end cutscene stuff runs twice on the objects
 peachs voice needs to reset pitch
-so logn gay bowser wrong pitch
+so long gay bowser has wrong pitch
 sleeping fucks sound?
 bonus: make the other player bounce higher off of someone thats crouching
 you cant grab poles without diving first
 
-
-
-
 fuck it:
 camera after exiting RR is shit
 mirror doesnt work, put a wall there
-bug if you start a cutscene while the other player is in a cutscene (toad star and door) NOT SURE IF FIXED
+bug if you start a cutscene while the other player is in a cutscene (toad star and door) [NOT SURE IF FIXED]
 infinite stairs are removed
-camera bugs for the other player if one player dies during cutscene
-	(chain chomp only?)
+camera bugs for the other player if one player dies during cutscene (chain chomp only?)
 luigi can get stuck in air from king bob omb. put a time limit
 doors sometimes read the wrong camera and then a door gets stuck
 p2 cam zooms out when getting a star
@@ -99,9 +93,5 @@ going into JRB ship kills player?
 piranha plant can mute mario/luigi audio?
 cannons can trap you?
 
-
-
-
-
 notes:
-the game seems to be unable to execute obj_nearest_object with behavior after entering volcano properly=?
+the game seems to be unable to execute obj_nearest_object with behavior after entering volcano properly?
