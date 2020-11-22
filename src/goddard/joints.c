@@ -268,7 +268,7 @@ struct ObjJoint *make_joint_withshape(struct ObjShape *shape, s32 flags, f32 x, 
     j->unk1BC |= flags;
     j->unk1C8 = 9;
     j->header.drawFlags |= OBJ_IS_GRABBALE;
-    j->header.drawFlags |= OBJ_NOT_DRAWABLE;
+    //j->header.drawFlags |= OBJ_NOT_DRAWABLE; //comment this out to make the joints visible on screen
     j->fn2C = &Proc8018E520;
     j->unk1D0 = NULL;
 
