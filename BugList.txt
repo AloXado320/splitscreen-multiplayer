@@ -79,6 +79,7 @@ Single Player mario/luigi is kissed twice, when mario strikes a pose after being
 ***31 & 32. entering Eyerok's room in SSL and the loading zone to the submarine area in DDD crashes
 ***33. Power meter is too small in singleplayer mode
 ****34. If you crouch under a player who just collected the star and is still in mid-air, he won't do the star animation and you'll be able to still play the level after collecting a star, which would make you go back to the castle.
+35. ! boxes with shells drop 2 instead of one in singleplayer
 
 Newest Bugs
 1. Mario and Luigi lose their voices after starting the race with Koopa the Quick in THI. 
