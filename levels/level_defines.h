@@ -17,7 +17,7 @@
 
 // NOTE: Be sure to edit sZoomOutAreaMasks in camera.c, as there isnt a good way to macro those right now.
 // TODO: Figure something out for sZoomOutAreaMasks?
-DEFINE_LEVEL("CASTLE",         LEVEL_TEST_CASTLE,      COURSE_NONE,     castle,           generic,  15000,    0x08, 0x08, 0x08, _,         _)
+STUB_LEVEL(  "",               LEVEL_UNKNOWN_1,        COURSE_NONE,                                 20000,    0x00, 0x00, 0x00, _,         _)
 DEFINE_LEVEL("TEST",           LEVEL_TEST,             COURSE_NONE,     test,             generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("DONJON",         LEVEL_DONJON,           COURSE_NONE,     donjon,           generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("TERESA OBAKE",   LEVEL_BBH,              COURSE_BBH,      bbh,              spooky,   28000,    0x28, 0x28, 0x28, sDynBbh,   sCamBBH)
@@ -51,7 +51,7 @@ DEFINE_LEVEL("EXT8 BLUE SKY",  LEVEL_WMOTR,            COURSE_WMOTR,    wmotr,  
 DEFINE_LEVEL("YAJIMA TEST",    LEVEL_YAJIMA_TEST,      COURSE_NONE,     yajima_test,      generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("KUPPA2",         LEVEL_BOWSER_2,         COURSE_BITFS,    bowser_2,         fire,     VAL_DIFF, 0x40, 0x40, 0x40, _,         _)
 DEFINE_LEVEL("KUPPA3",         LEVEL_BOWSER_3,         COURSE_BITS,     bowser_3,         generic,  VAL_DIFF, 0x40, 0x40, 0x40, _,         _)
-DEFINE_LEVEL("DUMMY",          LEVEL_DUMMY,            COURSE_NONE,     dummy,            generic,  15000,    0x08, 0x08, 0x08, _,         _)
+DEFINE_LEVEL("CASTLE",         LEVEL_TEST_CASTLE,      COURSE_NONE,     castle,           generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("DONKEY % SLID2", LEVEL_TTM,              COURSE_TTM,      ttm,              mountain, 15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("IWTEST",         LEVEL_IWTEST,           COURSE_NONE,     iwtest,           generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("SAND",           LEVEL_SAND,             COURSE_NONE,     sand,             generic,  15000,    0x08, 0x08, 0x08, _,         _)

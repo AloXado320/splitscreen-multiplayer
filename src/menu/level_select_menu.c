@@ -72,7 +72,7 @@ s16 level_select_input_loop(void) {
     }
     if (gPlayer1Controller->buttonPressed & D_JPAD) {
         ++gCurrLevelNum, stageChanged = TRUE;
-    }
+	}
     if (gPlayer1Controller->buttonPressed & L_JPAD) {
         gCurrLevelNum -= 10, stageChanged = TRUE;
     }
@@ -111,6 +111,11 @@ s16 level_select_input_loop(void) {
             gDebugLevelSelect = FALSE;
             return -1;
         }
+		if (gDebugLevelSelect) {	
+			if (gActivePlayers = 2){
+			split_screens();
+			}
+		}
         play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
         return gCurrLevelNum;
     }
