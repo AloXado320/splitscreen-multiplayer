@@ -146,10 +146,10 @@ void print_intro_text(void) {
     if ((gGlobalTimer & 0x1F) < 20) {
         if (gPlayer2Controller->controllerData == NULL || gPlayer1Controller->controllerData == NULL) {
             if (gPlayer1Controller->controllerData == NULL) {
-                print_text_centered(SCREEN_WIDTH / 2, 30, "NO PLAYER 1 CONTROLLER");
+                print_text_centered(SCREEN_WIDTH / 2, 30, "NO P1 CONTROLLER");
             }
             if (gPlayer2Controller->controllerData == NULL) {
-                print_text_centered(SCREEN_WIDTH / 2, 50, "NO PLAYER 2 CONTROLLER");
+                print_text_centered(SCREEN_WIDTH / 2, 50, "NO P2 CONTROLLER");
             }
         } else {
             //       print_text_centered(SCREEN_WIDTH / 2, 40, "PRESS START");

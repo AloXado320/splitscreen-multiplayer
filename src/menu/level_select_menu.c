@@ -111,7 +111,7 @@ s16 level_select_input_loop(void) {
             gDebugLevelSelect = FALSE;
             return -1;
         }
-		if (gDebugLevelSelect) {	
+		if ((gDebugLevelSelect) && (gActivePlayers > 1)) {	
 			if (gActivePlayers = 2){
 			split_screens();
 			}
