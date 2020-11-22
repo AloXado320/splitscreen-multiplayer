@@ -153,17 +153,6 @@ void motos_fly(void)
 {
    o->oForwardVel = 5.0f;
 	cur_obj_init_animation_with_sound(5);
-		if ((gCurrLevelNum == LEVEL_SL) & (o->oPosY < 1050.0f)) {
-							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-			o->oHealth--;
-			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			//o->oPosX = o->oHomeX;
-			//o->oPosZ = o->oHomeZ;
-			if (o->oHealth) 
-                o->oAction = 8;
-            if (o->oHealth == 0) 
-                o->oAction = 10;
-	}
 		if (o->oFloor->type == SURFACE_BURNING) {
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;
@@ -185,9 +174,8 @@ void motos_fly(void)
 }
 
 void motos_recover(void) {
-//   o->oForwardVel = 5.0f;
-    o->oForwardVel = 2.0f;
-
+   o->oForwardVel = 5.0f;
+//    o->oForwardVel = 2.0f;
 	cur_obj_init_animation_with_sound(4);
 if ( cur_obj_check_anim_frame(14) )	
 	o->oAction = 1;
@@ -199,17 +187,6 @@ void motos_recover2(void) {
 //   o->oForwardVel = 5.0f;
          	o->oForwardVel = 0.0f;
 	cur_obj_init_animation_with_sound(7);
-			if ((gCurrLevelNum == LEVEL_SL) & (o->oPosY < 1050.0f)) { //Repeat for good measure
-							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-			o->oHealth--;
-			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			//o->oPosX = o->oHomeX;
-			//o->oPosZ = o->oHomeZ;
-			if (o->oHealth) 
-                o->oAction = 1;
-            if (o->oHealth == 0) 
-                o->oAction = 10;
-	}
 		if (o->oFloor->type == SURFACE_BURNING) {
 							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
 			o->oHealth--;

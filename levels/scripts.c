@@ -200,7 +200,6 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_FLYGUY,                  flyguy_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CHUCKYA,                 chuckya_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TRAJECTORY_MARKER_BALL,      bowling_ball_track_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_UNKNOWN_58,      RCP_HmsEnemymotos_basedata_A),
     RETURN(),
 };
 
@@ -261,6 +260,7 @@ const LevelScript script_func_global_8[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD_HIDDEN,      mr_blizzard_hidden_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD,             mr_blizzard_geo),
     LOAD_MODEL_FROM_GEO(MODEL_PENGUIN,                 penguin_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_UNKNOWN_58,      RCP_HmsEnemyicemotos_basedata_A),
     RETURN(),
 };
 
