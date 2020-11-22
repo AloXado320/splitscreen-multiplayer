@@ -74,4 +74,5 @@ build/*
 !/sound/**/*custom*/**/*.aiff
 !/assets/**/*custom*.bin
 !/assets/**/*custom*/**/*.bin
-!/textures/title_screen_bg
+!/textures/title_screen_bg/*
+!/textures/segment2/*
