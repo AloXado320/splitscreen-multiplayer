@@ -1941,7 +1941,7 @@ void init_mario_from_save_file(void) {
 
         gMarioStates[i].numKeys = 0;
 
-        gMarioStates[i].numLives = 2;
+        gMarioStates[i].numLives = 4;
         gMarioStates[i].health = 0x880;
 
         gMarioStates[i].prevNumStarsForDialog = gMarioStates[i].numStars;

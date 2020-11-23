@@ -26,7 +26,7 @@ const GeoLayout castle_geo_0015B8[] = {
    GEO_NODE_START(),
    GEO_OPEN_NODE(),
       GEO_DISPLAY_LIST(LAYER_OPAQUE, inside_castle_seg7_dl_0704A0E8),
-      GEO_DISPLAY_LIST(LAYER_OPAQUE, inside_castle_seg7_dl_0704A2E0), // was layer transparent
+      GEO_DISPLAY_LIST(LAYER_TRANSPARENT, inside_castle_seg7_dl_0704A2E0),
       GEO_DISPLAY_LIST(LAYER_OPAQUE, inside_castle_seg7_dl_0704AA98),
       GEO_ASM(  0, geo_painting_update),
       GEO_ASM(PAINTING_ID(12, 1), geo_painting_draw),

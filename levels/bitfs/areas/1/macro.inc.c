@@ -9,7 +9,7 @@ const MacroObject bitfs_seg7_macro_objs[] = {
     MACRO_OBJECT(/*preset*/ macro_recovery_heart,              /*yaw*/   0, /*pos*/  3660, -2700,   280),
     MACRO_OBJECT(/*preset*/ macro_hidden_1up_in_pole,          /*yaw*/   0, /*pos*/  3880, -1140,   260),
     MACRO_OBJECT(/*preset*/ macro_coin_ring_horizontal_flying, /*yaw*/   0, /*pos*/ -1900,   652,   320),
-    MACRO_OBJECT(/*preset*/ macro_bully,                       /*yaw*/   0, /*pos*/ -1720,  1320,  -340),
+    //MACRO_OBJECT(/*preset*/ macro_bully,                       /*yaw*/   0, /*pos*/ -1720,  1320,  -340),
     MACRO_OBJECT(/*preset*/ macro_coin_line_horizontal,        /*yaw*/   0, /*pos*/  -640,   800,   180),
     MACRO_OBJECT(/*preset*/ macro_bully,                       /*yaw*/   0, /*pos*/ -5340,   410,    20),
     MACRO_OBJECT(/*preset*/ macro_bully,                       /*yaw*/   0, /*pos*/ -5200,   410,   700),

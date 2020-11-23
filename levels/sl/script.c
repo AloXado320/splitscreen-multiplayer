@@ -36,6 +36,8 @@ static const LevelScript script_func_local_3[] = {
     OBJECT(/*model*/ MODEL_MOTOS,         /*pos*/-1955, 1024, -6504, /*angle*/ 0,   0, 0, /*behParam*/ 0x01000000, /*beh*/ bhvMotos),
     OBJECT(/*model*/ MODEL_MOTOS,         /*pos*/-6687, 2048, -5681, /*angle*/ 0,   0, 0, /*behParam*/ 0x01000000, /*beh*/ bhvMotos),
     OBJECT(/*model*/ MODEL_BIG_CHILL_BULLY,    /*pos*/  315, 1331, -4852, /*angle*/ 0,   0, 0, /*behParam*/ 0x01000000, /*beh*/ bhvBigChillBully),
+    OBJECT(/*model*/ MODEL_CHILL_BULLY,        /*pos*/  313, 1352, -4051, /*angle*/ 0,   0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvSmallChillBully),
+    OBJECT(/*model*/ MODEL_CHILL_BULLY,        /*pos*/  500, 1352, -5152, /*angle*/ 0,   0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvSmallChillBully),
     OBJECT(/*model*/ MODEL_MR_BLIZZARD_HIDDEN, /*pos*/ 2954,  970,   750, /*angle*/ 0,   0, 0, /*behParam*/ 0x00020000, /*beh*/ bhvMrBlizzard),
     RETURN(),
 };

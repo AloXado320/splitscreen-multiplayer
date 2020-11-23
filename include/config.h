@@ -28,6 +28,6 @@
 #define SCREEN_HEIGHT 240
 
 // Border Height Define for NTSC Versions
-#define BORDER_HEIGHT 0
+#define BORDER_HEIGHT 8
 
 #endif // CONFIG_H
