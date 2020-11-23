@@ -34,14 +34,13 @@ s32 bhv_motos_do_throw_mario() {
 }
 
 void bhv_motos_hand_loop(void) {
-	o->oParentRelativePosX = 100.0f;
-	o->oParentRelativePosY = 0.0f;
-	o->oParentRelativePosZ = 150.0f;
+    o->oParentRelativePosY = -30.f;
+    o->oParentRelativePosX = -70.f; // Changed relative pos to make Mario fit in the hand better
 
     common_anchor_mario_behavior(50.0f, 30.0f, 64); // Used common func instead of repeating code
     // Also vert speed increased from 0 to 50
-    //if (o->oChuckyaUnk88 == 1)
-    //vec3f_copy(gMarioState->pos, gMarioObject->header.gfx.pos); // Added to fix camera
+    if (o->oChuckyaUnk88 == 1)
+        vec3f_copy(gMarioState->pos, gMarioObject->header.gfx.pos); // Added to fix camera
 }
 
 void bhv_motos_wait(void) {
@@ -56,6 +55,10 @@ void bhv_motos_wait(void) {
 }
 
 void bhv_motos_player_search(void) {
+    s32 sp1C = gGlobalTimer;
+    if ((sp1C & 14) == 0) {
+    cur_obj_play_sound_2(SOUND_OBJ_BULLY_WALKING);
+    }
     cur_obj_init_animation_with_sound(MOTOS_ANIM_WALK);
     o->oForwardVel = 5.f; // Sped up (was 2.f)
     cur_obj_rotate_yaw_toward(o->oAngleToMario, 800); // Sped up (was 300)
@@ -94,9 +97,12 @@ void bhv_motos_player_pitch(void) {
 }
 
 void bhv_motos_carry_run(void) {
+    s32 sp1C = gGlobalTimer;
+    if ((sp1C & 4) == 0) {
+    cur_obj_play_sound_2(SOUND_ACTION_METAL_STEP);
+    }
     o->oForwardVel = 15.f; // Sped up (was 5.f)
     cur_obj_init_animation_with_sound(MOTOS_ANIM_CARRY_RUN);
-    
     if (bhv_motos_do_throw_mario())
         o->oAction = MOTOS_ACT_PLAYER_PITCH;
     // Useless else clause removed
