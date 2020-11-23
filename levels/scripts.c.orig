@@ -217,7 +217,7 @@ const LevelScript script_func_global_3[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BLARGG,                  blargg_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BULLY_BOSS,              bully_boss_geo),
-	LOAD_MODEL_FROM_GEO(MODEL_MOTOS,			   RCP_HmsEnemymotos_basedata_A),
+	LOAD_MODEL_FROM_GEO(MODEL_UNKNOWN_58,			   RCP_HmsEnemymotos_basedata_A),
     RETURN(),
 };
 
@@ -260,7 +260,7 @@ const LevelScript script_func_global_8[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD_HIDDEN,      mr_blizzard_hidden_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD,             mr_blizzard_geo),
     LOAD_MODEL_FROM_GEO(MODEL_PENGUIN,                 penguin_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_MOTOS,                   RCP_HmsEnemyicemotos_basedata_A),
+    LOAD_MODEL_FROM_GEO(MODEL_UNKNOWN_58,      RCP_HmsEnemyicemotos_basedata_A),
     RETURN(),
 };
 
@@ -273,7 +273,7 @@ const LevelScript script_func_global_9[] = {
 
 const LevelScript script_func_global_10[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BOO,                     boo_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_BETA_BOO_KEY,            small_key_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_BETA_BOO_KEY,               small_key_geo),
     LOAD_MODEL_FROM_GEO(MODEL_HAUNTED_CHAIR,           haunted_chair_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MAD_PIANO,               mad_piano_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BOOKEND_PART,            bookend_part_geo),

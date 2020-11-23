@@ -100,7 +100,6 @@ void bully_step(void);
 void bully_spawn_coin(void);
 void bully_act_level_death(void);
 void s_motos_hand(void);
-void s_motos(void);
 void motos_act_level_death(void);
 void bhv_motos_anchor_mario_loop(void);
 void bhv_bully_loop(void);

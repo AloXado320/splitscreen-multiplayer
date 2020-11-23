@@ -1,301 +1,206 @@
-void s_motos_hand(void)
-{
+enum sMotosActions {
+    MOTOS_ACT_WAIT,
+    MOTOS_ACT_PLAYER_SEARCH,
+    MOTOS_ACT_PLAYER_CARRY,
+    MOTOS_ACT_PLAYER_PITCH,
+    MOTOS_ACT_CARRY_RUN,
+    MOTOS_ACT_THROWN,
+    MOTOS_ACT_RECOVER,
+    MOTOS_ACT_DEATH
+};
 
-//	struct Object *firep;
- //   struct Object *parent = o->parentObj;
-//    obj_copy_pos(o, parent);
-	o->oParentRelativePosX = 100.0f;
+enum sMotosAnimations {
+    MOTOS_ANIM_BASE,
+    MOTOS_ANIM_CARRY,
+    MOTOS_ANIM_CARRY_RUN,
+    MOTOS_ANIM_CARRY_START,
+    MOTOS_ANIM_DOWN_RECOVER,
+    MOTOS_ANIM_DOWN_STOP,
+    MOTOS_ANIM_PITCH,
+    MOTOS_ANIM_SAFE_DOWN,
+    MOTOS_ANIM_WAIT,
+    MOTOS_ANIM_WALK,
+    MOTOS_ANIM_END
+};
+
+// All changes made to the original code have been commented.
+
+// Modified, original did not make sense, it checked if Mario was close and in front, but he is always close and in front when being held
+// Now it goes off either a timer or when reached an edge
+s32 bhv_motos_do_throw_mario() {
+    return (o->oTimer > 45) || (o->oMoveFlags & OBJ_MOVE_HIT_EDGE);
+    // Original:
+    // return (cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x200)) || (o->oDistanceToMario < 500.f)
+}
+
+void bhv_motos_hand_loop(void) {
+	o->oParentRelativePosX = 50.0f;
 	o->oParentRelativePosY = 0.0f;
-	o->oParentRelativePosZ = 150.0f;
-	o->oMoveAngleYaw = o->parentObj->oMoveAngleYaw;
+    o->oParentRelativePosZ = 150.0f;
 
-	switch (o->parentObj->oMotosUnk88 ){
-	 	case	0:
-			break;
-		case	1:
-			obj_set_gfx_pos_at_obj_pos(gMarioObject, o);
-			break;
-		case	2:
-            gMarioObject->oInteractStatus |=
-                (INT_STATUS_MARIO_UNK2 + INT_STATUS_MARIO_UNK6); 
-			gMarioStates[0].forwardVel = 50.0f;
-			o->parentObj->oMotosUnk88 = 0;
-			break;
-	}
-
-
-
-//	if (o->parentObj->oMotosUnk88 != 0){
-//		o->parentObj->oMotosUnk88 = 0;
-//	 	firep = spawn_object(o, MODEL_UNKNOWN_7D, bhvUnusedParticleSpawn);
-//		firep->oForwardVel = 40.0f;
-//		firep->oVelY = 20.0f;
-//		firep->oMoveAngleYaw = o->parentObj->oMoveAngleYaw;
-//	}
-
-
+    common_anchor_mario_behavior(50.0f, 30.0f, 64); // Used common func instead of repeating code
+    // Also vert speed increased from 0 to 50
+    //if (o->oChuckyaUnk88 == 1)
+    //vec3f_copy(gMarioState->pos, gMarioObject->header.gfx.pos); // Added to fix camera
 }
 
-int s_ai_pitch(s32 angle, f32 dist)
-{
-
-	if ( (cur_obj_rotate_yaw_toward(o->oAngleToMario,angle)) && (o->oDistanceToMario < dist) ) 
-	return TRUE;
-	else																	  return FALSE;
-	
+void bhv_motos_wait(void) {
+    o->oForwardVel = 0.f;
+    o->oVelY = 0.f;
+    
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_WAIT);
+    
+    if (o->oDistanceToMario < 500.f) {
+        o->oAction = MOTOS_ACT_PLAYER_SEARCH;
+    }
 }
 
-void bhv_motos_anchor_mario_loop(void) {
-    common_anchor_mario_behavior(150.0f, 100.0f, 64);
+void bhv_motos_player_search(void) {
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_WALK);
+    o->oForwardVel = 5.f; // Sped up (was 2.f)
+    cur_obj_rotate_yaw_toward(o->oAngleToMario, 800); // Sped up (was 300)
+    
+    if (o->oInteractStatus & INT_STATUS_GRABBED_MARIO) {
+        o->oAction = MOTOS_ACT_PLAYER_CARRY;
+        o->oChuckyaUnk88 = 1;
+    }
 }
 
-void motos_wait(void)
-{
-    o->oForwardVel = 0.0f;
-    o->oVelY = 0.0f;
-	cur_obj_init_animation_with_sound(8);
-
-	if ( o->oDistanceToMario < 1000 )	o->oAction = 1;
-
+void bhv_motos_player_carry(void) {
+    // Replaced with the similar MOTOS_ACT_CARRY_START, which allows for running
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_CARRY_START);
+    
+    if (cur_obj_check_if_near_animation_end()) {
+        if (bhv_motos_do_throw_mario())
+            o->oAction = MOTOS_ACT_PLAYER_PITCH;
+        else
+            o->oAction = MOTOS_ACT_CARRY_RUN;
+    }
 }
 
-void motos_player_search(void)
-{
-	s32 sp1C = gGlobalTimer;
-	if ((sp1C & 14) == 0) {
-cur_obj_play_sound_2(SOUND_OBJ_BULLY_WALKING);
+void bhv_motos_player_pitch(void) {
+    o->oForwardVel = 0.f;
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_PITCH);
+    
+    if (cur_obj_check_anim_frame(14)) {
+        o->oChuckyaUnk88 = 2;
+        o->numCollidedObjs = 10;
+    }
+    
+    if (cur_obj_check_if_near_animation_end()) {
+        o->oAction = MOTOS_ACT_WAIT;
+        o->oInteractStatus &= (~INT_STATUS_GRABBED_MARIO);
+    }
 }
 
-	cur_obj_init_animation_with_sound(9);
-	o->oForwardVel = 2.0f;
-	cur_obj_rotate_yaw_toward(o->oAngleToMario,300);
-
-	if ( o->oInteractStatus & INT_STATUS_GRABBED_MARIO){
-		o->oAction = 2;
-	 	o->oMotosUnk88 = 1;
-	}
-
-	if (o->oFloor->type == SURFACE_BURNING) {
-		cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-		o->oHealth--;
-		//o->oPosY = o->oHomeY;
-		//o->oPosX = o->oHomeX;
-		//o->oPosZ = o->oHomeZ;
-		if (o->oHealth) 
-            o->oAction = 8;
-        if (o->oHealth == 0) 
-            o->oAction = 10;
-	}
-
+void bhv_motos_carry_run(void) {
+    o->oForwardVel = 15.f; // Sped up (was 5.f)
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_CARRY_RUN);
+    
+    if (bhv_motos_do_throw_mario())
+        o->oAction = MOTOS_ACT_PLAYER_PITCH;
+    // Useless else clause removed
 }
 
-
-void motos_player_carry(void)
-{
-
-	cur_obj_init_animation_with_sound(3);
-	if ( cur_obj_check_if_near_animation_end() )	o->oAction = 5;
-
+void bhv_motos_thrown(void) {
+    cur_obj_init_animation_with_sound(MOTOS_ANIM_WALK);
+    
+    if (o->oMoveFlags & OBJ_MOVE_LANDED) {
+        o->oAction = MOTOS_ACT_RECOVER; // New action: recover (used to go straight back into wait)
+        cur_obj_play_sound_2(SOUND_OBJ2_LARGE_BULLY_ATTACKED);
+    }
 }
 
-void motos_player_pitch(void){
-
-	o->oForwardVel = 0.0f;
-	cur_obj_init_animation_with_sound(6);
-	if ( cur_obj_check_anim_frame(14) ){
-		o->oMotosUnk88 = 2;		/* nageru shyn kan	*/
-		o->oMotosUnk100 = 10;		/* hit time wait!!	*/ //Despite what it says, it doesn't work
-	}
-	if ( cur_obj_check_if_near_animation_end() ){
-		o->oAction = 0;
-		o->oInteractStatus &= ~(INT_STATUS_GRABBED_MARIO);
-	}
-
+void bhv_motos_recover(void) {
+    // These animations were originally unused. This plays the falling over animation and then he gets up.
+    o->oForwardVel = 0.f;
+    if (o->oSubAction == 0) {
+        cur_obj_init_animation_with_sound(MOTOS_ANIM_DOWN_STOP);
+        cur_obj_extend_animation_if_at_end();
+        if (o->oTimer > 35)
+            o->oSubAction++;
+        
+    }
+    if (o->oSubAction == 1) {
+        cur_obj_init_animation_with_sound(MOTOS_ANIM_DOWN_RECOVER);
+        if (cur_obj_check_if_near_animation_end())
+            o->oAction = MOTOS_ACT_WAIT;
+    }
 }
 
-void motos_carry_start(void)
-{
-	cur_obj_init_animation_with_sound(3);
-	if ( cur_obj_check_if_near_animation_end() ){
-		if ( s_ai_pitch(0x200,500) ) o->oAction = 5;
-		else			   			 o->oAction = 5;
-	}		
-
+void bhv_motos_death(void) {
+    // Taken from bully code to handle death
+    if (obj_lava_death()) {
+        struct Object *coin = spawn_object(o, MODEL_BLUE_COIN, bhvBlueCoinMotos);
+        cur_obj_play_sound_2(SOUND_GENERAL_COIN_SPURT_2);
+        coin->oForwardVel = 10.0f;
+        coin->oVelY = 100.0f;
+        coin->oPosY = o->oPosY + 310.0f;
+        coin->oMoveAngleYaw = (f32)(o->oFaceAngleYaw + 0x8000) + random_float() * 1024.0f;
+    }
 }
 
-void motos_carry_run(void)
-{
-	s32 sp1C = gGlobalTimer;
-	o->oForwardVel = 5.0f;
-	if ((sp1C & 4) == 0) {
-cur_obj_play_sound_2(SOUND_ACTION_METAL_STEP);
-}
-	cur_obj_init_animation_with_sound(2);
-	if ( s_ai_pitch(0x200,500) )  o->oAction = 3;
-	else			   			  o->oAction = 5;
+void bhv_motos_main() {
+    f32 floorY;
 
-}
-
-void motos_pitch(void)
-{
-	o->oForwardVel = 0.0f;
-	cur_obj_init_animation_with_sound(6);
-
-	if ( cur_obj_check_anim_frame(14) ){
-		o->oMotosUnk88 = 0;
-	}
-	if ( cur_obj_check_if_near_animation_end() )	
-	o->oAction = 0;
-
-}
-
-void motos_fly(void)
-{
-   o->oForwardVel = 5.0f;
-	cur_obj_init_animation_with_sound(5);
-		if (o->oFloor->type == SURFACE_BURNING) {
-							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-			o->oHealth--;
-			//o->oPosY = o->oHomeY;
-			//o->oPosX = o->oHomeX;
-			//o->oPosZ = o->oHomeZ;
-			if (o->oHealth) 
-                o->oAction = 8;
-            if (o->oHealth == 0) 
-                o->oAction = 10;
-	}
-	if ( o->oMoveFlags & OBJ_MOVE_LANDED ) {
-//	cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);      
-	
-//	cur_obj_init_animation_with_sound(4);
-	o->oAction = 8;
-	}
-
-}
-
-void motos_recover(void) {
-   o->oForwardVel = 5.0f;
-//    o->oForwardVel = 2.0f;
-	cur_obj_init_animation_with_sound(4);
-if ( cur_obj_check_anim_frame(14) )	
-	o->oAction = 1;
-}
-	
-void motos_recover2(void) {
-    struct Surface *floor = cur_obj_update_floor_height_and_get_floor();
-    o->oFloor = floor;
-//   o->oForwardVel = 5.0f;
-         	o->oForwardVel = 0.0f;
-	cur_obj_init_animation_with_sound(7);
-		if (o->oFloor->type == SURFACE_BURNING) {
-							cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-			o->oHealth--;
-			//o->oPosY = o->oHomeY; //This is a horrible way of making motos return to it's home
-			//o->oPosX = o->oHomeX;
-			//o->oPosZ = o->oHomeZ;
-			if (o->oHealth) 
-                o->oAction = 1;
-            if (o->oHealth == 0) 
-                o->oAction = 10;
-	}
-//	if (o->oFloor->type != SURFACE_BURNING) {
-//		cur_obj_play_sound_2(SOUND_OBJ2_KING_BOBOMB_DAMAGE);     
-o->oAction = 1;
-}
-
-void motos_death(void) { 
-			o->oHomeY = o->oPosY;
-			o->oHomeX = o->oPosX;
-			o->oHomeZ = o->oPosZ;
-		if (obj_lava_death() == 1) {
-			o->oPosY = o->oHomeY;
-			o->oPosX = o->oHomeX;
-			o->oPosZ = o->oHomeZ;
-        	create_sound_spawner(SOUND_OBJ_KING_WHOMP_DEATH);
-        	cur_obj_hide();
-        	cur_obj_become_intangible();
-			bully_spawn_coin();
-        	spawn_mist_particles_variable(0, 0, 200.0f);
-        	spawn_triangle_break_particles(20, 138, 3.0f, 4);
-        	cur_obj_shake_screen(SHAKE_POS_SMALL);
-			o->oInteractStatus &= ~(INT_STATUS_GRABBED_MARIO);
-		}
-	}
-void (*sMotosActions[])(void) = { motos_wait, motos_player_search, motos_player_carry, motos_player_pitch, motos_carry_start, motos_carry_run, motos_pitch, motos_fly, motos_recover, motos_recover2, motos_death};
-
-void motos_main(void)
-{
     cur_obj_update_floor_and_walls();
-	//cur_obj_move_using_fvel_and_gravity();	
-	
 
-//	default: rmonpf(("Error objmode motos\n")); }
-
-	    cur_obj_move_standard(-78);							/*	monky moving 	*/
-    if (o->oDistanceToMario < 5000.0f)
-        cur_obj_enable_rendering();
-    else
-        cur_obj_disable_rendering();
+    switch (o->oAction) {
+        case MOTOS_ACT_WAIT:
+            bhv_motos_wait();
+            break;
+        case MOTOS_ACT_PLAYER_SEARCH:
+            bhv_motos_player_search();
+            break;
+        case MOTOS_ACT_PLAYER_CARRY:
+            bhv_motos_player_carry();
+            break;
+        case MOTOS_ACT_PLAYER_PITCH:
+            bhv_motos_player_pitch();
+            break;
+        case MOTOS_ACT_CARRY_RUN:
+            bhv_motos_carry_run();
+            break;
+        case MOTOS_ACT_THROWN:
+            bhv_motos_thrown();
+            break;
+        case MOTOS_ACT_RECOVER:
+            bhv_motos_recover();
+            break;
+    }
+    
+    cur_obj_move_standard(-78);
+    
+    // Added to detect lava death
+    floorY = find_floor(o->oPosX, o->oPosY, o->oPosZ, &sObjFloor);
+    if (sObjFloor != NULL) {
+        if ((floorY + 1.f > o->oPosY) && (sObjFloor->type == SURFACE_BURNING)) {
+            o->oAction = MOTOS_ACT_DEATH;
+        }
+    }
 }
 
-void s_motos(void)
-{
-    f32 sp2C = 10.0f;
-    f32 sp28 = 20.0f;
-
-	cur_obj_scale(2.0f);
-
+void bhv_motos_loop(void) {
+    cur_obj_scale(2.0f);
     o->oInteractionSubtype |= INT_SUBTYPE_GRABS_MARIO;
-
-	switch (o->oAction) {
-	case 0:
-	motos_wait();
-	break;
-	case 1:
-	motos_player_search();
-	break;
-	case 2:
-	motos_player_carry();
-	break;
-	case 3:
-	motos_player_pitch();
-	break;
-	case 4:
-	motos_carry_start();
-	break;
-	case 5:
-	motos_carry_run();
-	break;
-	case 6:
-	motos_pitch();
-	break;
-	case 7:
-	motos_fly();
-	break;
-	case 8:
-	motos_recover();
-	break;
-	case 9:
-	motos_recover2();
-	break;
-	case 10:
-	motos_death();
-	break;
-	}
-cur_obj_call_action_function(sMotosActions);
-	switch (o->oHeldState) {
+    
+    switch (o->oHeldState) {
         case HELD_FREE:
-            motos_main();
+            // If clause to prevent Motos from updating physics while dying from lava
+            if (o->oAction == MOTOS_ACT_DEATH)
+                bhv_motos_death();
+            else
+                bhv_motos_main();
             break;
         case HELD_HELD:
-            cur_obj_unrender_and_reset_state(8, 1);
+            cur_obj_unrender_and_reset_state(MOTOS_ANIM_WALK, MOTOS_ACT_WAIT);
             break;
         case HELD_THROWN:
         case HELD_DROPPED:
-            cur_obj_get_thrown_or_placed(sp2C, sp28, 7);
+            cur_obj_get_thrown_or_placed(15.f, 35.f, MOTOS_ACT_THROWN);
             break;
-	}
-    o->oInteractStatus = 0;
-//	s_erase_shape(obj_playerdist,2000);
- // cur_obj_become_tangible();
+    }
+    
+    o->oInteractStatus = 0; // Added because it doesnt work without this, cmon Nintendo
+    set_object_visibility(o, 8000); // Increased from 2000
 }

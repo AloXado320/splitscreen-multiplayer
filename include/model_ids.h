@@ -345,6 +345,7 @@
 #define MODEL_BLARGG                      0x54        // blargg_geo
 #define MODEL_BULLY                       0x56        // bully_geo
 #define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
+#define MODEL_MOTOS                       0x58        // betah motos
 
 // group 3
 #define MODEL_WATER_BOMB                  0x54        // water_bomb_geo

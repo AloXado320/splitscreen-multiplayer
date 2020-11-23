@@ -1,0 +1,67 @@
+--- data/behavior_data.c
++++ data/behavior_data.c
+@@ -3657,19 +3657,27 @@ const BehaviorScript bhvActSelector[] = {
+ 
+ const BehaviorScript bhvMovingYellowCoin[] = {
+     BEGIN(OBJ_LIST_LEVEL),
++    CALL_NATIVE(bhv_moving_yellow_coin_init),
++    // Moving coin general
+     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+     BILLBOARD(),
+     SET_HITBOX(/*Radius*/ 100, /*Height*/ 64),
+     SET_INT(oInteractType, INTERACT_COIN),
+     SET_INT(oIntangibleTimer, 0),
+     SET_INT(oAnimState, -1),
+-    CALL_NATIVE(bhv_moving_yellow_coin_init),
+     BEGIN_LOOP(),
+         CALL_NATIVE(bhv_moving_yellow_coin_loop),
+         ADD_INT(oAnimState, 1),
+     END_LOOP(),
+ };
+ 
++// Uses a combination of behaviors in order to have correct movement
++const BehaviorScript bhvBlueCoinMotos[] = {
++    BEGIN(OBJ_LIST_LEVEL),
++    CALL_NATIVE(bhv_moving_blue_coin_init),
++    GOTO(bhvMovingYellowCoin + 1 + 2),
++};
++
+ const BehaviorScript bhvMovingBlueCoin[] = {
+     BEGIN(OBJ_LIST_LEVEL),
+     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+@@ -4112,6 +4120,29 @@ const BehaviorScript bhvBigChillBully[] = {
+     END_LOOP(),
+ };
+ 
++const BehaviorScript bhvMotosHand[] = {
++    BEGIN(OBJ_LIST_GENACTOR),
++    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW)),
++    BILLBOARD(),
++    BEGIN_LOOP(),
++        CALL_NATIVE(bhv_motos_hand_loop),
++    END_LOOP(),
++};
++
++const BehaviorScript bhvMotos[] = {
++    BEGIN(OBJ_LIST_GENACTOR),
++    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_HOLDABLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO)),
++    LOAD_ANIMATIONS(oAnimations, motos_anime),
++    SET_INT(oInteractType, INTERACT_GRABBABLE),
++    SET_HITBOX(/*Radius*/ 100, /*Height*/ 100),
++    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 30, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 200, /*Unused*/ 0, 0),
++    SPAWN_OBJ(/*Model*/ MODEL_NONE, /*Behavior*/ bhvMotosHand),
++    SET_INT(oIntangibleTimer, 0),
++    BEGIN_LOOP(),
++        CALL_NATIVE(bhv_motos_loop),
++    END_LOOP(),
++};
++
+ const BehaviorScript bhvJetStreamRingSpawner[] = {
+     BEGIN(OBJ_LIST_DEFAULT),
+     HIDE(),
+@@ -6105,5 +6136,3 @@ const BehaviorScript bhvIntroScene[] = {
+         CALL_NATIVE(bhv_intro_scene_loop),
+     END_LOOP(),
+ };
+-
+-

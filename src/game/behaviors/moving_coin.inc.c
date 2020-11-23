@@ -96,7 +96,7 @@ void bhv_moving_yellow_coin_loop(void) {
 }
 
 void bhv_moving_blue_coin_init(void) {
-    o->oGravity = 5.0f;
+    o->oGravity = 3.0f;
     o->oFriction = 1.0f;
     o->oBuoyancy = 1.5f;
 

@@ -3,21 +3,6 @@
 
 #include "types.h"
 
-//Motos
-extern const GeoLayout RCP_HmsEnemymotos_basedata_A[];
-extern const Gfx RCP_motos_LhandB[];
-extern const Gfx RCP_motos_LhandA[];
-extern const Gfx RCP_motos_RhandA[];
-extern const Gfx RCP_motos_RhandB[];
-extern const Gfx RCP_motos_Lfoot[];
-extern const Gfx RCP_motos_Rfoot[];
-extern const Gfx RCP_motos_Rfoot[];
-extern const Gfx RCP_motos_head[];
-extern const Gfx RCP_motos_body[];
-extern const Gfx RCP_motos_leg[];
-extern const Gfx RCP_motos_arm[];
-extern const struct Animation *const motos_seg8_anims_0801DA4C[];
-
 // amp
 extern const GeoLayout amp_geo[];
 extern const Gfx amp_seg8_dl_08002B68[];
@@ -231,5 +216,8 @@ extern const Gfx RCP_icemotos_head[];
 extern const Gfx RCP_icemotos_body[];
 extern const Gfx RCP_icemotos_leg[];
 extern const Gfx RCP_icemotos_arm[];
+
+//Motos
+#include "motos/header.h"
 
 #endif

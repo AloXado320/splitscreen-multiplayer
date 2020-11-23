@@ -40,6 +40,7 @@ U64MB Bug List
 30. You can pause and exit anytime in any given stage.
 31. Mario/Luigi should not go into a bubble after death.
 32. Luigi should use MARIO_ANIM_WINDEMOAOLD for his star dance
+33. If Mario or Luigi gets tired and the camera zooms into them falling asleep, the camera also zooms in for the other brother (and like you would expect, it stays zoomed in until the sleeping brother gets up)
 
 Single Player Ending Bugs
 Single Player mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music

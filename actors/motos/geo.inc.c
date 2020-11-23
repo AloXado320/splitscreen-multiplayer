@@ -1,3 +1,5 @@
+#include "actors/motos/header.h"
+
 const GeoLayout RCP_HmsEnemymotos_basedata_A[] = {
 GEO_SHADOW(SHADOW_CIRCLE_4_VERTS, 0x96, 100),
  GEO_OPEN_NODE(),

@@ -1,0 +1,7 @@
+--- src/game/obj_behaviors.c
++++ src/game/obj_behaviors.c
+@@ -852,3 +852,4 @@ s32 UNUSED debug_sequence_tracker(s16 debugInputSequence[]) {
+ #include "behaviors/treasure_chest.inc.c"
+ #include "behaviors/mips.inc.c"
+ #include "behaviors/yoshi.inc.c"
++#include "behaviors/motos.inc.c"

@@ -1,0 +1,19 @@
+--- include/behavior_data.h
++++ include/behavior_data.h
+@@ -323,6 +323,7 @@ extern const BehaviorScript bhvMenuButtonManager[];
+ extern const BehaviorScript bhvActSelectorStarType[];
+ extern const BehaviorScript bhvActSelector[];
+ extern const BehaviorScript bhvMovingYellowCoin[];
++extern const BehaviorScript bhvBlueCoinMotos[];
+ extern const BehaviorScript bhvMovingBlueCoin[];
+ extern const BehaviorScript bhvBlueCoinSliding[];
+ extern const BehaviorScript bhvBlueCoinJumping[];
+@@ -361,6 +362,8 @@ extern const BehaviorScript bhvBigBully[];
+ extern const BehaviorScript bhvBigBullyWithMinions[];
+ extern const BehaviorScript bhvSmallChillBully[];
+ extern const BehaviorScript bhvBigChillBully[];
++extern const BehaviorScript bhvMotosHand[];
++extern const BehaviorScript bhvMotos[];
+ extern const BehaviorScript bhvJetStreamRingSpawner[];
+ extern const BehaviorScript bhvJetStreamWaterRing[];
+ extern const BehaviorScript bhvMantaRayWaterRing[];

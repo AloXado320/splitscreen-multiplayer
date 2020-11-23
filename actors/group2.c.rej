@@ -1,0 +1,10 @@
+--- actors/group2.c
++++ actors/group2.c
+@@ -14,3 +14,7 @@ UNUSED static const u64 binid_0 = 0;
+ #include "blargg/anims/data.inc.c"
+ #include "blargg/anims/table.inc.c"
+ UNUSED static const u64 binid_1 = 1;
++
++#include "motos/model.inc.c"
++#include "motos/anims/anim.inc.c"
++UNUSED static const u64 binid_2 = 2;
