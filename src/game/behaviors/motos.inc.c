@@ -34,9 +34,9 @@ s32 bhv_motos_do_throw_mario() {
 }
 
 void bhv_motos_hand_loop(void) {
-	o->oParentRelativePosX = 50.0f;
+	o->oParentRelativePosX = 100.0f;
 	o->oParentRelativePosY = 0.0f;
-    o->oParentRelativePosZ = 150.0f;
+	o->oParentRelativePosZ = 150.0f;
 
     common_anchor_mario_behavior(50.0f, 30.0f, 64); // Used common func instead of repeating code
     // Also vert speed increased from 0 to 50

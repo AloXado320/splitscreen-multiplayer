@@ -28,7 +28,7 @@ const MacroObject lll_seg7_area_1_macro_objs[] = {
     MACRO_OBJECT(/*preset*/ macro_coin_line_horizontal_flying, /*yaw*/  90, /*pos*/  3000,    50,   520),
     MACRO_OBJECT(/*preset*/ macro_coin_ring_horizontal,        /*yaw*/   0, /*pos*/  7160,   320,  1400),
     MACRO_OBJECT(/*preset*/ macro_coin_ring_horizontal,        /*yaw*/   0, /*pos*/  3800,   320, -5600),
-    MACRO_OBJECT(/*preset*/ macro_mr_i,                        /*yaw*/   0, /*pos*/  6673,   154, -3060),
+    //MACRO_OBJECT(/*preset*/ macro_mr_i,                        /*yaw*/   0, /*pos*/  6673,   154, -3060),
     MACRO_OBJECT(/*preset*/ macro_coin_ring_horizontal,        /*yaw*/   0, /*pos*/  6673,   154, -3060),
     MACRO_OBJECT(/*preset*/ macro_coin_line_horizontal,        /*yaw*/  45, /*pos*/  6300,   755, -6580),
     MACRO_OBJECT(/*preset*/ macro_1up,                         /*yaw*/   0, /*pos*/  6326,   686, -6580),
