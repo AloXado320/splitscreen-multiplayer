@@ -29,3 +29,4 @@
 #include "koopa_shell/geo.inc.c"
 #include "motos/geo.inc.c"
 #include "icemotos/geo.inc.c"
+#include "springboard/geo.inc.c"

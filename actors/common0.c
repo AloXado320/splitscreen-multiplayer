@@ -83,3 +83,7 @@ UNUSED static const u64 binid_18 = 18;
 #include "icemotos/model.inc.c"
 #include "motos/anims/anim.inc.c"
 UNUSED static const u64 binid_19 = 19;
+
+#include "springboard/model.inc.c"
+#include "springboard/collision.inc.c"
+UNUSED static const u64 binid_20 = 20;
