@@ -1,4 +1,4 @@
-# Makefile to rebuild SM64 split image
+# Makefile to build an Ultra 64 Mario Bros. ROM
 
 ### Default target ###
 
