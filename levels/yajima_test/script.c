@@ -58,6 +58,7 @@
 #define S_itemhat_wing MODEL_MARIOS_WING_CAP
 #define S_itemhat_hat MODEL_MARIOS_CAP
 #define S_itembox MODEL_EXCLAMATION_BOX
+#define S_motosman MODEL_MOTOS
 
 #define e_wind_ping bhvSLWalkingPenguin
 #define e_wind bhvSLSnowmanWind
@@ -82,6 +83,7 @@
 #define e_osublock bhvJumpingBox
 #define e_horiage bhvHeaveHo
 #define e_testball bhvFreeBowlingBall//it's unknown what testball actually was.
+#define e_motos bhvMotos
 
 //some of these objects can't be loaded all together because they're in different groups.
 //this may be evidence that most/all objects were once in a single group, or could be loaded at any time.
@@ -110,7 +112,7 @@ const LevelScript level_yajima_test_entry[] = {
     MARIO(/*model*/ MODEL_MARIO, /*behParam*/ 0x00000001, /*beh*/ bhvMario),
     JUMP_LINK(script_func_global_1),
     JUMP_LINK(script_func_global_8),
-//    JUMP_LINK(script_func_global_9),
+	//JUMP_LINK(script_func_global_9),
 
     AREA(/*index*/ 1, RCP_Stage32Scene1),
 
@@ -172,7 +174,7 @@ const LevelScript level_yajima_test_entry[] = {
 
 //			seqActor(S_monky			,      0,   200,     0,   0,0,0,  0,0,0, e_monky			)
 //			seqActor(S_horiage			,   2000,   200,  2000,   0,0,0,  0,0,0, e_horiage			)
-//			seqActor(S_motosman			,	    0,    0, -1500,   0,0,0,  0,0,0, e_motos			)
+			seqActor(S_motosman			,	    0,    0, -1500,   0,0,0,  0,0,0, e_motos			)
 			seqActor(S_hibiblock		,  	 1000,    0,     0,   0,0,0,  0,0,0, e_osublock			)
 			seqActor(S_itemhat_metalwing,    -200,  200,  2500,   0,0,0,  0,0,0, e_hat_metal_wing	)
 			seqActor(S_itemhat_metal 	,    -600,  200,  2500,   0,0,0,  0,0,0, e_hat_metal 		)

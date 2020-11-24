@@ -203,6 +203,7 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_TRAMPOLINE,              springboard_top_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TRAMPOLINE_CENTER,       springboard_spring_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TRAMPOLINE_BASE,         springboard_bottom_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_MOTOS,			       RCP_HmsEnemymotos_basedata_A),
     RETURN(),
 };
 
@@ -220,7 +221,6 @@ const LevelScript script_func_global_3[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BLARGG,                  blargg_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BULLY_BOSS,              bully_boss_geo),
-	LOAD_MODEL_FROM_GEO(MODEL_MOTOS,			       RCP_HmsEnemymotos_basedata_A),
     RETURN(),
 };
 
@@ -263,7 +263,6 @@ const LevelScript script_func_global_8[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD_HIDDEN,      mr_blizzard_hidden_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD,             mr_blizzard_geo),
     LOAD_MODEL_FROM_GEO(MODEL_PENGUIN,                 penguin_geo),
-    LOAD_MODEL_FROM_GEO(MODEL_MOTOS,                   RCP_HmsEnemyicemotos_basedata_A),
     RETURN(),
 };
 
@@ -349,6 +348,7 @@ const LevelScript script_func_global_17[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CHILL_BULLY,             chilly_chief_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BIG_CHILL_BULLY,         chilly_chief_big_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MONEYBAG,                moneybag_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_MOTOS,                   RCP_HmsEnemyicemotos_basedata_A),
     RETURN(),
 };
 
