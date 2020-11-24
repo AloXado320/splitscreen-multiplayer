@@ -8,6 +8,7 @@
 #include "game_init.h"
 #include "interaction.h"
 #include "mario_step.h"
+#include "object_list_processor.h"
 
 static s16 sMovingSandSpeeds[] = { 12, 8, 4, 0 };
 
@@ -15,6 +16,8 @@ struct Surface gWaterSurfacePseudoFloor = {
     SURFACE_VERY_SLIPPERY, 0,    0,    0, 0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 0, 0, 0 },
     { 0.0f, 1.0f, 0.0f },  0.0f, NULL,
 };
+
+struct Object *sTrampoline = NULL;
 
 /**
  * Always returns zero. This may have been intended
@@ -27,7 +30,7 @@ struct Surface gWaterSurfacePseudoFloor = {
  * and if so return a higher value than 0.
  */
 f32 get_additive_y_vel_for_jumps(void) {
-    return 0.0f;
+    return (sTrampoline != NULL) ? sTrampoline->oBetaTrampolineAdditiveYVel : 0.0f;
 }
 
 /**
@@ -50,6 +53,7 @@ void stub_mario_step_1(UNUSED struct MarioState *x) {
  * or to set a variable with its intended additive Y vel.
  */
 void stub_mario_step_2(void) {
+    sTrampoline = gCurrentObject;
 }
 
 void transfer_bully_speed(struct BullyCollisionData *obj1, struct BullyCollisionData *obj2) {

@@ -17,7 +17,8 @@
 #include "levels/totwc/header.h"
 
 static const LevelScript script_func_local_1[] = {
-    OBJECT(/*model*/ MODEL_CAP_SWITCH, /*pos*/   0, -2047, 10, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvCapSwitch),
+    OBJECT(/*model*/ MODEL_CAP_SWITCH, /*pos*/     0, -2047, 10, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvCapSwitch),
+    OBJECT(/*model*/ MODEL_NONE,       /*pos*/ -1019, -1897, 10, /*angle*/ 0, 0, 0, /*behParam*/ 0x99999999, /*beh*/ bhvBetaTrampolineTop), //MUST be placed 159 units above the ground for it to work proper.
     RETURN(),
 };
 

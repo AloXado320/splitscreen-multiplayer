@@ -492,13 +492,13 @@ s32 act_triple_jump(struct MarioState *m) {
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, SOUND_MARIO_YAHOO);
 #endif
 
-    if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) {
-        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_DOUBLE_JUMP_RISE, 0);
+    if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { //Is player Mario?
+        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_DOUBLE_JUMP_RISE, 0); //if so, proceed with triple jump.
         m->angleVel[1] = approach_s32(m->angleVel[1], 0x1800, 0x200, 0x200);
         m->twirlYaw += m->angleVel[1];
         vec3s_set(m->marioObj->header.gfx.angle, 0, m->faceAngle[1] + m->twirlYaw, 0);
     } else {
-        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP, 0);
+        common_air_action_step(m, ACT_TRIPLE_JUMP_LAND, MARIO_ANIM_TRIPLE_JUMP, 0); 
     }
 #ifdef VERSION_SH
     if (m->action == ACT_TRIPLE_JUMP_LAND) {
@@ -507,8 +507,8 @@ s32 act_triple_jump(struct MarioState *m) {
 #endif
     play_flip_sounds(m, 2, 8, 20);
     if (m->vel[1] < 2.0f) {
-        if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) {
-            return set_mario_action(m, ACT_TWIRLING, 0);
+        if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
+            return set_mario_action(m, ACT_TWIRLING, 0); // if so, do triple jump twirl instead.
         }
     }
     return FALSE;
