@@ -46,6 +46,9 @@ const LevelScript level_castle_entry[] = {
         TERRAIN(/*terrainData*/ castle_info),
         SET_BACKGROUND_MUSIC(/*settingsPreset*/ 0x0000, /*seq*/ SEQ_SOUND_PLAYER),
         TERRAIN_TYPE(/*terrainType*/ TERRAIN_GRASS),
+
+        OBJECT(/*model*/ MODEL_NONE,       /*pos*/ -5741, 5065, -1543, /*angle*/ 0, 0, 0, /*behParam*/ 0x00340000, /*beh*/ bhvBetaTrampolineTop), //MUST be placed 150 units above the ground for it to work proper.
+
     END_AREA(),
 
     FREE_LEVEL_POOL(),

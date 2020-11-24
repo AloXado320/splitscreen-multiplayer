@@ -97,8 +97,8 @@ const LevelScript level_yajima_test_entry[] = {
     LOAD_RAW(         /*seg*/ 0x0D, _group6_geoSegmentRomStart,  _group6_geoSegmentRomEnd),
     LOAD_MIO0(        /*seg*/ 0x05, _group7_mio0SegmentRomStart, _group7_mio0SegmentRomEnd),
     LOAD_RAW(         /*seg*/ 0x0C, _group7_geoSegmentRomStart,  _group7_geoSegmentRomEnd),
-//    LOAD_MIO0(        /*seg*/ 0x09, _group8_mio0SegmentRomStart, _group8_mio0SegmentRomEnd),
-//    LOAD_RAW(         /*seg*/ 0x0A, _group8_geoSegmentRomStart,  _group8_geoSegmentRomEnd),
+    LOAD_MIO0(        /*seg*/ 0x09, _group8_mio0SegmentRomStart, _group8_mio0SegmentRomEnd),
+    LOAD_RAW(         /*seg*/ 0x0A, _group8_geoSegmentRomStart,  _group8_geoSegmentRomEnd),
     LOAD_MIO0(        /*seg*/ 0x08, _common0_mio0SegmentRomStart, _common0_mio0SegmentRomEnd),
     LOAD_RAW(         /*seg*/ 0x0F, _common0_geoSegmentRomStart,  _common0_geoSegmentRomEnd),
 
@@ -203,7 +203,7 @@ const LevelScript level_yajima_test_entry[] = {
 			seqActor(S_bluecoin			,	  400,    0,   200,   0,0,0,  0,0,0, e_bluecoin			)
 			seqActor(S_bluecoin			,	 -200,    0,   200,   0,0,0,  0,0,0, e_bluecoin			)
 			seqActor(S_bluecoin			,	 -400,    0,   200,   0,0,0,  0,0,0, e_bluecoin			)
-
+    		OBJECT(/*model*/ MODEL_NONE,       /*pos*/ -870, 150, 370, /*angle*/ 0, 0, 0, /*behParam*/ 0x00340000, /*beh*/ bhvBetaTrampolineTop), //MUST be placed 150 units above the ground for it to work proper.
 
 
 	
