@@ -73,6 +73,7 @@ void bhv_beta_trampoline_top_loop(void) {
     // Maybe they intended to decrease the trampoline's position
     // when Mario's on it in this if statement?
     if (gMarioObject->platform == o) {
+        stub_mario_step_2();
         o->oBetaTrampolineMarioOnTrampoline = TRUE;
 
         o->oPosY =
@@ -101,5 +102,4 @@ void bhv_beta_trampoline_top_loop(void) {
     // that the trampoline is currently in use. This potential
     // trampoline infrastructure is found in mario_step.c. See
     // that file for more details.
-    stub_mario_step_2();
 }

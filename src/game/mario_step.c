@@ -17,7 +17,7 @@ struct Surface gWaterSurfacePseudoFloor = {
     { 0.0f, 1.0f, 0.0f },  0.0f, NULL,
 };
 
-struct Object *sTrampoline = NULL;
+static struct Object *sTrampoline;
 
 /**
  * Always returns zero. This may have been intended
