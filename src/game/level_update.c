@@ -440,8 +440,12 @@ void init_mario_after_warp(void) {
             play_cap_music(SEQUENCE_ARGS(4, SEQ_EVENT_METAL_CAP));
         }
 
-        if (gMarioStates[0].flags & (MARIO_VANISH_CAP | MARIO_WING_CAP)) {
+        if (gMarioStates[0].flags & MARIO_WING_CAP) {
             play_cap_music(SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP));
+        }
+
+        if (gMarioStates[0].flags & MARIO_VANISH_CAP) {
+            play_cap_music(SEQUENCE_ARGS(4, SEQ_EVENT_VANISH_CAP));
         }
 
 #ifndef VERSION_JP
