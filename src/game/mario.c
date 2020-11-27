@@ -1906,7 +1906,7 @@ void init_mario(void) {
         gMarioStates[i].marioObj->oMoveAngleYaw = gMarioStates[i].faceAngle[1];
         gMarioStates[i].marioObj->oMoveAngleRoll = gMarioStates[i].faceAngle[2];
         */
-        gMarioStates[i].numLives = 2;
+        gMarioStates[i].numLives = 4;
         gMarioStates[i].bubble = NULL;
         // vec3f_copy(gMarioStates[i].marioObj->header.gfx.pos, gMarioStates[i].pos);
         // vec3s_set(gMarioStates[i].marioObj->header.gfx.angle, 0, gMarioStates[i].faceAngle[1], 0);

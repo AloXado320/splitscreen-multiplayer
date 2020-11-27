@@ -1162,11 +1162,11 @@ s32 play_mode_paused(void) {
             level_trigger_warp(&gMarioStates[0], WARP_OP_WARP_FLOOR);
             level_trigger_warp(&gMarioStates[1], WARP_OP_WARP_FLOOR);
             set_play_mode(PLAY_MODE_NORMAL);
-            if (gMarioStates[0].numLives < 2) {
-                gMarioStates[0].numLives = 2;
+            if (gMarioStates[0].numLives < 4) {
+                gMarioStates[0].numLives = 4;
             }
-            if (gMarioStates[1].numLives < 2) {
-                gMarioStates[1].numLives = 2;
+            if (gMarioStates[1].numLives < 4) {
+                gMarioStates[1].numLives = 4;
             }
             // fade_into_special_warp(0, 0);
             // gSavedCourseNum = COURSE_NONE;

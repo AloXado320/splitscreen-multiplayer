@@ -89,6 +89,7 @@ static const LevelScript script_func_local_4[] = {
     OBJECT(/*model*/ MODEL_BUTTERFLY, /*pos*/ -1504,  326,  3196, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvButterfly),
     OBJECT(/*model*/ MODEL_BUTTERFLY, /*pos*/ -1204,  326,  3296, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvButterfly),
     OBJECT(/*model*/ MODEL_YOSHI,     /*pos*/     0, 3174, -5625, /*angle*/ 0, 0, 0, /*behParam*/ 0x00000000, /*beh*/ bhvYoshi),
+    OBJECT(/*model*/ MODEL_NONE,       /*pos*/ 1165, 3324, -5733, /*angle*/ 0, 0, 0, /*behParam*/ 0x00340000, /*beh*/ bhvBetaTrampolineTop), //MUST be placed 150 units above the ground for it to work proper.
     RETURN(),
 };
 
