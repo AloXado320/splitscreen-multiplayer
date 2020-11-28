@@ -27,6 +27,7 @@
 #include "seq_ids.h"
 #include "sound_init.h"
 #include "thread6.h"
+#define m gMarioState
 
 // TODO: put this elsewhere
 enum SaveOption { SAVE_OPT_SAVE_AND_CONTINUE = 1, SAVE_OPT_SAVE_AND_QUIT, SAVE_OPT_CONTINUE_DONT_SAVE };
@@ -649,8 +650,13 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
 
 s32 act_star_dance(struct MarioState *m) {
     m->faceAngle[1] = m->thisPlayerCamera->yaw;
+    if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
+    set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
+                                               : MARIO_ANIM_WINDEMOAOLD);
+    } else {
     set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
                                                : MARIO_ANIM_STAR_DANCE);
+    }
     general_star_dance_handler(m, 0);
     if (m->actionState != 2 && m->actionTimer >= 40) {
         m->marioBodyState->handState = MARIO_HAND_PEACE_SIGN;
