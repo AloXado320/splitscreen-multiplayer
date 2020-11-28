@@ -1,4 +1,4 @@
-U64MB Bug List
+U64MB Bug/todo List (Programmers; please take note of every bug in this list.)
 
 
 * = Introduced in the current update (or unable to be duplicated in Kaze's original splitscreen release)
@@ -13,22 +13,20 @@ U64MB Bug List
 3. Game file A is instantly selected if 2 controllers are plugged in (on hardware, and emulator)
 4. Unable to select Star missions, star screen is near instantly skipped if 2 controllers are plugged in (on hardware, and emulator)
 5. Up-C no longer moves the Mario Bros.'s head around.
-7. Getting into a cannon crashes the game. (fixed??)
 8. Talking to a pink bob-omb to open a cannon softlocks the game, but you are still able to pause and exit the level.
 9. Unable to get Game Over.
 10. Boss cutscenes/dialogs do not seem to be restored
 11. You start with 2 lives in multiplayer, but 0 lives in single player (update, emulator simply doesn't count lives properly in single player). Consider reversing so 1 Up's have a purpose in multiplayer (earning you bubbles, instead of having bubbles for free). This could be a positive effect on Co Op.
 12. No audio after the ending, so no credits music and no "thank you so much for as to playing my game"
-13. Feedback on power meter is that it is too small for Single Player. Likely can't be fixed because we need it that small for Co Op.
+13. Feedback on power meter is that it is too small for Single Player.
 14. the Goddard touch points are still in the center, even though the model is not
 15. Peach is muted in Luigi's ending.
 16. Speaking to Yoshi softlocks the game.
-17. Dying in single player turns you into a bubble after death animation before Bowser laugh screen exits the level. (low priority, if it can't be fixed due to needing the bubble for Co Op, not a big deal)
+17. Dying in single player turns you into a bubble after death animation before Bowser laugh screen exits the level.
 18. Framerate on File Select screen is very choppy. Likely frameskip's fault.
 19. Game crashes (on hardware for some, and emulator for all) when loading new areas of levels. For example; SSL's boss fight, Bowser Sub Area in DDD, and WDW's underwater town.
 20. Koopa the Quick has Bob-Omb buddy dialogue and voice before he gives you his star.
-21. If a player triple jumps with Luigi near the edge of a building (Example: Shifting Sand Land Koopa Shell building), Luigi gets stuck in the edge basically T-posing, just like Mario constantly falling off the edge without really falling. However, Luigi just gets stuck in a frame of the animation doing nothing.
-FIXED 22. Merry-Go-Round music still plays when a player exits it in BBH. Mr. I shoots his goo and it crosses the door. Not only that, if they exit the room behind this door, they kinda get an X-ray vision, making them see a Scuttlebug behind walls.
+21. If a player triple jumps with Luigi near the inverted slanted edge of a building (angled like this slash \ ) (Example: Shifting Sand Land Koopa Shell building), Luigi gets stuck in the edge basically T-posing, just like Mario constantly falling off the edge without really falling. However, Luigi just gets stuck in a frame of the animation doing nothing.
 23. If you enter the tunnel to fight Eyerok in SSL's pyramid, the game straight up crashes (on hardware and emulators).
 25. One can get stuck on inverted slopes such as the edge of those tilting pyramid platforms in ssl.
 26. If a player long jumps on the Jolly Roger's walls they clip through it and fall immediately into water.
@@ -44,7 +42,7 @@ FIXED 22. Merry-Go-Round music still plays when a player exits it in BBH. Mr. I 
 
 Single Player Ending Bugs
 Single Player mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
-end of singleplayer end bugs
+END OF SINGLEPLAYER ENDING BUGS
 
 *** -4. adjust position that motos holds mario so he fits in his hand
 *** -3. Can we reinstate the mirror room and endless stairs in Co-op and Singleplayer?
@@ -53,17 +51,14 @@ end of singleplayer end bugs
 *1. The opening Dialog for stage 2 is duplicated from stage 1. This is the only instance of this bug, all other stages have their normal opening dialog.
 ***2. Hurtbox feels *huge* - but in case it's enemies having seemingly huge hitboxes, Piranha Plants, Goombas, Clams, Scuttlebugs, Skeeters, Bunches of enemies in the Sandlands. Moles. All Shy Guys. Koopas. Lakitus. Moneybags. Spindrifts. (this list is almost guaranteed to be incomplete sadly)
 *3. King Bob-omb Boss Music does not play
-*4. FIXED  Kuromame, Shy Guys, and single shot Bowser breath won't burn Luigi
 5. "let's-a go!" voice clip does not have enough time to play to completion
 6. Hoot the Owl still generates dialogue.
 7. Dialogue does not freeze players in place.
-8. FIXED Amps won't shock Luigi.
 9. Luigi doesn't say "So long gay bowser!" **would it work if we added a sound specifically for Luigi?
 10. When both players die, Bowser's laugh doesn't seem to play the entire duration?
 11. Standing on Dorrie's head as either player will not raise her head up.
 12. Unsure if volcano explosion hurts either player...
 13. Ring detection is extremely off in The Manta Ray's Reward
-*14. FIXED  Boo's Balcony; Big Boo will not come onto the balcony forcing you to ground pound all the way back to the ground every time you want to hit him. Makes it easier overall since you never have to worry about being hit. ***fixed***
 15. Cool Cool Mountain's Snowman Head still produces dialogue.
 *16. Swimming camera on Jolly Roger Bay and outside the castle is all screwed up. 
 17. (from Inky) entering another room while one player dies at the point where the transition would happen makes both players receive death eject knockback when entering the room (or knocked out of the painting if during a level transition such as finishing the Secret Slide as one player while the other player dies)
@@ -71,10 +66,8 @@ end of singleplayer end bugs
 19. Monkey bugs; after the monkey takes your hat and you catch him, he becomes invisible. When you put him down, he becomes visible again but you can't put your hat back on. Monkey and anyone who takes your hat, always the Mario hat (which it's OK, it can be Mario's hat, it's the same way it works in Odyssey for some reason)
 20. Dialogue still exists for the monkey at the top of the mountain in the Monkey Cage star. (that may be just so you can free him, nevermind)
 21. cannon enter cutscene, cannon does not animate properly
-*22. FIXED Crashes when I try to go to the mirror room. ***fixed***
 23. Bowser level 1: Painting does not transition from Peach to Bowser as you get closer. Is simply Bowser. (may be a gfx plugin issue)
 *24. Crashes during the ending.*******************
-*25. FIXED Bully type enemies are unable to collide with Luigi.
 **26. Since the Snowman's Land painting can't be seen in the mirror room as the Mirror is removed, why not place the painting on the wall????
 **27. Why don't we make the 2nd Bowser fight take two bombs to win?
 *28. Flying speed is way too high
@@ -83,7 +76,6 @@ end of singleplayer end bugs
 ***31 & 32. entering Eyerok's room in SSL, The loading zone to the town in WDW and the loading zone to the submarine area in DDD crashes
 ***33. Power meter is too small in singleplayer mode
 ****34. If you crouch under a player who just collected the star and is still in mid-air, he won't do the star animation and you'll be able to still play the level after collecting a star, which would make you go back to the castle.
-35. ! boxes with shells drop 2 instead of one in singleplayer
 36. the clock on the 3rd floor ticks even if you aren't near it
 37. The 3D cannon barrel is still visible when you're inside it
 38. bowser opening dialog is missing for all 3 fights
@@ -96,5 +88,6 @@ Newest Bugs
 **6. Luigi's power meter is the shape of Mario's head
 7. exit course needs fixing
 
+For any other possible bugs, refer to the old todo list.
 
 
