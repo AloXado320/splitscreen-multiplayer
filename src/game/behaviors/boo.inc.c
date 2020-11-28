@@ -193,7 +193,7 @@ static void boo_move_during_hit(s32 roll, f32 fVel) {
     s32 oscillationVel = o->oTimer * 0x800 + 0x800;
 
     o->oForwardVel = fVel;
-    o->oVelY = coss(oscillationVel);
+    o->oVelY = coss(oscillationVel) * 20;
     o->oMoveAngleYaw = o->oBooMoveYawDuringHit;
 
     if (roll != FALSE) {

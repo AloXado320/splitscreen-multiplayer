@@ -50,11 +50,16 @@ static void handle_merry_go_round_music(void) {
         // If Mario is not in the merry-go-round's area of the basement anymore,
         // stop playing the music.
         // If he is, play the creaking sound.
-        if (
-            // The merry-go-round is a dynamic surface.
-            (gMarioCurrentRoom[0] != BBH_DYNAMIC_SURFACE_ROOM
-            && gMarioCurrentRoom[0] != BBH_NEAR_MERRY_GO_ROUND_ROOM) && (gMarioCurrentRoom[1] != BBH_DYNAMIC_SURFACE_ROOM
-            && gMarioCurrentRoom[1] != BBH_NEAR_MERRY_GO_ROUND_ROOM)  )  {
+        // The merry-go-round is a dynamic surface.
+        if (singlePlayerChar) {
+        if ((gMarioCurrentRoom[0] != BBH_DYNAMIC_SURFACE_ROOM && gMarioCurrentRoom[0] != BBH_NEAR_MERRY_GO_ROUND_ROOM))  {
+            func_80321080(300); // Switch to BBH music? FIXME: Audio needs labelling
+            o->oMerryGoRoundMusicShouldPlay = FALSE;
+        } else {
+            cur_obj_play_sound_1(SOUND_ENV_MERRY_GO_ROUND_CREAKING);
+        }
+        }
+        if ((gMarioCurrentRoom[0] != BBH_DYNAMIC_SURFACE_ROOM && gMarioCurrentRoom[0] != BBH_NEAR_MERRY_GO_ROUND_ROOM) && (gMarioCurrentRoom[1] != BBH_DYNAMIC_SURFACE_ROOM && gMarioCurrentRoom[1] != BBH_NEAR_MERRY_GO_ROUND_ROOM))  {
             func_80321080(300); // Switch to BBH music? FIXME: Audio needs labelling
             o->oMerryGoRoundMusicShouldPlay = FALSE;
         } else {

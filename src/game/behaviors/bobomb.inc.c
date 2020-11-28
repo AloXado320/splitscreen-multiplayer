@@ -360,8 +360,7 @@ void bobomb_buddy_act_talk(void) {
                 if (ASSUMELOW > 1) {
                     set_mario_npc_dialog(0);
                 } else {
-                    if (cutscene_object_with_dialog(CUTSCENE_DIALOG, o, o->oBehParams2ndByte)
-                        != BOBOMB_BUDDY_BP_STYPE_GENERIC) {
+                    if (cutscene_object_with_dialog(CUTSCENE_DIALOG, o, o->oBehParams2ndByte) != BOBOMB_BUDDY_BP_STYPE_GENERIC) {
                         set_mario_npc_dialog(0);
 
                         o->activeFlags &= ~ACTIVE_FLAG_INITIATED_TIME_STOP;
