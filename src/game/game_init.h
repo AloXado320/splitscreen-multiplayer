@@ -52,7 +52,7 @@ extern struct MarioAnimation gDemo;
 extern u8 gMarioAnims[];
 extern u8 gDemoInputs[];
 
-#define GFX_POOL_SIZE 30400     //KAZENOTE reset this to 6400 maybe
+#define GFX_POOL_SIZE 6400     //KAZENOTE reset this to 6400 maybe
 
 struct GfxPool {
     Gfx buffer[GFX_POOL_SIZE];

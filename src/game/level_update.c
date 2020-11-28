@@ -1201,7 +1201,7 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            /*if (singlePlayerChar) { //attempt at fixing exit course by sunlit, please dont use this unless you are fixing it
+            /*if (singlePlayerChar) { //attempt at fixing exit course by sunlit, please dont use this unless you are fixing it yourself
                 initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
                 set_play_mode(PLAY_MODE_NORMAL);
                 fade_into_special_warp(0, 0);
@@ -1211,11 +1211,13 @@ s32 play_mode_paused(void) {
             level_trigger_warp(&gMarioStates[0], WARP_OP_WARP_FLOOR);
             level_trigger_warp(&gMarioStates[1], WARP_OP_WARP_FLOOR);
             set_play_mode(PLAY_MODE_NORMAL);
+            if (PLAYERCOUNTAGAIN > 1) {
             if (gMarioStates[0].numLives < 4) {
                 gMarioStates[0].numLives = 4;
             }
             if (gMarioStates[1].numLives < 4) {
                 gMarioStates[1].numLives = 4;
+            }
             }
             // initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
             // fade_into_special_warp(0, 0);

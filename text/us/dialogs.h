@@ -1980,6 +1980,8 @@ We hope that you like it!\n\
 Enjoy!!!"
 #endif
 
+#define MARIO "Mario"
+
 DEFINE_DIALOG(DIALOG_161, 1, 4, 30, 200, _("\
 Mario!!!\n\
 Is that really you???\n\
@@ -1997,15 +1999,13 @@ And saved the Princess?\n\
 I knew you could do it!\n\
 Now I have a very special\n\
 message for you.\n\
-『Thanks for playing\n\
-Ultra 64 Mario Bros!\n\
+『Thanks for playing!\n\
 This is the\n\
 end of the game, but not\n\
 the end of the fun." \
 KEEP_ON_PLAYING "』\n\
 \n\
-The Ultra 64 Mario\n\
-Bros. Team"))
+The Development Team"))
 
 DEFINE_DIALOG(DIALOG_162, 1, 4, 30, 200, _("\
 No, no, no! Not you\n\
