@@ -13,11 +13,10 @@ U64MB Bug List
 3. Game file A is instantly selected if 2 controllers are plugged in (on hardware, and emulator)
 4. Unable to select Star missions, star screen is near instantly skipped if 2 controllers are plugged in (on hardware, and emulator)
 5. Up-C no longer moves the Mario Bros.'s head around.
-6. Ending needs to have both Mario Bros. appear for consistency with the voice lines and animations
-7. Getting into a cannon crashes the game.
-8. Talking to a pink bob-omb to open a cannon soft locks the game, but you are still able to pause and exit the level.
+7. Getting into a cannon crashes the game. (fixed??)
+8. Talking to a pink bob-omb to open a cannon softlocks the game, but you are still able to pause and exit the level.
 9. Unable to get Game Over.
-10. Boss cutscenes do not seem to be restored
+10. Boss cutscenes/dialogs do not seem to be restored
 11. You start with 2 lives in multiplayer, but 0 lives in single player (update, emulator simply doesn't count lives properly in single player). Consider reversing so 1 Up's have a purpose in multiplayer (earning you bubbles, instead of having bubbles for free). This could be a positive effect on Co Op.
 12. No audio after the ending, so no credits music and no "thank you so much for as to playing my game"
 13. Feedback on power meter is that it is too small for Single Player. Likely can't be fixed because we need it that small for Co Op.
@@ -45,6 +44,7 @@ U64MB Bug List
 
 Single Player Ending Bugs
 Single Player mario/luigi is kissed twice, when mario strikes a pose after being kissed, the camera switches too early to the next angle, no music
+end of singleplayer end bugs
 
 *** -4. adjust position that motos holds mario so he fits in his hand
 *** -3. Can we reinstate the mirror room and endless stairs in Co-op and Singleplayer?
@@ -70,7 +70,7 @@ Single Player mario/luigi is kissed twice, when mario strikes a pose after being
 18. Wet/Dry world can only be entered with the water drained unless both players jump into the painting at the same time.
 19. Monkey bugs; after the monkey takes your hat and you catch him, he becomes invisible. When you put him down, he becomes visible again but you can't put your hat back on. Monkey and anyone who takes your hat, always the Mario hat (which it's OK, it can be Mario's hat, it's the same way it works in Odyssey for some reason)
 20. Dialogue still exists for the monkey at the top of the mountain in the Monkey Cage star. (that may be just so you can free him, nevermind)
-21. Sides of cannon do not rotate properly with cannon.
+21. cannon enter cutscene, cannon does not animate properly
 *22. FIXED Crashes when I try to go to the mirror room. ***fixed***
 23. Bowser level 1: Painting does not transition from Peach to Bowser as you get closer. Is simply Bowser. (may be a gfx plugin issue)
 *24. Crashes during the ending.*******************
@@ -93,9 +93,8 @@ Newest Bugs
 1. Mario and Luigi lose their voices after starting the race with Koopa the Quick in THI. 
 2. if Big Bubba (Big fish in THI) eats either of them, that respective player cannot respawn properly. After their respawn bubble is popped, they respawn as a glitchy "invisible" character that eventually becomes frozen.
 4. HUD scales differently from Single Player (who cares? which one is the correct one? Hard to say.) https://cdn.discordapp.com/attachments/749001228498894889/759490288216571924/4gdwvn.gif
-5. Yoshi dialog should be restored in 2P **or Yoshi should be ridable right off the bat outside.**
 **6. Luigi's power meter is the shape of Mario's head
-
+7. exit course needs fixing
 
 
 

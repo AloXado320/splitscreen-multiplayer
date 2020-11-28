@@ -174,10 +174,10 @@ s8 sWarpCheckpointActive = FALSE;
 #ifdef TARGET_N64
 OSTime oldTime = 0;
 OSTime deltaTime = 0;
+//u8 gameLagged = 0;
 #endif
 
 u8 luigiCamFirst = 0;
-// u8 gameLagged = 0;
 int gIsGameEnding;
 int gIsInStarSelect = FALSE;
 
@@ -1094,12 +1094,18 @@ s32 play_mode_normal(void) {
         area_update_objects();
         if (deltaTime > 1562744) {
             // reset buttonPressed
+            if (gDebugLevelSelect) {
             for (i = 0; i < gActivePlayers; i++) {
                 struct Controller *controller = &gControllers[i];
                 if (controller->controllerData != NULL) {
                     controller->buttonPressed = 0;
                 }
             }
+            }
+            for (i = 0; i < gActivePlayers; i++) {
+                struct Controller *controller = &gControllers[i];
+                if (controller->controllerData != NULL) {
+                    controller->buttonPressed = 0;
         }
     }
 #else
@@ -1156,12 +1162,18 @@ s32 play_mode_paused(void) {
         gCameraMovementFlags[1] &= ~CAM_MOVE_PAUSE_SCREEN;
         set_play_mode(PLAY_MODE_NORMAL);
     } else {
-        // Exit level
+        // Exit level/course
 
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            // initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+            /*if (singlePlayerChar) { //attempt at fixing exit course by sunlit, please dont use this unless you are fixing it
+            // Exit level
+                initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+                set_play_mode(PLAY_MODE_NORMAL);
+                fade_into_special_warp(0, 0);
+                gSavedCourseNum = COURSE_NONE;
+            }*/
             sSourceWarpNodeId = 0xf1;
             level_trigger_warp(&gMarioStates[0], WARP_OP_WARP_FLOOR);
             level_trigger_warp(&gMarioStates[1], WARP_OP_WARP_FLOOR);
@@ -1172,6 +1184,7 @@ s32 play_mode_paused(void) {
             if (gMarioStates[1].numLives < 4) {
                 gMarioStates[1].numLives = 4;
             }
+            // initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
             // fade_into_special_warp(0, 0);
             // gSavedCourseNum = COURSE_NONE;
         }
