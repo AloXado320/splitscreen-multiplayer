@@ -1,11 +1,20 @@
 // Parameters: dialog enum ID, (unused), lines per box, left offset, width
 
+#ifdef VERSION_EU
+#define COMRADES "friends"
+#define PLASTERED "splattered"
+#define SCAM_ME "cheat!\n"
+#define SCRAM "get lost"
+#define YOU_CANT_SWIM_IN_IT "Its too heavy to swim\nwith."
+#define GIVE_UP "give up"
+#else
 #define COMRADES "comrades"
 #define PLASTERED "plastered"
 #define SCAM_ME "scam\nME. "
 #define SCRAM "scram--"
 #define YOU_CANT_SWIM_IN_IT "You can't swim in it."
 #define GIVE_UP "give"
+#endif
 
 DEFINE_DIALOG(DIALOG_000, 1, 6, 30, 200, _("\
 Wow! You're smack in the\n\
@@ -14,17 +23,18 @@ You'll find the Power\n\
 Stars that Bowser stole\n\
 inside the painting\n\
 worlds.\n\
-Make sure to help out\n\
-each other!\n\
-\n\
-\n\
-\n\
-\n\
-You can give your buddy\n\
-a boost by letting him\n\
-bounce on your head\n\
-while you crouch\n\
-using the [Z] button!"))
+First, talk to the\n\
+Bob-omb Buddy. (Press [B]\n\
+to talk.) He'll certainly\n\
+help you out, and so will\n\
+his " COMRADES " in other\n\
+areas.\n\
+To read signs, stop, face\n\
+them and press [B]. Press [A]\n\
+or [B] to scroll ahead. You\n\
+can talk to some other\n\
+characters by facing them\n\
+and pressing [B]."))
 
 DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
 Watch out! If you wander\n\
@@ -265,7 +275,7 @@ Shhh! Please walk\n\
 quietly in the hallway!"))
 
 DEFINE_DIALOG(DIALOG_020, 1, 6, 95, 150, _("\
-Dear Mario and Luigi:\n\
+Dear Mario:\n\
 Please come to the\n\
 castle. I've baked\n\
 a cake for you.\n\
@@ -1223,12 +1233,11 @@ Come on in here...\n\
 ...heh, heh, heh..."))
 
 // unused
-/*
+DEFINE_DIALOG(DIALOG_099, 1, 5, 95, 200, _("\
 Eh he he...\n\
 You're mine, now, hee hee!\n\
 I'll pass right through\n\
-this wall. Can you do\n\*/
-DEFINE_DIALOG(DIALOG_099, 1, 5, 95, 200, _("\
+this wall. Can you do\n\
 that? Heh, heh, heh!"))
 
 DEFINE_DIALOG(DIALOG_100, 1, 3, 95, 200, _("\
@@ -1988,13 +1997,15 @@ And saved the Princess?\n\
 I knew you could do it!\n\
 Now I have a very special\n\
 message for you.\n\
-『Thanks for playing Super\n\
-Mario 64! This is the\n\
+『Thanks for playing\n\
+Ultra 64 Mario Bros!\n\
+This is the\n\
 end of the game, but not\n\
 the end of the fun." \
 KEEP_ON_PLAYING "』\n\
 \n\
-The Super Mario 64 Team"))
+The Ultra 64 Mario\n\
+Bros. Team"))
 
 DEFINE_DIALOG(DIALOG_162, 1, 4, 30, 200, _("\
 No, no, no! Not you\n\

@@ -321,8 +321,10 @@ void bobomb_buddy_cannon_dialog(s16 dialogFirstText, s16 dialogSecondText) {
 
     switch (o->oBobombBuddyCannonStatus) {
         case BOBOMB_BUDDY_CANNON_UNOPENED:
-            save_file_set_cannon_unlocked();
-            cannonClosed = cur_obj_nearest_object_with_behavior(bhvCannonClosed);
+            buddyText = cutscene_object_with_dialog(CUTSCENE_DIALOG, o, dialogFirstText);
+            if (buddyText != 0) {
+                save_file_set_cannon_unlocked();
+                cannonClosed = cur_obj_nearest_object_with_behavior(bhvCannonClosed);
             if (cannonClosed != 0)
                 o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_OPENING;
             else
@@ -335,10 +337,10 @@ void bobomb_buddy_cannon_dialog(s16 dialogFirstText, s16 dialogSecondText) {
             if (cutscene == -1)
                 o->oBobombBuddyCannonStatus = BOBOMB_BUDDY_CANNON_OPENED;
             break;
-
+            
         case BOBOMB_BUDDY_CANNON_OPENED:
-            set_mario_npc_dialog(0);
-            break;
+            buddyText = cutscene_object_with_dialog(CUTSCENE_DIALOG, o, dialogSecondText);
+            if (buddyText != 0)
         case BOBOMB_BUDDY_CANNON_STOP_TALKING:
             set_mario_npc_dialog(0);
 

@@ -84,7 +84,7 @@ void yoshi_talk_loop(void) {
                 o->oHomeX = sYoshiHomeLocations[2];
                 o->oHomeZ = sYoshiHomeLocations[3];
                 o->oYoshiTargetYaw = atan2s(o->oHomeZ - o->oPosZ, o->oHomeX - o->oPosX);
-                o->oAction = YOSHI_ACT_GIVE_PRESENT;
+                //o->oAction = YOSHI_ACT_GIVE_PRESENT;
             }
         }
     } else {
