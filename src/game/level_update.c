@@ -823,6 +823,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                     }
                     m->health = 0x880;
                     m->healCounter = 31;
+                    if (PLAYERCOUNTAGAIN == 2) {
                     m->action = ACT_BUBBLED;
                     val04 = FALSE;
                     warp = 1;
@@ -830,6 +831,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         if (gMarioStates[i].action != ACT_BUBBLED) {
                             warp = 0;
                         }
+                    }
                     }
                     if (warp) {
                         sDelayedWarpOp = warpOp;
