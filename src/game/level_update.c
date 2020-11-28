@@ -798,7 +798,18 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
                 break;
             case WARP_OP_DEATH:
+            if (PLAYERCOUNTAGAIN == 1) {
+                if (m->numLives == 0) {
+                    sDelayedWarpOp = WARP_OP_GAME_OVER;
+                }
+                sDelayedWarpTimer = 48;
+                sSourceWarpNodeId = WARP_NODE_DEATH;
+                play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, 0x30, 0x00, 0x00, 0x00);
+                play_sound(SOUND_MENU_BOWSER_LAUGH, gDefaultSoundArgs);
+                break;
+            }
             case WARP_OP_WARP_FLOOR: // interact_warp
+            if (PLAYERCOUNTAGAIN > 1) {
                 if ((sSourceWarpNodeId != WARP_NODE_DEATH) || sJustTeleported) {
                     sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
                     if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
@@ -823,7 +834,6 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                     }
                     m->health = 0x880;
                     m->healCounter = 31;
-                    if (PLAYERCOUNTAGAIN == 2) {
                     m->action = ACT_BUBBLED;
                     val04 = FALSE;
                     warp = 1;
@@ -831,7 +841,6 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         if (gMarioStates[i].action != ACT_BUBBLED) {
                             warp = 0;
                         }
-                    }
                     }
                     if (warp) {
                         sDelayedWarpOp = warpOp;
@@ -844,6 +853,20 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                     }
                 }
                 break;
+            } else {
+                sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
+                if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
+                    if (m->numLives == 0) {
+                        sDelayedWarpOp = WARP_OP_GAME_OVER;
+                    } else {
+                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                    }
+                }
+                sDelayedWarpTimer = 20;
+                play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
+                break;
+            }
+
             case WARP_OP_UNKNOWN_01: // enter totwc
                 sDelayedWarpTimer = 30;
                 sSourceWarpNodeId = WARP_NODE_F2;
