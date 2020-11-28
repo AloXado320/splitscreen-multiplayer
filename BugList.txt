@@ -28,7 +28,7 @@ U64MB Bug/todo List (Programmers; please take note of every bug in this list.)
 20. Koopa the Quick has Bob-Omb buddy dialogue and voice before he gives you his star.
 21. If a player triple jumps with Luigi near the inverted slanted edge of a building (angled like this slash \ ) (Example: Shifting Sand Land Koopa Shell building), Luigi gets stuck in the edge basically T-posing, just like Mario constantly falling off the edge without really falling. However, Luigi just gets stuck in a frame of the animation doing nothing.
 23. If you enter the tunnel to fight Eyerok in SSL's pyramid, the game straight up crashes (on hardware and emulators).
-25. One can get stuck on inverted slopes such as the edge of those tilting pyramid platforms in ssl.
+25. One can get stuck on inverted slopes (\) such as the edge of those tilting pyramid platforms in ssl.
 26. If a player long jumps on the Jolly Roger's walls they clip through it and fall immediately into water.
 27. The platform that balances in LLL and BITFS doesn't, and if a player stands on it they can seem clipping through it.
 28. Various Co-op teleports weren't disabled for 1P mode and thus crash the game.

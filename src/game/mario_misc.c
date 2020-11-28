@@ -23,6 +23,7 @@
 #include "save_file.h"
 #include "skybox.h"
 #include "sound_init.h"
+#define m gMarioState
 
 #define TOAD_STAR_1_REQUIREMENT 12
 #define TOAD_STAR_2_REQUIREMENT 25
@@ -413,9 +414,15 @@ Gfx *geo_mario_tilt_torso(s32 callContext, struct GraphNode *node, UNUSED Mat4 *
             && action != ACT_RIDING_SHELL_GROUND) {
             vec3s_copy(bodyState->torsoAngle, gVec3sZero);
         }
+        if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
+        bodyState->torsoAngle[1] = bodyState->torsoAngle[1];
+        bodyState->torsoAngle[2] = bodyState->torsoAngle[2];
+        bodyState->torsoAngle[0] = bodyState->torsoAngle[0];
+        } else {
         rotNode->rotation[0] = bodyState->torsoAngle[1];
         rotNode->rotation[1] = bodyState->torsoAngle[2];
         rotNode->rotation[2] = bodyState->torsoAngle[0];
+        }
     }
     return NULL;
 }

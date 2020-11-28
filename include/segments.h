@@ -1,7 +1,7 @@
 #ifndef SEGMENTS_H
 #define SEGMENTS_H
 
-/* Use expansion pack RAM */
+/* Use expansion pak RAM */
 #define USE_EXT_RAM 1
 
 #ifndef LINKER
