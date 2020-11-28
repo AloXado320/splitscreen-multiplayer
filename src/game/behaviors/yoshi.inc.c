@@ -64,8 +64,8 @@ void yoshi_idle_loop(void) {
         o->oAction = YOSHI_ACT_TALK;
 
     // Credits; Yoshi appears at this position overlooking the castle near the end of the credits
-    if (gPlayerCameraState[0].cameraEvent == CAM_EVENT_START_ENDING ||
-        gPlayerCameraState[0].cameraEvent == CAM_EVENT_START_END_WAVING) {
+    if (gPlayerCameraState->cameraEvent == CAM_EVENT_START_ENDING ||
+        gPlayerCameraState->cameraEvent == CAM_EVENT_START_END_WAVING) {
         o->oAction = YOSHI_ACT_CREDITS;
         o->oPosX = -1798.0f;
         o->oPosY = 3174.0f;
@@ -84,7 +84,7 @@ void yoshi_talk_loop(void) {
                 o->oHomeX = sYoshiHomeLocations[2];
                 o->oHomeZ = sYoshiHomeLocations[3];
                 o->oYoshiTargetYaw = atan2s(o->oHomeZ - o->oPosZ, o->oHomeX - o->oPosX);
-                //o->oAction = YOSHI_ACT_GIVE_PRESENT;
+                o->oAction = YOSHI_ACT_GIVE_PRESENT;
             }
         }
     } else {
@@ -132,7 +132,7 @@ void yoshi_finish_jumping_and_despawn_loop(void) {
 }
 
 void yoshi_give_present_loop(void) {
-    s32 sp1C = gGlobalTimer / 2;
+    s32 sp1C = gGlobalTimer;
 
     if (gHudDisplay.lives == 100) {
         play_sound(SOUND_GENERAL_COLLECT_1UP, gDefaultSoundArgs);
@@ -143,8 +143,13 @@ void yoshi_give_present_loop(void) {
 
     if ((sp1C & 0x03) == 0) {
         play_sound(SOUND_MENU_YOSHI_GAIN_LIVES, gDefaultSoundArgs);
-        gMarioState[0].numLives++;
-        gMarioState[1].numLives++;
+        gMarioState->numLives++;
+    }
+
+    if (gMarioState->numLives == 100) {
+        play_sound(SOUND_GENERAL_COLLECT_1UP, gDefaultSoundArgs);
+        gSpecialTripleJump = TRUE;
+        o->oAction = YOSHI_ACT_WALK_JUMP_OFF_ROOF;
     }
 }
 
