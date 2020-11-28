@@ -34,8 +34,7 @@ U64MB Bug/todo List (Programmers; please take note of every bug in this list.)
 28. Various Co-op teleports weren't disabled for 1P mode and thus crash the game.
 29. In the ending cutscene where it shows all the stages, the player can pause and exit out of them.
 30. You can pause and exit anytime in any given stage.
-31. Mario/Luigi should not go into a bubble after death.
-32. Luigi should use MARIO_ANIM_WINDEMOAOLD for his star dance
+31. Mario/Luigi should not go into a bubble after death, dying should work as in the vanilla game in singleplayer.
 33. If Mario or Luigi gets tired and the camera zooms into them falling asleep, the camera also zooms in for the other brother (and like you would expect, it stays zoomed in until the sleeping brother gets up)
 34. using exit course in singleplayer does not go back to the first floor of the castle like in the vanilla game
 35. You can pause during moments where you shouldn't be able to
