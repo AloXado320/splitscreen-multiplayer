@@ -3344,7 +3344,7 @@ ALIGNED8 static const u8 intro_seg7_texture_0700B4A0[] = {
 
 // 0x0700C4A0 - 0x0700D4A0
 ALIGNED8 static const u8 intro_seg7_texture_0700C4A0[] = {
-#include "levels/intro/3_tm.rgba16.inc.c"
+#include "../textures/custom/level_intro/3_tm.rgba16.inc.c"
 };
 
 // 0x0700C6A0 - 0x0700C790
