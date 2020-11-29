@@ -318,12 +318,12 @@ static Vtx_t gd_vertex_star[] = {
 };
 
 //! no references to these vertices
-UNUSED static Vtx_t gd_unused_vertex[] = {
+/*UNUSED static Vtx_t gd_unused_vertex[] = {
     { { 16384, 0, 0 }, 0, { 0, 16384 }, { 0x00, 0x00, 0x00 } },
     { { 0, 0, 16384 }, 0, { 0, 0 }, { 0x00, 0x00, 0x40 } },
     { { 0, 0, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00 } },
     { { 0, 0, 0 }, 0, { 0, 0 }, { 0x00, 0x00, 0x00 } },
-};
+};*/
 
 static Gfx gd_dl_star[] = {
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
@@ -477,9 +477,9 @@ ALIGNED8 static u8 gd_texture_sparkle_4[] = {
 
 //! No reference to this texture. Two DL's uses the same previous texture
 //  instead of using this texture.
-ALIGNED8 static u8 gd_texture_sparkle_5[] = {
+/*ALIGNED8 static u8 gd_texture_sparkle_5[] = {
 #include "textures/intro_raw/sparkle_5.rgba16.inc.c"
-};
+};*/
 
 static Vtx_t gd_vertex_sparkle[] = {
     { { -32, 0, 0 }, 0, { 0, 1984 }, { 0x00, 0x00, 0x7F, 0x00 } },
@@ -881,7 +881,7 @@ void gd_printf(const char *format, ...) {
                         break;
                     case 'c':
                         //! @bug formatter 'c' uses `s32` for va_arg instead of `char`
-                        *csr = va_arg(args, s32);
+                        *csr = va_arg(args, char);
                         csr++;
                         *csr = '\0';
                         break;
@@ -1449,6 +1449,7 @@ struct GdDisplayList *create_child_gdl(s32 id, struct GdDisplayList *srcDl) {
     newDl = alloc_displaylist(id);
     newDl->parent = srcDl;
     cpy_remaining_gddl(newDl, srcDl);
+    return newDl;
 //! @bug No return statement, despite return value being used.
 //!      Goddard lucked out that `v0` return from alloc_displaylist()
 //!      is not overwriten, as that pointer is what should be returned
@@ -2750,6 +2751,8 @@ s32 setup_view_buffers(const char *name, struct ObjView *view, UNUSED s32 ulx, U
         view->parent = D_801A86E0;
     }
 
+    return 0;
+
 //! @bug No actual return, but the return value is used.
 //!      There is no obvious value to return. Since the function
 //!      doesn't use four of its parameters, this function may have
@@ -2781,6 +2784,7 @@ void func_801A43DC(UNUSED struct GdObj *obj) {
 
 /* 252BC0 -> 252BE0 */
 void *func_801A43F0(UNUSED const char *menufmt, ...) {
+    return;
     //! @bug no return; function was stubbed
 }
 

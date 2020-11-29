@@ -183,7 +183,7 @@ void print_mapinfo(void) {
     //! Fat finger: programmer hit tab instead of space. Japanese
     // thumb shift keyboards had the tab key next to the spacebar,
     // so this was likely the reason.
-    print_debug_top_down_mapinfo("wy\t  %d", gCurrentObject->oPosY);
+    print_debug_top_down_mapinfo("wy   %d", gCurrentObject->oPosY);
     print_debug_top_down_mapinfo("wz   %d", gCurrentObject->oPosZ);
     print_debug_top_down_mapinfo("bgY  %d", bgY);
     print_debug_top_down_mapinfo("angY %d", angY);

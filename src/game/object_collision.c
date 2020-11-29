@@ -102,6 +102,7 @@ s32 detect_object_hurtbox_overlap(struct Object *a, struct Object *b) {
     }
 
     //! no return value
+    return 0;
 }
 
 void clear_object_collision(struct Object *a) {
