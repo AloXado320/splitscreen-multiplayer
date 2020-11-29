@@ -788,7 +788,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
             case 0x99:
                 sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
                 if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
-                    if (m->numLives == 0) {
+                    if (MarioStates[i].numLives == 0) {
                         sDelayedWarpOp = WARP_OP_GAME_OVER;
                     } else {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
@@ -798,8 +798,8 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
                 break;
             case WARP_OP_DEATH:
-            if (PLAYERCOUNTAGAIN == 1) {
-                if (m->numLives == 0) {
+            if (PLAYERCOUNTAGAIN < 2) {
+                if (MarioStates[i].numLives == 0) {
                     sDelayedWarpOp = WARP_OP_GAME_OVER;
                 }
                 sDelayedWarpTimer = 48;
@@ -813,7 +813,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 if ((sSourceWarpNodeId != WARP_NODE_DEATH) || sJustTeleported) {
                     sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
                     if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
-                        if (m->numLives == 0) {
+                        if (MarioStates[i].numLives == 0) {
                             sDelayedWarpOp = WARP_OP_GAME_OVER;
                         } else {
                             sSourceWarpNodeId = WARP_NODE_DEATH;
@@ -822,14 +822,14 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                     sDelayedWarpTimer = 20;
                     play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
                 } else {
-                    if (m->numLives == 0) {
+                    if (MarioStates[i].numLives == 0) {
                         m->marioObj->header.gfx.node.flags |=
                             GRAPH_RENDER_INVISIBLE; // this flags controls interaction too if at -1
                                                     // lives
-                        m->numLives = -1;
+                        gMarioStates[i].numLives = -1;
                     } else {
                         if (m->action != ACT_BUBBLED) {
-                            m->numLives--;
+                            gMarioStates[i].numLives--;
                         }
                     }
                     m->health = 0x880;
@@ -857,7 +857,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 if ((sSourceWarpNodeId != WARP_NODE_DEATH) || sJustTeleported) {
                     sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
                     if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
-                        if (m->numLives == 0) {
+                        if (MarioStates[i].numLives == 0) {
                             sDelayedWarpOp = WARP_OP_GAME_OVER;
                         } else {
                             sSourceWarpNodeId = WARP_NODE_DEATH;

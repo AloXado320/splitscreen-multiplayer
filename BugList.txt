@@ -14,7 +14,7 @@ U64MB Bug/todo List (Programmers; please take note of every bug in this list.)
 4. Unable to select Star missions, star screen is near instantly skipped if 2 controllers are plugged in (on hardware, and emulator)
 5. Up-C no longer moves the Mario Bros.'s head around.
 8. Talking to a pink bob-omb to open a cannon softlocks the game, but you are still able to pause and exit the level.
-9. Unable to get Game Over.
+9. it is impossible to get a game over.
 10. Boss cutscenes/dialogs do not seem to be restored
 11. You start with 2 lives in multiplayer, but 0 lives in single player (update, emulator simply doesn't count lives properly in single player). Consider reversing so 1 Up's have a purpose in multiplayer (earning you bubbles, instead of having bubbles for free). This could be a positive effect on Co Op.
 12. No audio after the ending, so no credits music and no "thank you so much for as to playing my game"
