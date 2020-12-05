@@ -197,10 +197,11 @@ Would you like to Save?\n\
 DEFINE_DIALOG(DIALOG_012, 1, 4, 30, 200, _("\
 You've just stepped on\n\
 the Vanish Cap Switch.\n\
-The Vanish Cap makes\n\
-Mario disappear.\n\
+The Vanish Cap lets\n\
+Mario become one with\n\
+the ghosts.\n\
 Now Vanish Caps will pop\n\
-from all of the blue\n\
+out from all of the blue\n\
 blocks you find.\n\
 \n\
 Would you like to Save?\n\
@@ -275,7 +276,7 @@ Shhh! Please walk\n\
 quietly in the hallway!"))
 
 DEFINE_DIALOG(DIALOG_020, 1, 6, 95, 150, _("\
-Dear Mario:\n\
+Dear Mario and Luigi:\n\
 Please come to the\n\
 castle. I've baked\n\
 a cake for you.\n\
