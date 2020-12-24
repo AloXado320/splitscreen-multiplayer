@@ -35,5 +35,5 @@
     "20_cutscene_ending": ["23"],
     "21_menu_file_select": ["24"],
     "22_cutscene_lakitu": {"ifdef": ["VERSION_US", "VERSION_EU"], "banks": ["1B"]},
-	"23_event_vanish_cap": ["11"]
+	"23_event_vanish_cap_custom": ["11"]
 }
