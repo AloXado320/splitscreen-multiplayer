@@ -85,59 +85,59 @@ const Gfx title_screen_bg_dl_0A000190[] = {
 };
 
 // 0x0A0001C0
-ALIGNED8 static const u8 title_texture_0A0001C0[] = {
+ALIGNED8 static const Texture title_texture_0A0001C0[] = {
 #include "textures/title_screen_bg/title_screen_bg.001C0.rgba16.inc.c"
 };
 
 // 0x0A000E40
-ALIGNED8 static const u8 title_texture_0A000E40[] = {
+ALIGNED8 static const Texture title_texture_0A000E40[] = {
 #include "textures/title_screen_bg/title_screen_bg.00E40.rgba16.inc.c"
 };
 
 // 0x0A001AC0
-ALIGNED8 static const u8 title_texture_0A001AC0[] = {
+ALIGNED8 static const Texture title_texture_0A001AC0[] = {
 #include "textures/title_screen_bg/title_screen_bg.01AC0.rgba16.inc.c"
 };
 
 // 0x0A002740
-ALIGNED8 static const u8 title_texture_0A002740[] = {
+ALIGNED8 static const Texture title_texture_0A002740[] = {
 #include "textures/title_screen_bg/title_screen_bg.02740.rgba16.inc.c"
 };
 
 // 0x0A0033C0
-ALIGNED8 static const u8 title_texture_0A0033C0[] = {
+ALIGNED8 static const Texture title_texture_0A0033C0[] = {
 #include "textures/title_screen_bg/title_screen_bg.033C0.rgba16.inc.c"
 };
 
 // 0x0A004040
-ALIGNED8 static const u8 title_texture_0A004040[] = {
+ALIGNED8 static const Texture title_texture_0A004040[] = {
 #include "textures/title_screen_bg/title_screen_bg.04040.rgba16.inc.c"
 };
 
 // 0x0A004CC0
-ALIGNED8 static const u8 title_texture_0A004CC0[] = {
+ALIGNED8 static const Texture title_texture_0A004CC0[] = {
 #include "textures/title_screen_bg/title_screen_bg.04CC0.rgba16.inc.c"
 };
 
 // 0x0A005940
-ALIGNED8 static const u8 title_texture_0A005940[] = {
+ALIGNED8 static const Texture title_texture_0A005940[] = {
 #include "textures/title_screen_bg/title_screen_bg.05940.rgba16.inc.c"
 };
 
 // 0x0A005940
-ALIGNED8 static const u8 marioOption[] = {
+ALIGNED8 static const Texture marioOption[] = {
 #include "textures/title_screen_bg/mareo_custom.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 luigiOption[] = {
+ALIGNED8 static const Texture luigiOption[] = {
 #include "textures/title_screen_bg/luigi_custom.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 coopOption[] = {
+ALIGNED8 static const Texture coopOption[] = {
 #include "textures/title_screen_bg/coop_custom.rgba16.inc.c"
 };
 
-ALIGNED8 static const u8 versusOption[] = {
+ALIGNED8 static const Texture versusOption[] = {
 #include "textures/title_screen_bg/versus_custom.rgba16.inc.c"
 };
 
@@ -155,3 +155,44 @@ const u8 *const game_over_texture_table[] = {
 };
 
 UNUSED static const u64 title_screen_bg_unused_0 = 0;
+
+#ifdef VERSION_SH
+const Gfx title_screen_bg_dl_0A0065E8[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_COPY),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsSPEndDisplayList(),
+};
+
+const Gfx title_screen_bg_dl_0A006618[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
+    gsSPEndDisplayList(),
+};
+
+ALIGNED8 static const u8 title_texture_rumble_pak[] = {
+#include "textures/title_screen_bg/title_screen_bg.06648.rgba16.inc.c"
+};
+
+const Gfx title_screen_bg_dl_0A007548[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_COPY),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsDPSetTextureFilter(G_TF_POINT),
+    gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
+    gsDPSetScissor(G_SC_NON_INTERLACE, 0, 0, 319, 239),
+    gsDPLoadTextureTile(title_texture_rumble_pak, G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, 0, 0, 0, 79, 23, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD),
+    gsSPTextureRectangle(220 << 2, 200 << 2, 299 << 2, 223 << 2, G_TX_RENDERTILE, 0, 0, 4 << 10, 1 << 10),
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsDPSetTextureFilter(G_TF_BILERP),
+    gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
+    gsSPEndDisplayList(),
+};
+#endif

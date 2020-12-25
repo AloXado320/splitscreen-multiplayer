@@ -25,11 +25,11 @@ static void racing_penguin_act_wait_for_mario(void) {
 }
 
 static void racing_penguin_act_show_init_text(void) {
-    s32 response;
-    struct Object *child;
+    s32 response = 1;
 
-    response = 1;
     if (response == 1) {
+        struct Object *child;
+
         child = cur_obj_nearest_object_with_behavior(bhvPenguinRaceFinishLine);
         child->parentObj = o;
 

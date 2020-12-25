@@ -10,6 +10,7 @@
 #include "game/print.h"
 #include "game/save_file.h"
 #include "game/sound_init.h"
+#include "game/rumble_init.h"
 #include "level_table.h"
 #include "seq_ids.h"
 #include "sm64.h"
@@ -82,7 +83,7 @@ s16 level_select_input_loop(void) {
 
     // if the stage was changed, play the sound for changing a stage.
     if (stageChanged) {
-        play_sound(SOUND_GENERAL_LEVEL_SELECT_CHANGE, gDefaultSoundArgs);
+        play_sound(SOUND_GENERAL_LEVEL_SELECT_CHANGE, gGlobalSoundSource);
     }
 
     // TODO: enum counts for the stage lists
@@ -116,7 +117,7 @@ s16 level_select_input_loop(void) {
 			split_screens();
 			}
 		}
-        play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
         return gCurrLevelNum;
     }
     return 0;
@@ -129,9 +130,9 @@ s32 intro_default(void) {
 
     if (D_U_801A7C34 == 1) {
         if (gGlobalTimer < 0x81) {
-            play_sound(SOUND_MARIO_HELLO, gDefaultSoundArgs);
+            play_sound(SOUND_MARIO_HELLO, gGlobalSoundSource);
         } else {
-            play_sound(SOUND_MARIO_PRESS_START_TO_PLAY, gDefaultSoundArgs);
+            play_sound(SOUND_MARIO_PRESS_START_TO_PLAY, gGlobalSoundSource);
         }
         D_U_801A7C34 = 0;
         startGame = 0;
@@ -141,7 +142,11 @@ s32 intro_default(void) {
     }
     print_intro_text();
     if (startGame/* || ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed) & START_BUTTON)*/) {
-        play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
+#ifdef VERSION_SH
+        queue_rumble_data(60, 70);
+        func_sh_8024C89C(1);
+#endif
         sp1C = 100 + gDebugLevelSelect;
         D_U_801A7C34 = 1;
     }
@@ -153,7 +158,7 @@ s32 intro_game_over(void) {
 
 #ifndef VERSION_JP
     if (gameOverNotPlayed == 1) {
-        play_sound(SOUND_MARIO_GAME_OVER, gDefaultSoundArgs);
+        play_sound(SOUND_MARIO_GAME_OVER, gGlobalSoundSource);
         gameOverNotPlayed = 0;
     }
 #endif
@@ -161,7 +166,11 @@ s32 intro_game_over(void) {
     print_intro_text();
 
     if ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed) & START_BUTTON) {
-        play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
+        play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
+#ifdef VERSION_SH
+        queue_rumble_data(60, 70);
+        func_sh_8024C89C(1);
+#endif
         sp1C = 100 + gDebugLevelSelect;
 #ifndef VERSION_JP
         gameOverNotPlayed = 1;
@@ -172,7 +181,7 @@ s32 intro_game_over(void) {
 
 s32 intro_play_its_a_me_mario(void) {
     set_background_music(0, SEQ_SOUND_PLAYER, 0);
-    play_sound(SOUND_MENU_COIN_ITS_A_ME_MARIO, gDefaultSoundArgs);
+    play_sound(SOUND_MENU_COIN_ITS_A_ME_MARIO, gGlobalSoundSource);
     return 1;
 }
 

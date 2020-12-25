@@ -13,6 +13,8 @@
 #include "n64graphics.h"
 #include "utils.h"
 
+#define SKYCONV_ENCODING ENCODING_U8
+
 typedef struct {
     rgba *px;
     bool useless;
@@ -285,9 +287,7 @@ static void print_raw_data(FILE *cFile, TextureTile *tile) {
     ImageProps props = IMAGE_PROPERTIES[type][true];
     uint8_t *raw = malloc(props.tileWidth * props.tileHeight * 2);
     int size = rgba2raw(raw, tile->px, props.tileWidth, props.tileHeight, 16);
-    for (int i = 0; i < size; ++i) {
-        fprintf(cFile, "0x%hhX,", raw[i]);
-    }
+    fprint_write_output(cFile, SKYCONV_ENCODING, raw, size);
     free(raw);
 }
 
@@ -311,11 +311,11 @@ static void write_skybox_c() { /* write c data to disc */
         fprintf(stderr, "err: Could not open %s\n", fBuffer);
     }
 
-    fprintf(cFile, "#include \"sm64.h\"\n\n#include \"make_const_nonconst.h\"\n\n");
+    fprintf(cFile, "#include \"types.h\"\n\n#include \"make_const_nonconst.h\"\n\n");
 
     for (int i = 0; i < props.numRows * props.numCols; i++) {
         if (!tiles[i].useless) {
-            fprintf(cFile, "ALIGNED8 const u8 %s_skybox_texture_%05X[] = {\n", skyboxName, tiles[i].pos);
+            fprintf(cFile, "ALIGNED8 const Texture %s_skybox_texture_%05X[] = {\n", skyboxName, tiles[i].pos);
 
             print_raw_data(cFile, &tiles[i]);
 
@@ -323,7 +323,7 @@ static void write_skybox_c() { /* write c data to disc */
         }
     }
 
-    fprintf(cFile, "const u8 *const %s_skybox_ptrlist[] = {\n", skyboxName);
+    fprintf(cFile, "const Texture *const %s_skybox_ptrlist[] = {\n", skyboxName);
 
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 10; col++) {
@@ -368,7 +368,7 @@ static void write_cake_c() {
 
     int numTiles = TABLE_DIMENSIONS[type].cols * TABLE_DIMENSIONS[type].rows;
     for (int i = 0; i < numTiles; ++i) {
-        fprintf(cFile, "ALIGNED8 u8 cake_end_texture_%s%d[] = {\n", euSuffx, i);
+        fprintf(cFile, "ALIGNED8 Texture cake_end_texture_%s%d[] = {\n", euSuffx, i);
         print_raw_data(cFile, &tiles[i]);
         fputs("};\n\n", cFile);
     }

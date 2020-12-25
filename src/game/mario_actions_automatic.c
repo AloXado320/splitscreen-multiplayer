@@ -15,7 +15,7 @@
 #include "interaction.h"
 #include "camera.h"
 #include "level_table.h"
-#include "thread6.h"
+#include "rumble_init.h"
 #include "object_helpers.h"
 #include "level_update.h"
 
@@ -178,7 +178,7 @@ s32 act_holding_pole(struct MarioState *m) {
 #ifdef VERSION_SH
         reset_rumble_timers();
 #endif
-        func_80320A4C(1, marioObj->oMarioPoleYawVel / 0x100 * 2);
+        set_sound_moving_speed(SOUND_BANK_MOVING, marioObj->oMarioPoleYawVel / 0x100 * 2);
     } else {
         marioObj->oMarioPoleYawVel = 0;
         m->faceAngle[1] -= m->controller->stickX * 16.0f;
@@ -483,7 +483,7 @@ s32 act_hang_moving(struct MarioState *m) {
     if (m->marioObj->header.gfx.animInfo.animFrame == 12) {
         play_sound(SOUND_ACTION_HANGING_STEP, m->marioObj->soundOrigin);
 #ifdef VERSION_SH
-        queue_rumble_data(5, 30);
+        queue_rumble_data(1, 30);
 #endif
     }
 
@@ -903,7 +903,7 @@ s32 act_bubbled(struct MarioState *m) {
     if (oMar != NULL) {
         if ((dist_between_objects(oMar, m->marioObj) < 200.f) && (m->numLives != -1)) {
             set_mario_action(m, ACT_FREEFALL, 0);
-            play_sound(SOUND_OBJ_DEFAULT_DEATH, gDefaultSoundArgs);
+            play_sound(SOUND_OBJ_DEFAULT_DEATH, gGlobalSoundSource);
             m->bubble->activeFlags = ACTIVE_FLAG_DEACTIVATED;
             m->bubble = NULL;
             m->invincTimer = 0x20;

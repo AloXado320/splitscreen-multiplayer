@@ -1,8 +1,9 @@
-#include <ultra64.h>
-#include "sm64.h"
-#include "surface_terrains.h"
-#include "geo_commands.h"
+#include <PR/ultratypes.h>
+#include <PR/gbi.h>
 
+#include "macros.h"
+#include "surface_terrains.h"
+#include "types.h"
 #include "make_const_nonconst.h"
 
 #include "bully/model.inc.c"
@@ -14,3 +15,7 @@ UNUSED static const u64 binid_0 = 0;
 #include "blargg/anims/data.inc.c"
 #include "blargg/anims/table.inc.c"
 UNUSED static const u64 binid_1 = 1;
+
+#include "motos/model.inc.c"
+#include "motos/anims/anim.inc.c"
+UNUSED static const u64 binid_2 = 2;

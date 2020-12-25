@@ -2581,12 +2581,12 @@ static const Vtx intro_seg7_vertex_07007DF0[] = {
 };
 
 // 0x07007EA0 - 0x07007EA2
-ALIGNED8 static const u8 intro_seg7_texture_07007EA0[] = {
+ALIGNED8 static const Texture intro_seg7_texture_07007EA0[] = {
 #include "levels/intro/0.rgba16.inc.c"
 };
 
 // 0x070086A0 - 0x070086A2
-ALIGNED8 static const u8 intro_seg7_texture_070086A0[] = {
+ALIGNED8 static const Texture intro_seg7_texture_070086A0[] = {
 #include "levels/intro/1.rgba16.inc.c"
 };
 
@@ -3338,12 +3338,12 @@ static const Vtx intro_seg7_vertex_0700B460[] = {
 };
 
 // 0x0700B4A0 - 0x0700B4A2
-ALIGNED8 static const u8 intro_seg7_texture_0700B4A0[] = {
+ALIGNED8 static const Texture intro_seg7_texture_0700B4A0[] = {
 #include "../textures/custom/level_intro/2_copyright.rgba16.inc.c"
 };
 
 // 0x0700C4A0 - 0x0700D4A0
-ALIGNED8 static const u8 intro_seg7_texture_0700C4A0[] = {
+ALIGNED8 static const Texture intro_seg7_texture_0700C4A0[] = {
 #include "../textures/custom/level_intro/3_tm.rgba16.inc.c"
 };
 

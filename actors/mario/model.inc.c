@@ -37,17 +37,17 @@ static const Lights1 mario_brown2_lights_group = gdSPDefLights1(
 );
 
 // 0x04001890
-ALIGNED8 static const u8 mario_texture_m_logo[] = {
+ALIGNED8 static const Texture mario_texture_m_logo[] = {
 #include "actors/mario/mario_logo.rgba16.inc.c"
 };
 
 // 0x04002090
-ALIGNED8 static const u8 mario_texture_hair_sideburn[] = {
+ALIGNED8 static const Texture mario_texture_hair_sideburn[] = {
 #include "actors/mario/mario_sideburn.rgba16.inc.c"
 };
 
 // 0x04002890
-ALIGNED8 static const u8 marior_texture_mustache[] = {
+ALIGNED8 static const Texture marior_texture_mustache[] = {
 #include "actors/mario/mario_mustache.rgba16.inc.c"
 };
 

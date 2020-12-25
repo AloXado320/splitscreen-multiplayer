@@ -58,6 +58,7 @@ void guMtxIdentF(float mf[4][4]) {
         }
     }
 }
+
 void guMtxIdent(Mtx *m) {
 #ifndef GBI_FLOATS
     float mf[4][4];

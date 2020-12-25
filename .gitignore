@@ -52,9 +52,6 @@ build/*
 .assets-local.txt
 *zone.identifier
 
-# Crash Screen Textures
-!/textures/crash_screen/*
-
 # Assets. Generally ignored, but ones with "custom" in the name are fine.
 /levels/**/*.png
 /actors/**/*.png
@@ -74,5 +71,8 @@ build/*
 !/sound/**/*custom*/**/*.aiff
 !/assets/**/*custom*.bin
 !/assets/**/*custom*/**/*.bin
+
+# Preserve texture folders
 !/textures/title_screen_bg/*
 !/textures/segment2/*
+!/textures/crash_screen/*
