@@ -332,8 +332,8 @@ u8 sMaxChannelsForSoundBank[SOUND_BANK_COUNT] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 //#define BANK27_SIZE 0x40
 //#endif
 
-// Double bank size for Luigi
-#define BANK27_SIZE 0x40
+// Double bank size for Luigi (since it uses channel 2)
+#define BANK27_SIZE 0x80
 u8 sNumSoundsPerBank[SOUND_BANK_COUNT] = {
     0x70, 0x30, BANK27_SIZE, 0x80, 0x20, 0x80, 0x20, BANK27_SIZE, 0x80, 0x80,
 };
