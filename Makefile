@@ -125,6 +125,7 @@ endif
 #   1 - verifies the SHA-1 hash of the selected version of the game
 #   0 - does not verify the hash
 COMPARE ?= 0
+AVOID_UB ?= 1
 $(eval $(call validate-option,COMPARE,0 1))
 
 TARGET_STRING := u64mb.$(VERSION).$(GRUCODE)
