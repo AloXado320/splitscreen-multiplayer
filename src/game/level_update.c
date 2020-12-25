@@ -1118,25 +1118,11 @@ void basic_update(UNUSED s16 *arg) {
     }
 }
 
-s32 play_mode_normal(void) {
 #ifdef TARGET_N64
+void delta_time_handle(void) {
     OSTime newTime = osGetTime();
     int i;
-#endif
-    warp_area();
-
-    check_instant_warp(gLuigiState);
-    check_instant_warp(gMarioState);
-
-    // might cause infinite loop in DDD, if it does, cap deltatime on CPU lag
-    gCurrentArea->luigiCamera->controller = (gMarioStates[1].controller);
-    gCurrentArea->luigiCamera->cameraID = 1;
-    gMarioStates[1].thisPlayerCamera = gCurrentArea->luigiCamera;
-    gCurrentArea->marioCamera->controller = (gMarioStates[0].controller);
-    gCurrentArea->marioCamera->cameraID = 0;
-    gMarioStates[0].thisPlayerCamera = gCurrentArea->marioCamera;
-
-#ifdef TARGET_N64
+    
     deltaTime += newTime - oldTime;
     oldTime = newTime;
     while (deltaTime > 1562744) {
@@ -1155,7 +1141,37 @@ s32 play_mode_normal(void) {
             }
         }
     }
+}  
+#endif
+
+static void delta_time_reset(void) {
+#ifdef TARGET_N64
+    deltaTime = 0;
+    oldTime = osGetTime();
+#endif
+}
+
+s32 play_mode_normal(void) {
+    warp_area();
+
+    check_instant_warp(gLuigiState);
+    check_instant_warp(gMarioState);
+
+    // might cause infinite loop in DDD, if it does, cap deltatime on CPU lag
+    gCurrentArea->luigiCamera->controller = (gMarioStates[1].controller);
+    gCurrentArea->luigiCamera->cameraID = 1;
+    gMarioStates[1].thisPlayerCamera = gCurrentArea->luigiCamera;
+    gCurrentArea->marioCamera->controller = (gMarioStates[0].controller);
+    gCurrentArea->marioCamera->cameraID = 0;
+    gMarioStates[0].thisPlayerCamera = gCurrentArea->marioCamera;
+
+#ifdef TARGET_N64
+    delta_time_handle();
 #else
+    if (sTimerRunning && gHudDisplay.timer < 17999) {
+        gHudDisplay.timer += 1;
+    }
+
     area_update_objects();
 #endif
 
@@ -1351,31 +1367,19 @@ s32 update_level(void) {
             break;
         case PLAY_MODE_PAUSED:
             changeLevel = play_mode_paused();
-#ifdef TARGET_N64
-            deltaTime = 0;
-            oldTime = osGetTime();
-#endif
+            delta_time_reset();
             break;
         case PLAY_MODE_CHANGE_AREA:
             changeLevel = play_mode_change_area();
-#ifdef TARGET_N64
-            deltaTime = 0;
-            oldTime = osGetTime();
-#endif
+            delta_time_reset();
             break;
         case PLAY_MODE_CHANGE_LEVEL:
             changeLevel = play_mode_change_level();
-#ifdef TARGET_N64
-            deltaTime = 0;
-            oldTime = osGetTime();
-#endif
+            delta_time_reset();
             break;
         case PLAY_MODE_FRAME_ADVANCE:
             changeLevel = play_mode_frame_advance();
-#ifdef TARGET_N64
-            deltaTime = 0;
-            oldTime = osGetTime();
-#endif
+            delta_time_reset();
             break;
     }
 
@@ -1470,10 +1474,7 @@ s32 lvl_init_or_update(s16 initOrUpdate, UNUSED s32 unused) {
     switch (initOrUpdate) {
         case 0:
             result = init_level();
-#ifdef TARGET_N64
-            deltaTime = 0;
-            oldTime = osGetTime();
-#endif
+            delta_time_reset();
             break;
         case 1:
             result = update_level();
