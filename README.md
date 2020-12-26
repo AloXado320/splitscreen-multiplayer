@@ -1,4 +1,4 @@
-# Project Ultra 64 Mario Bros.
+# Ultra 64 Mario Bros.
 
 - This repo aims to combine Splitscreen and Single Player with the ability to select Mario or Luigi.
 
@@ -99,7 +99,7 @@ Resulting artifacts can be found in the `build` directory.
 
 The full list of configurable variables are listed below, with the default being the first listed:
 
-* ``VERSION``: ``us``, ``jp``, ``eu``, ``sh`` (WIP)
+* ``VERSION``: ``us``, ``jp``, ``eu``, ``sh``
 * ``GRUCODE``: ``f3d_old``, ``f3d_new``, ``f3dex``, ``f3dex2``, ``f3dzex``
 * ``COMPARE``: ``1`` (compare ROM hash), ``0`` (do not compare ROM hash)
 * ``NON_MATCHING``: Use functionally equivalent C implementations for non-matchings (Currently there aren't any non-matchings, but this will apply to Shindou and iQue). Also will avoid instances of undefined behavior.
