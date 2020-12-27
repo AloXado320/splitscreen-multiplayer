@@ -59,6 +59,8 @@ build/*
 /assets/**/*.bin
 /sound/**/*.m64
 /sound/**/*.aiff
+!/sound/samples/sfx_mario/*.aiff
+!/sound/samples/sfx_mario_peach/*.aiff
 !/levels/**/*custom*.png
 !/levels/**/*custom*/**/*.png
 !/actors/**/*custom*.png
