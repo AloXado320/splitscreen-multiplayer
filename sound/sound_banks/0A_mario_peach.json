@@ -133,6 +133,130 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "16_peach_mario2_custom"
+        },
+        "inst23": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "20_luigi_waaaooow"
+        },
+        "inst24": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "21_luigi_hoohoo"
+        },
+        "inst25": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "22_luigi_panting"
+        },
+        "inst26": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "23_luigi_dying"
+        },
+        "inst27": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "24_luigi_on_fire"
+        },
+        "inst28": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "25_luigi_uh2"
+        },
+        "inst29": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "26_luigi_coughing"
+        },
+        "inst30": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "27_luigi_its_a_me_mario"
+        },
+        "inst31": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "28_luigi_punch_yah"
+        },
+        "inst32": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "29_luigi_punch_hoo"
+        },
+        "inst33": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2A_luigi_mama_mia"
+        },
+        "inst34": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2B_luigi_okey_dokey"
+        },
+        "inst35": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2C_luigi_drowning"
+        },
+        "inst36": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2D_luigi_thank_you_playing_my_game"
+        },
+        "inst37": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2E_peach_dear_luigi_custom"
+        },
+        "inst38": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2F_peach_luigi_custom"
+        },
+        "inst39": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "30_peach_power_of_the_stars_custom"
+        },
+        "inst40": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "31_peach_thanks_to_you_custom"
+        },
+        "inst41": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "32_peach_thank_you_luigi_custom"
+        },
+        "inst42": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "33_peach_something_special_custom"
+        },
+        "inst43": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "34_peach_bake_a_cake_custom"
+        },
+        "inst44": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "35_peach_for_luigi_custom"
+        },
+        "inst45": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "36_peach_luigi2_custom"
         }
     },
     "instrument_list": [
@@ -159,6 +283,30 @@
         "inst19",
         "inst20",
         "inst21",
-        "inst22"
+        "inst22",
+        "inst23",
+        "inst24",
+        "inst25",
+        null,
+        "inst26",
+        "inst27",
+        "inst28",
+        "inst29",
+        "inst30",
+        "inst31",
+        "inst32",
+        "inst33",
+        "inst34",
+        "inst35",
+        "inst36",
+        "inst37",
+        "inst38",
+        "inst39",
+        "inst40",
+        "inst41",
+        "inst42",
+        "inst43",
+        "inst44",
+        "inst45"
     ]
 }

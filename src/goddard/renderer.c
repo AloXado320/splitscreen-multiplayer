@@ -72,11 +72,11 @@ struct GdDisplayList {
     /*0x4C*/ struct GdDisplayList *parent; // not quite sure?
 };                                         /* sizeof = 0x50 */
 // accessor macros for gd dl
-#define DL_CURRENT_VTX(dl)   ((dl)->vtx[(dl)->curVtxIdx])
-#define DL_CURRENT_MTX(dl)   ((dl)->mtx[(dl)->curMtxIdx])
+#define DL_CURRENT_VTX(dl) ((dl)->vtx[(dl)->curVtxIdx])
+#define DL_CURRENT_MTX(dl) ((dl)->mtx[(dl)->curMtxIdx])
 #define DL_CURRENT_LIGHT(dl) ((dl)->light[(dl)->curLightIdx])
-#define DL_CURRENT_GFX(dl)   ((dl)->gfx[(dl)->curGfxIdx])
-#define DL_CURRENT_VP(dl)    ((dl)->vp[(dl)->curVpIdx])
+#define DL_CURRENT_GFX(dl) ((dl)->gfx[(dl)->curGfxIdx])
+#define DL_CURRENT_VP(dl) ((dl)->vp[(dl)->curVpIdx])
 
 struct LightDirVec {
     s32 x, y, z;
@@ -115,19 +115,19 @@ static OSContPad sPrevFrameCont[4]; // @ 801BAE88
 static u8 D_801BAEA0;
 static struct ObjGadget *sTimerGadgets[GD_NUM_TIMERS]; // @ 801BAEA8
 static u32 D_801BAF28;                                 // RAM addr offset?
-static s16 sTriangleBuf[13][8];                          // [[s16; 8]; 13]? vert indices?
+static s16 sTriangleBuf[13][8];                        // [[s16; 8]; 13]? vert indices?
 static u32 unref_801bb000[3];
 static u8 *sMemBlockPoolBase; // @ 801BB00C
 static u32 sAllocMemory;      // @ 801BB010; malloc-ed bytes
 static u32 unref_801bb014;
 static s32 D_801BB018;
 static s32 D_801BB01C;
-static void *sLoadedTextures[0x10];          // texture pointers
-static s32 sTextureDisplayLists[0x10];            // gd_dl indices
+static void *sLoadedTextures[0x10];     // texture pointers
+static s32 sTextureDisplayLists[0x10];  // gd_dl indices
 static s16 sVtxCvrtTCBuf[2];            // @ 801BB0A0
 static s32 sCarGdDlNum;                 // @ 801BB0A4
 static struct ObjGroup *sYoshiSceneGrp; // @ 801BB0A8
-static s32 unusedDl801BB0AC;                  // unused DL number
+static s32 unusedDl801BB0AC;            // unused DL number
 static struct ObjGroup *sMarioSceneGrp; // @ 801BB0B0
 static s32 D_801BB0B4;                  // second offset into sTriangleBuf
 static struct ObjGroup *sLuigiSceneGrp; // @ 801BB0B0
@@ -135,18 +135,18 @@ static s32 D_801BB0B4L;                 // second offset into D_801BAF30
 static struct ObjGroup *sCarSceneGrp;   // @ 801BB0B8
 static s32 sVertexBufCount; // vtx's to load into RPD? Vtx len in GD Dl and in the lower bank (AF30)
 static struct ObjView *sYoshiSceneView; // @ 801BB0C0
-static s32 sTriangleBufCount;                  // number of triangles in sTriangleBuf
+static s32 sTriangleBufCount;           // number of triangles in sTriangleBuf
 static struct ObjView *sMSceneView;     // @ 801BB0C8; Mario scene view
-static s32 sVertexBufStartIndex;                  // Vtx start in GD Dl
+static s32 sVertexBufStartIndex;        // Vtx start in GD Dl
 static struct ObjView *sLSceneView;     // @ 801BB0C8; Mario scene view
-static s32 sVertexBufStartIndexLuigi;                                                              
-static struct ObjView *sCarSceneView;   // @ 801BB0D0
-static s32 sUpdateYoshiScene;           // @ 801BB0D4; update dl Vtx from ObjVertex?
-static s32 sUpdateMarioScene;           // @ 801BB0D8; update dl Vtx from ObjVertex?
+static s32 sVertexBufStartIndexLuigi;
+static struct ObjView *sCarSceneView; // @ 801BB0D0
+static s32 sUpdateYoshiScene;         // @ 801BB0D4; update dl Vtx from ObjVertex?
+static s32 sUpdateMarioScene;         // @ 801BB0D8; update dl Vtx from ObjVertex?
 static u32 unref_801bb0dc;
 static s32 sUpdateCarScene; // @ 801BB0E0; guess, not really used
 static u32 unref_801bb0e4;
-static struct GdVec3f sTextDrawPos;  // position to draw text? only set in one function, never used
+static struct GdVec3f sTextDrawPos; // position to draw text? only set in one function, never used
 static u32 unref_801bb0f8[2];
 static Mtx sIdnMtx;           // @ 801BB100
 static Mat4f sInitIdnMat4;    // @ 801BB140
@@ -161,13 +161,14 @@ static Hilite sHilites[600];
 static struct GdVec3f D_801BD758;
 static struct GdVec3f D_801BD768; // had to migrate earlier
 static u32 D_801BD774;
-static struct GdObj *sMenuGadgets[9]; // @ 801BD778; d_obj ptr storage? menu?
+static struct GdObj *sMenuGadgets[9];   // @ 801BD778; d_obj ptr storage? menu?
 static struct ObjView *sDebugViews[2];  // Seems to be a list of ObjViews for displaying debug info
-static struct GdDisplayList *sStaticDl;     // @ 801BD7A8
+static struct GdDisplayList *sStaticDl; // @ 801BD7A8
 static struct GdDisplayList *sDynamicMainDls[2]; // @ 801BD7B0
-static struct GdDisplayList *sGdDlStash;    // @ 801BD7B8
-static struct GdDisplayList *sMHeadMainDls[2]; // @ 801BD7C0; two DLs, double buffered one per frame - seem to be basic dls that branch to actual lists?
-static struct GdDisplayList *sViewDls[3][2];       // I guess? 801BD7C8 -> 801BD7E0?
+static struct GdDisplayList *sGdDlStash;         // @ 801BD7B8
+static struct GdDisplayList *sMHeadMainDls[2];   // @ 801BD7C0; two DLs, double buffered one per frame -
+                                                 // seem to be basic dls that branch to actual lists?
+static struct GdDisplayList *sViewDls[3][2];     // I guess? 801BD7C8 -> 801BD7E0?
 static struct GdDisplayList *sGdDLArray[MAX_GD_DLS]; // @ 801BD7E0; indexed by dl number (gddl+0x44)
 static s32 sPickBufLen;                              // @ 801BE780
 static s32 sPickBufPosition;                         // @ 801BE784
@@ -194,18 +195,18 @@ static s32 D_801A8674 = 0;
 static u32 unref_801a8678 = 0;
 static s32 D_801A867C = 0;
 static s32 D_801A8680 = 0;
-static f32 sTracked1FrameTime = 0.0f; // @ 801A8684
-static f32 sDynamicsTime = 0.0f;      // @ 801A8688
-static f32 sDLGenTime = 0.0f;         // @ 801A868C
-static f32 sRCPTime = 0.0f;           // @ 801A8690
-static f32 sTimeScaleFactor = 1.0f;   // @ D_801A8694
-static u32 sMemBlockPoolSize = 1;     // @ 801A8698
-static s32 sMemBlockPoolUsed = 0;     // @ 801A869C
-static s32 sTextureCount = 0;  // maybe?
+static f32 sTracked1FrameTime = 0.0f;     // @ 801A8684
+static f32 sDynamicsTime = 0.0f;          // @ 801A8688
+static f32 sDLGenTime = 0.0f;             // @ 801A868C
+static f32 sRCPTime = 0.0f;               // @ 801A8690
+static f32 sTimeScaleFactor = 1.0f;       // @ D_801A8694
+static u32 sMemBlockPoolSize = 1;         // @ 801A8698
+static s32 sMemBlockPoolUsed = 0;         // @ 801A869C
+static s32 sTextureCount = 0;             // maybe?
 static struct GdTimer *D_801A86A4 = NULL; // timer for dlgen, dynamics, or rcp
 static struct GdTimer *D_801A86A8 = NULL; // timer for dlgen, dynamics, or rcp
 static struct GdTimer *D_801A86AC = NULL; // timer for dlgen, dynamics, or rcp
-s32 gGdFrameBufNum = 0;                      // @ 801A86B0
+s32 gGdFrameBufNum = 0;                   // @ 801A86B0
 static u32 unref_801a86B4 = 0;
 static struct ObjShape *sHandShape = NULL; // @ 801A86B8
 static s32 D_801A86BC = 1;
@@ -213,14 +214,14 @@ static s32 D_801A86C0 = 0; // gd_dl id for something?
 static u32 unref_801a86C4 = 10;
 static s32 sMtxParamType = G_MTX_PROJECTION;
 static struct GdVec3f D_801A86CC = { 1.0f, 1.0f, 1.0f };
-static struct ObjView *sActiveView = NULL;  // @ 801A86D8 current view? used when drawing dl
+static struct ObjView *sActiveView = NULL; // @ 801A86D8 current view? used when drawing dl
 static struct ObjView *sScreenView = NULL; // @ 801A86DC
 static struct ObjView *D_801A86E0 = NULL;
 static struct ObjView *sHandView = NULL; // @ 801A86E4
 static struct ObjView *sMenuView = NULL; // @ 801A86E8
 static u32 sItemsInMenu = 0;             // @ 801A86EC
-static s32 sDebugViewsCount = 0;               // number of elements in the sDebugViews array
-static s32 sCurrDebugViewIndex = 0;             // @ 801A86F4; timing activate cool down counter?
+static s32 sDebugViewsCount = 0;         // number of elements in the sDebugViews array
+static s32 sCurrDebugViewIndex = 0;      // @ 801A86F4; timing activate cool down counter?
 static u32 unref_801a86F8 = 0;
 static struct GdDisplayList *sCurrentGdDl = NULL; // @ 801A86FC
 static u32 sGdDlCount = 0;                        // @ 801A8700
@@ -767,7 +768,8 @@ static Gfx *next_gfx(void) {
 }
 
 /**
- * Increments the current display list's Light index list and returns a pointer to the next Light element
+ * Increments the current display list's Light index list and returns a pointer to the next Light
+ * element
  */
 static Lights4 *next_light(void) {
     if (sCurrentGdDl->curLightIdx >= sCurrentGdDl->totalLights) {
@@ -779,7 +781,8 @@ static Lights4 *next_light(void) {
 }
 
 /**
- * Increments the current display list's matrix index list and returns a pointer to the next matrix element
+ * Increments the current display list's matrix index list and returns a pointer to the next matrix
+ * element
  */
 static Mtx *next_mtx(void) {
     if (sCurrentGdDl->curMtxIdx >= sCurrentGdDl->totalMtx) {
@@ -791,7 +794,8 @@ static Mtx *next_mtx(void) {
 }
 
 /**
- * Increments the current display list's vertex index list and returns a pointer to the next vertex element
+ * Increments the current display list's vertex index list and returns a pointer to the next vertex
+ * element
  */
 static Vtx *next_vtx(void) {
     if (sCurrentGdDl->curVtxIdx >= sCurrentGdDl->totalVtx) {
@@ -803,7 +807,8 @@ static Vtx *next_vtx(void) {
 }
 
 /**
- * Increments the current display list's viewport list and returns a pointer to the next viewport element
+ * Increments the current display list's viewport list and returns a pointer to the next viewport
+ * element
  */
 static Vp *next_vp(void) {
     if (sCurrentGdDl->curVpIdx >= sCurrentGdDl->totalVp) {
@@ -848,7 +853,7 @@ void gd_printf(const char *format, ...) {
     UNUSED u32 pad150;
     char buf[0x100];
     char *csr = buf;
-    char spec[8];    // specifier string
+    char spec[8]; // specifier string
     UNUSED u32 pad40;
     union PrintVal val;
     va_list args;
@@ -1013,9 +1018,9 @@ void draw_indexed_dl(s32 dlNum, s32 gfxIdx) {
     Gfx *dl;
 
     if (gfxIdx != 0) {
-        dl = sGdDLArray[dlNum]->dlptr[gfxIdx - 1];  // multiple display lists (determined by frame)
+        dl = sGdDLArray[dlNum]->dlptr[gfxIdx - 1]; // multiple display lists (determined by frame)
     } else {
-        dl = sGdDLArray[dlNum]->gfx;  // only one display list
+        dl = sGdDLArray[dlNum]->gfx; // only one display list
     }
     gSPDisplayList(next_gfx(), GD_VIRTUAL_TO_PHYSICAL(dl));
 }
@@ -1175,7 +1180,8 @@ void print_gdm_stats(void) {
 
 /* 24AC80 -> 24AD14; orig name: func_8019C4B0 */
 struct ObjView *make_view_withgrp(char *name, struct ObjGroup *grp) {
-    struct ObjView *view = make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, 0, 0, 320, 240, grp);
+    struct ObjView *view =
+        make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, 0, 0, 320, 240, grp);
     UNUSED struct ObjGroup *viewgrp = make_group(2, grp, view);
 
     view->lights = gGdLightGroup;
@@ -1291,11 +1297,11 @@ void gd_vblank(void) {
 }
 
 /**
- * Copies the player1 controller data from p1cont to sGdContPads[0]. 
+ * Copies the player1 controller data from p1cont to sGdContPads[0].
  */
 void gd_copy_p1_contpad(OSContPad *p1cont) {
-    u32 i;                                    // 24
-    u8 *src = (u8 *) p1cont;             // 20
+    u32 i;                             // 24
+    u8 *src = (u8 *) p1cont;           // 20
     u8 *dest = (u8 *) &sGdContPads[0]; // 1c
 
     for (i = 0; i < sizeof(OSContPad); i++) {
@@ -1657,10 +1663,10 @@ s32 gd_startdisplist(s32 memarea) {
     D_801BB01C = 1;
 
     switch (memarea) {
-        case 7:  // Create new display list as a child of sStaticDl
+        case 7: // Create new display list as a child of sStaticDl
             sCurrentGdDl = create_child_gdl(0, sStaticDl);
             break;
-        case 8:  // Use the active view's display list
+        case 8: // Use the active view's display list
             if (sActiveView->id > 2) {
                 fatal_printf("gd_startdisplist(): Too many views to display");
             }
@@ -1837,7 +1843,8 @@ void func_8019F2C4(f32 arg0, s8 arg1) {
 }
 
 /* 24DAE8 -> 24E1A8 */
-void gd_dl_lookat(struct ObjCamera *cam, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7) {
+void gd_dl_lookat(struct ObjCamera *cam, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6,
+                  f32 arg7) {
     LookAt *lookat;
 
     arg7 *= RAD_PER_DEG;
@@ -2004,14 +2011,13 @@ void gd_dl_flush_vertices(void) {
 
     if (sVertexBufCount != 0) {
         // load vertex data
-        gSPVertex(next_gfx(), osVirtualToPhysical(&sCurrentGdDl->vtx[sVertexBufStartIndex]), sVertexBufCount, 0);
+        gSPVertex(next_gfx(), osVirtualToPhysical(&sCurrentGdDl->vtx[sVertexBufStartIndex]),
+                  sVertexBufCount, 0);
         // load triangle data
         for (i = 0; i < sTriangleBufCount; i++) {
-            gSP1Triangle(next_gfx(),
-                sTriangleBuf[i][0] - sVertexBufStartIndex,
-                sTriangleBuf[i][1] - sVertexBufStartIndex,
-                sTriangleBuf[i][2] - sVertexBufStartIndex,
-                0);
+            gSP1Triangle(next_gfx(), sTriangleBuf[i][0] - sVertexBufStartIndex,
+                         sTriangleBuf[i][1] - sVertexBufStartIndex,
+                         sTriangleBuf[i][2] - sVertexBufStartIndex, 0);
         }
     }
     func_801A0038();
@@ -2079,9 +2085,9 @@ void branch_to_gddl(s32 dlNum) {
 /* 24EC48 -> 24F03C */
 // phong shading function?
 void gd_dl_hilite(s32 idx, // material GdDl number; offsets into hilite array
-                   struct ObjCamera *cam, UNUSED struct GdVec3f *arg2, UNUSED struct GdVec3f *arg3,
-                   struct GdVec3f *arg4,   // vector to light source?
-                   struct GdColour *colour // light color
+                  struct ObjCamera *cam, UNUSED struct GdVec3f *arg2, UNUSED struct GdVec3f *arg3,
+                  struct GdVec3f *arg4,   // vector to light source?
+                  struct GdColour *colour // light color
 ) {
     UNUSED u32 pad2[24];
     Hilite *hilite; // 4c
@@ -2273,14 +2279,16 @@ static void gd_dl_viewport(void) {
 
     vp = &DL_CURRENT_VP(sCurrentGdDl);
 
-    vp->vp.vscale[0] = (s16)(sActiveView->lowerRight.x * 2.0f);  // x scale
-    vp->vp.vscale[1] = (s16)(sActiveView->lowerRight.y * 2.0f);  // y scale
-    vp->vp.vscale[2] = 0x1FF;  // z scale
+    vp->vp.vscale[0] = (s16)(sActiveView->lowerRight.x * 2.0f); // x scale
+    vp->vp.vscale[1] = (s16)(sActiveView->lowerRight.y * 2.0f); // y scale
+    vp->vp.vscale[2] = 0x1FF;                                   // z scale
     vp->vp.vscale[3] = 0x000;
 
-    vp->vp.vtrans[0] = (s16)((sActiveView->upperLeft.x * 4.0f) + (sActiveView->lowerRight.x * 2.0f));  // x offset
-    vp->vp.vtrans[1] = (s16)((sActiveView->upperLeft.y * 4.0f) + (sActiveView->lowerRight.y * 2.0f));  // y offset
-    vp->vp.vtrans[2] = 0x1FF;  // z offset
+    vp->vp.vtrans[0] =
+        (s16)((sActiveView->upperLeft.x * 4.0f) + (sActiveView->lowerRight.x * 2.0f)); // x offset
+    vp->vp.vtrans[1] =
+        (s16)((sActiveView->upperLeft.y * 4.0f) + (sActiveView->lowerRight.y * 2.0f)); // y offset
+    vp->vp.vtrans[2] = 0x1FF;                                                          // z offset
     vp->vp.vtrans[3] = 0x000;
 
     gSPViewport(next_gfx(), osVirtualToPhysical(vp));
@@ -2414,7 +2422,7 @@ void parse_p1_controller(void) {
     OSContPad *currInputs;
     OSContPad *prevInputs;
 
-    // Copy current inputs to previous 
+    // Copy current inputs to previous
     u8 *src = (u8 *) gdctrl;
     u8 *dest = (u8 *) gdctrl->prevFrame;
     for (i = 0; i < sizeof(struct GdControl); i++) {
@@ -2426,28 +2434,28 @@ void parse_p1_controller(void) {
     currInputs = &sGdContPads[0];
     prevInputs = &sPrevFrameCont[0];
     // stick values
-    gdctrl->stickXf     = currInputs->stick_x;
-    gdctrl->stickYf     = currInputs->stick_y;
+    gdctrl->stickXf = currInputs->stick_x;
+    gdctrl->stickYf = currInputs->stick_y;
     gdctrl->stickDeltaX = gdctrl->stickX;
     gdctrl->stickDeltaY = gdctrl->stickY;
-    gdctrl->stickX      = currInputs->stick_x;
-    gdctrl->stickY      = currInputs->stick_y;
+    gdctrl->stickX = currInputs->stick_x;
+    gdctrl->stickY = currInputs->stick_y;
     gdctrl->stickDeltaX -= gdctrl->stickX;
     gdctrl->stickDeltaY -= gdctrl->stickY;
     // button values (as bools)
-    gdctrl->trgL   = (currInputs->button & L_TRIG) != 0;
-    gdctrl->trgR   = (currInputs->button & R_TRIG) != 0;
-    gdctrl->btnA   = (currInputs->button & A_BUTTON) != 0;
-    gdctrl->btnB   = (currInputs->button & B_BUTTON) != 0;
-    gdctrl->cleft  = (currInputs->button & L_CBUTTONS) != 0;
+    gdctrl->trgL = (currInputs->button & L_TRIG) != 0;
+    gdctrl->trgR = (currInputs->button & R_TRIG) != 0;
+    gdctrl->btnA = (currInputs->button & A_BUTTON) != 0;
+    gdctrl->btnB = (currInputs->button & B_BUTTON) != 0;
+    gdctrl->cleft = (currInputs->button & L_CBUTTONS) != 0;
     gdctrl->cright = (currInputs->button & R_CBUTTONS) != 0;
-    gdctrl->cup    = (currInputs->button & U_CBUTTONS) != 0;
-    gdctrl->cdown  = (currInputs->button & D_CBUTTONS) != 0;
+    gdctrl->cup = (currInputs->button & U_CBUTTONS) != 0;
+    gdctrl->cdown = (currInputs->button & D_CBUTTONS) != 0;
     // but not these buttons??
-    gdctrl->dleft  = currInputs->button & L_JPAD;
+    gdctrl->dleft = currInputs->button & L_JPAD;
     gdctrl->dright = currInputs->button & R_JPAD;
-    gdctrl->dup    = currInputs->button & U_JPAD;
-    gdctrl->ddown  = currInputs->button & D_JPAD;
+    gdctrl->dup = currInputs->button & U_JPAD;
+    gdctrl->ddown = currInputs->button & D_JPAD;
 
     if (gdctrl->btnA && !gdctrl->dragging) {
         gdctrl->startedDragging = TRUE;
@@ -2532,8 +2540,7 @@ void stub_renderer_4(f32 arg0) {
     return;
 
     // dead code
-    if (D_801BD768.x * D_801A86CC.x + arg0 * 2.0f > 160.0)
-    {
+    if (D_801BD768.x * D_801A86CC.x + arg0 * 2.0f > 160.0) {
         func_801A3370(D_801BD758.x - D_801BD768.x, -20.0f, 0.0f);
         D_801BD768.x = D_801BD758.x;
     }
@@ -2856,7 +2863,7 @@ long defpup(UNUSED const char *menufmt, ...) {
 }
 
 /**
-* Unused - called when the user picks an item from the "Control Type" menu.
+ * Unused - called when the user picks an item from the "Control Type" menu.
  * Presumably, this would allow switching inputs between controller, keyboard,
  * and mouse.
  *
@@ -3067,6 +3074,15 @@ u8 handCollission(f32 x, f32 y) {
     return 0;
 }
 
+u16 currButton = 0;
+u16 buttonCombo[] = {
+    D_JPAD,     0, D_JPAD,     0, L_JPAD,     0, L_JPAD,     0, L_JPAD,     0, R_JPAD,     0,
+    R_JPAD,     0, R_JPAD,     0, D_CBUTTONS, 0, D_CBUTTONS, 0, L_CBUTTONS, 0, L_CBUTTONS, 0,
+    L_CBUTTONS, 0, R_CBUTTONS, 0, R_CBUTTONS, 0, R_CBUTTONS,
+
+};
+u8 buttonComboLength = sizeof(buttonCombo) / 2;
+extern s8 gDebugLevelSelect;
 extern void *seg2_dialog_table[];
 extern u8 coop;
 extern u8 singlePlayerChar;
@@ -3090,6 +3106,22 @@ void update_cursor(void) {
     } else {
         sHandView->flags &= ~VIEW_UPDATE;
         gd_play_sfx(GD_SFX_HAND_DISAPPEAR);
+    }
+    if (sGdContPads[0].button) {
+        if (sGdContPads[0].button == buttonCombo[currButton]) {
+            currButton++;
+        } else if (sGdContPads[0].button == buttonCombo[currButton - 1]) {
+        } else {
+            currButton = 0;
+        }
+    } else {
+        if (sGdContPads[0].button == buttonCombo[currButton]) {
+            currButton++;
+        }
+    }
+    if (currButton == buttonComboLength) {
+        gDebugLevelSelect = 1;
+        gd_play_sfx(GD_SFX_UNUSED_COIN);
     }
 
     sHandView->upperLeft.x = (f32) gGdCtrl.csrX;
@@ -3147,7 +3179,7 @@ void update_cursor(void) {
             for (i = 0; i < 10; i++) {
                 str[11 + i] = 0x9e;
             }
-            #define TEXTBLOCKSIZE 0x7F00
+#define TEXTBLOCKSIZE 0x7F00
             // replace mario references with luigi
             dialog = (struct DialogEntry *) segmented_to_virtual(dialogTable[0]);
             str = segmented_to_virtual(dialog->str);
@@ -3158,10 +3190,10 @@ void update_cursor(void) {
                             if (str[i + 3] == 0x2c) {
                                 if (str[i + 4] == 0x32) {
                                     str[i] = 0x15;
-                                    str[i+1] = 0x38;
-                                    str[i+2] = 0x2c;
-                                    str[i+3] = 0x2a;
-                                    str[i+4] = 0x2c;
+                                    str[i + 1] = 0x38;
+                                    str[i + 2] = 0x2c;
+                                    str[i + 3] = 0x2a;
+                                    str[i + 4] = 0x2c;
                                 }
                             }
                         }
@@ -3420,7 +3452,7 @@ void stub_renderer_14(UNUSED s8 *arg0) {
  * functions from IRIS GL.
  * @param buf  pointer to an array of 16-bit values
  * @param len  maximum number of values to store
- */ 
+ */
 void init_pick_buf(s16 *buf, s32 len) {
     buf[0] = 0;
     buf[1] = 0;
@@ -3517,7 +3549,7 @@ void Unknown801A5D90(struct ObjGroup *arg0) {
     struct ObjLabel *mtLabel;  // 254
     struct ObjGroup *labelgrp; // 250
     struct ObjView *memview;   // 24c
-    s32 trackerNum;                 // memtracker id and/or i
+    s32 trackerNum;            // memtracker id and/or i
     s32 sp244;                 // label y position?
     s32 sp240;                 // done checking all memtrakcers
     s32 sp23C;                 // memtracker label made?
@@ -3838,7 +3870,8 @@ static void gd_block_dma(u32 romAddr, void *vAddr, s32 size) {
             blockSize = 0x1000;
         }
 
-        osPiStartDma(&sGdDMAReqMesg, OS_MESG_PRI_NORMAL, OS_READ, romAddr, vAddr, blockSize, &sGdDMAQueue);
+        osPiStartDma(&sGdDMAReqMesg, OS_MESG_PRI_NORMAL, OS_READ, romAddr, vAddr, blockSize,
+                     &sGdDMAQueue);
         osRecvMesg(&sGdDMAQueue, &sGdDMACompleteMsg, OS_MESG_BLOCK);
         romAddr += blockSize;
         vAddr = (void *) ((uintptr_t) vAddr + blockSize);
@@ -3880,7 +3913,7 @@ struct GdObj *load_dynlist(struct DynList *dynlist) {
             fatal_printf("load_dynlist() unkown bank");
     }
 
-#define PAGE_SIZE 65536  // size of a 64K TLB page 
+#define PAGE_SIZE 65536 // size of a 64K TLB page
 
     segSize = dynlistSegEnd - dynlistSegStart;
     allocSegSpace = gd_malloc_temp(segSize + PAGE_SIZE);
@@ -3890,7 +3923,7 @@ struct GdObj *load_dynlist(struct DynList *dynlist) {
     }
 
     allocSegSpace = (u8 *) (((uintptr_t) allocSegSpace + PAGE_SIZE) & 0xFFFF0000);
-    
+
     // Copy the dynlist data from ROM
     gd_block_dma(dynlistSegStart, (void *) allocSegSpace, segSize);
 
@@ -3903,10 +3936,12 @@ struct GdObj *load_dynlist(struct DynList *dynlist) {
 
     // Map virtual address 0x04000000 to `allocSegSpace`
     for (i = 0; i < tlbEntries; i++) {
-        osMapTLB(i, OS_PM_64K,
-            (void *) (uintptr_t) (0x04000000 + (i * 2 * PAGE_SIZE)),  // virtual address to map
-            GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * PAGE_SIZE) + 0),  // even page address
-            GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * PAGE_SIZE) + PAGE_SIZE),  // odd page address
+        osMapTLB(
+            i, OS_PM_64K,
+            (void *) (uintptr_t)(0x04000000 + (i * 2 * PAGE_SIZE)), // virtual address to map
+            GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * PAGE_SIZE) + 0), // even page address
+            GD_LOWER_24(((uintptr_t) allocSegSpace) + (i * 2 * PAGE_SIZE)
+                        + PAGE_SIZE), // odd page address
             -1);
     }
 
@@ -3944,8 +3979,8 @@ void func_801A71CC(struct ObjNet *net) {
     UNUSED u32 pad8C;
     struct ObjZone *sp88;
     register struct ListNode *link;  // s0 (84)
-    s32 sp80;                     // linked planes contained in zone?
-    s32 sp7C;                     // linked planes in net count?
+    s32 sp80;                        // linked planes contained in zone?
+    s32 sp7C;                        // linked planes in net count?
     register struct ListNode *link1; // s1 (78)
     register struct ListNode *link2; // s2 (74)
     register struct ListNode *link3; // s3 (70)

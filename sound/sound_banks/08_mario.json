@@ -155,6 +155,152 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "1A_mario_lets_a_go"
+        },
+        "inst27": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "20_luigi_jump_hoo"
+        },
+        "inst28": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "21_luigi_jump_wah"
+        },
+        "inst29": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "22_luigi_yah"
+        },
+        "inst30": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "23_luigi_haha"
+        },
+        "inst31": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "24_luigi_yahoo"
+        },
+        "inst32": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "25_luigi_uh"
+        },
+        "inst33": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "26_luigi_hrmm"
+        },
+        "inst34": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "27_luigi_wah2"
+        },
+        "inst35": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "28_luigi_whoa"
+        },
+        "inst36": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "29_luigi_eeuh"
+        },
+        "inst37": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2A_luigi_attacked"
+        },
+        "inst38": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2B_luigi_ooof"
+        },
+        "inst39": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2C_luigi_here_we_go"
+        },
+        "inst40": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2D_luigi_yawning"
+        },
+        "inst41": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2E_luigi_snoring1"
+        },
+        "inst42": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "2F_luigi_snoring2"
+        },
+        "inst43": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "30_luigi_doh"
+        },
+        "inst44": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "31_luigi_game_over"
+        },
+        "inst45": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "32_luigi_hello"
+        },
+        "inst46": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "33_luigi_press_start_to_play_placeholder"
+        },
+        "inst47": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "34_luigi_twirl_bounce"
+        },
+        "inst48": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "35_luigi_snoring3_placeholder"
+        },
+        "inst49": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": {"ifdef": ["VERSION_SH"], "then": "16_mario_bye_bye", "else": "36_luigi_so_longa_bowser"}
+        },
+        "inst50": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "37_luigi_ima_tired"
+        },
+        "inst51": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "38_luigi_waha"
+        },
+        "inst52": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "39_luigi_yippee"
+        },
+        "inst53": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "3A_luigi_lets_a_go"
         }
     },
     "instrument_list": [
@@ -184,6 +330,33 @@
         "inst23",
         "inst24",
         "inst25",
-        "inst26"
+        "inst26",
+        "inst27",
+        "inst28",
+        "inst29",
+        "inst30",
+        "inst31",
+        "inst32",
+        "inst33",
+        "inst34",
+        "inst35",
+        "inst36",
+        "inst37",
+        "inst38",
+        "inst39",
+        "inst40",
+        "inst41",
+        "inst42",
+        "inst43",
+        "inst44",
+        "inst45",
+        "inst46",
+        "inst47",
+        "inst48",
+        "inst49",
+        "inst50",
+        "inst51",
+        "inst52",
+        "inst53"
     ]
 }
