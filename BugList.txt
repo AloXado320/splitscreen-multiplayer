@@ -86,6 +86,7 @@ Newest Bugs
 4. HUD scales differently from Single Player (who cares? which one is the correct one? Hard to say.) https://cdn.discordapp.com/attachments/749001228498894889/759490288216571924/4gdwvn.gif
 **6. Luigi's power meter is the shape of Mario's head
 7. exit course needs fixing
+8. text after achieving a certain amount of stars (e.g. the textbox after getting your first star) are missing
 
 For any other possible bugs, refer to the old todo list.
 
