@@ -34,8 +34,9 @@ s32 bhv_motos_do_throw_mario() {
 }
 
 void bhv_motos_hand_loop(void) {
-    o->oParentRelativePosY = -30.f;
-    o->oParentRelativePosX = -70.f; // Changed relative pos to make Mario fit in the hand better
+    o->oParentRelativePosY = -50.f;
+    o->oParentRelativePosX = 0.f; // Changed relative pos to make Mario fit in the hand better
+    o->oParentRelativePosZ = 100.f; // Changed relative pos to make Mario fit in the hand better
 
     common_anchor_mario_behavior(50.0f, 30.0f, 64); // Used common func instead of repeating code
     // Also vert speed increased from 0 to 50

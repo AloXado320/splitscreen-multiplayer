@@ -70,8 +70,8 @@ static s8 gMarioAttackScaleAnimation[3 * 6] = {
     10, 12, 16, 24, 10, 10, 10, 14, 20, 30, 10, 10, 10, 16, 20, 26, 26, 20,
 };
 
-struct MarioBodyState gBodyStates[2]; // 2nd is never accessed in practice, most likely Luigi related
-struct GraphNodeObject gMirrorMario;  // copy of Mario's geo node for drawing mirror Mario
+struct MarioBodyState gBodyStates[2];   // 2nd is never accessed in practice, most likely Luigi related
+struct GraphNodeObject gMirrorMario[2]; // copy of Mario's geo node for drawing mirror Mario
 
 // This whole file is weirdly organized. It has to be the same file due
 // to rodata boundaries and function aligns, which means the programmer
@@ -181,7 +181,8 @@ void bhv_toad_message_loop(void) {
 
 void bhv_toad_message_init(void) {
     s32 saveFlags = save_file_get_flags();
-    s32 starCount = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
+    s32 starCount =
+        save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
     s32 dialogId = (gCurrentObject->oBehParams >> 24) & 0xFF;
     s32 enoughStars = TRUE;
 
@@ -252,7 +253,7 @@ void bhv_unlock_door_star_loop(void) {
             gCurrentObject->oMoveAngleYaw +=
                 gCurrentObject->oUnlockDoorStarYawVel; // Apply yaw velocity
             obj_scale(gCurrentObject, gCurrentObject->oUnlockDoorStarTimer / 50.0f
-                                             + 0.5f); // Scale the star to be bigger
+                                          + 0.5f); // Scale the star to be bigger
             if (++gCurrentObject->oUnlockDoorStarTimer == 30) {
                 gCurrentObject->oUnlockDoorStarTimer = 0;
                 gCurrentObject->oUnlockDoorStarState++; // Sets state to UNLOCK_DOOR_STAR_WAITING
@@ -264,7 +265,7 @@ void bhv_unlock_door_star_loop(void) {
             if (++gCurrentObject->oUnlockDoorStarTimer == 30) {
                 play_sound(SOUND_MENU_STAR_SOUND,
                            gCurrentObject->soundOrigin); // Play final sound
-                cur_obj_hide();                                            // Hide the object
+                cur_obj_hide();                          // Hide the object
                 gCurrentObject->oUnlockDoorStarTimer = 0;
                 gCurrentObject
                     ->oUnlockDoorStarState++; // Sets state to UNLOCK_DOOR_STAR_SPAWNING_PARTICLES
@@ -289,9 +290,8 @@ void bhv_unlock_door_star_loop(void) {
     // Checks if the angle has cycled back to 0.
     // This means that the code will execute when the star completes a full revolution.
     if (prevYaw > (s16) gCurrentObject->oMoveAngleYaw) {
-        play_sound(
-            SOUND_GENERAL_SHORT_STAR,
-            gCurrentObject->soundOrigin); // Play a sound every time the star spins once
+        play_sound(SOUND_GENERAL_SHORT_STAR,
+                   gCurrentObject->soundOrigin); // Play a sound every time the star spins once
     }
 }
 
@@ -319,7 +319,7 @@ static Gfx *make_gfx_mario_alpha(struct GraphNodeGenerated *node, s16 alpha) {
 
 /**
  * Sets the correct blend mode and color for mirror Mario.
- */
+ *//*
 Gfx *geo_mirror_mario_set_alpha(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
     UNUSED u8 unused1[4];
     Gfx *gfx = NULL;
@@ -336,6 +336,20 @@ Gfx *geo_mirror_mario_set_alpha(s32 callContext, struct GraphNode *node, UNUSED 
         }
         bodyState = &gBodyStates[obj->oAnimState];
 
+        alpha = (bodyState->modelState & 0x100) ? (bodyState->modelState & 0xFF) : 255;
+        gfx = make_gfx_mario_alpha(asGenerated, alpha);
+    }
+    return gfx;
+}*/
+Gfx *geo_mirror_mario_set_alpha(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
+    UNUSED u8 unused1[4];
+    Gfx *gfx = NULL;
+    struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
+    struct MarioBodyState *bodyState = &gBodyStates[luigiCamFirst];
+    s16 alpha;
+    UNUSED u8 unused2[4];
+
+    if (callContext == GEO_CONTEXT_RENDER) {
         alpha = (bodyState->modelState & 0x100) ? (bodyState->modelState & 0xFF) : 255;
         gfx = make_gfx_mario_alpha(asGenerated, alpha);
     }
@@ -414,14 +428,15 @@ Gfx *geo_mario_tilt_torso(s32 callContext, struct GraphNode *node, UNUSED Mat4 *
             && action != ACT_RIDING_SHELL_GROUND) {
             vec3s_copy(bodyState->torsoAngle, gVec3sZero);
         }
-        if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
-        bodyState->torsoAngle[1] = bodyState->torsoAngle[1];
-        bodyState->torsoAngle[2] = bodyState->torsoAngle[2];
-        bodyState->torsoAngle[0] = bodyState->torsoAngle[0];
+        if ((m->thisPlayerCamera->cameraID)
+            || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
+            bodyState->torsoAngle[1] = bodyState->torsoAngle[1];
+            bodyState->torsoAngle[2] = bodyState->torsoAngle[2];
+            bodyState->torsoAngle[0] = bodyState->torsoAngle[0];
         } else {
-        rotNode->rotation[0] = bodyState->torsoAngle[1];
-        rotNode->rotation[1] = bodyState->torsoAngle[2];
-        rotNode->rotation[2] = bodyState->torsoAngle[0];
+            rotNode->rotation[0] = bodyState->torsoAngle[1];
+            rotNode->rotation[1] = bodyState->torsoAngle[2];
+            rotNode->rotation[2] = bodyState->torsoAngle[0];
         }
     }
     return NULL;
@@ -435,26 +450,29 @@ Gfx *geo_mario_head_rotation(s32 callContext, struct GraphNode *node, UNUSED Mat
     struct MarioBodyState *bodyState;
     s32 action;
     struct Object *obj;
+    if ((gCurGraphNodeObject != &gMirrorMario[0]) && (gCurGraphNodeObject != &gMirrorMario[1])) {
 
-    if (callContext == GEO_CONTEXT_RENDER) {
-        struct GraphNodeRotation *rotNode = (struct GraphNodeRotation *) node->next;
-        struct Camera *camera = gCurGraphNodeCamera->config.camera;
-        obj = (struct Object *) gCurGraphNodeObject; // TODO: change global type to Object pointer
-        if (gCurGraphNodeHeldObject != 0) {
-            obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
-        }
-        bodyState = &gBodyStates[obj->oAnimState];
-        action = bodyState->action;
-        if (camera->mode == CAMERA_MODE_C_UP) {
-            rotNode->rotation[0] = gPlayerCameraState[obj->oAnimState].headRotation[1];
-            rotNode->rotation[2] = gPlayerCameraState[obj->oAnimState].headRotation[0];
-        } else if (action & ACT_FLAG_WATER_OR_TEXT) {
-            rotNode->rotation[0] = bodyState->headAngle[1];
-            rotNode->rotation[1] = bodyState->headAngle[2];
-            rotNode->rotation[2] = bodyState->headAngle[0];
-        } else {
-            vec3s_set(bodyState->headAngle, 0, 0, 0);
-            vec3s_set(rotNode->rotation, 0, 0, 0);
+        if (callContext == GEO_CONTEXT_RENDER) {
+            struct GraphNodeRotation *rotNode = (struct GraphNodeRotation *) node->next;
+            struct Camera *camera;                       // = gCurGraphNodeCamera->config.camera;
+            obj = (struct Object *) gCurGraphNodeObject; // TODO: change global type to Object pointer
+            camera = gMarioStates[obj->oAnimState].thisPlayerCamera;
+            if (gCurGraphNodeHeldObject != 0) {
+                obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
+            }
+            bodyState = &gBodyStates[obj->oAnimState];
+            action = bodyState->action;
+            if (camera->mode == CAMERA_MODE_C_UP) {
+                rotNode->rotation[0] = gPlayerCameraState[obj->oAnimState].headRotation[1];
+                rotNode->rotation[2] = gPlayerCameraState[obj->oAnimState].headRotation[0];
+            } else if (action & ACT_FLAG_WATER_OR_TEXT) {
+                rotNode->rotation[0] = bodyState->headAngle[1];
+                rotNode->rotation[1] = bodyState->headAngle[2];
+                rotNode->rotation[2] = bodyState->headAngle[0];
+            } else {
+                vec3s_set(bodyState->headAngle, 0, 0, 0);
+                vec3s_set(rotNode->rotation, 0, 0, 0);
+            }
         }
     }
     return NULL;
@@ -593,7 +611,7 @@ Gfx *geo_mario_rotate_wing_cap_wings(s32 callContext, struct GraphNode *node, UN
         if (gCurGraphNodeHeldObject != 0) {
             obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
         }
-        //rotNode = &gBodyStates[obj->oAnimState];
+        // rotNode = &gBodyStates[obj->oAnimState];
 
         if (!gBodyStates[asGenerated->parameter >> 1].wingFlutter) {
             rotX = (coss((gAreaUpdateCounter & 0xF) << 12) + 1.0f) * 4096.0f;
@@ -617,43 +635,45 @@ Gfx *geo_switch_mario_hand_grab_pos(s32 callContext, struct GraphNode *b, Mat4 *
     Mat4 *curTransform = mtx;
     struct Object *obj;
     struct MarioState *marioState;
+    if ((gCurGraphNodeObject != &gMirrorMario[0]) && (gCurGraphNodeObject != &gMirrorMario[1])) {
 
-    if (callContext == GEO_CONTEXT_RENDER) {
-        obj = (struct Object *) gCurGraphNodeObject;
-        if (gCurGraphNodeHeldObject != 0) {
-            marioState = (struct Object *) gCurGraphNodeHeldObject->objNode;
-        }
-        marioState = &gMarioStates[obj->oAnimState];
-        asHeldObj->objNode = NULL;
-        if (marioState->heldObj != NULL) {
-            asHeldObj->objNode = marioState->heldObj;
-            switch (marioState->marioBodyState->grabPos) {
-                case GRAB_POS_LIGHT_OBJ:
-                    if (marioState->action & ACT_FLAG_THROWING) {
-                        vec3s_set(asHeldObj->translation, 50, 0, 0);
-                    } else {
-                        vec3s_set(asHeldObj->translation, 50, 0, 110);
-                    }
-                    break;
-                case GRAB_POS_HEAVY_OBJ:
-                    vec3s_set(asHeldObj->translation, 145, -173, 180);
-                    break;
-                case GRAB_POS_BOWSER:
-                    vec3s_set(asHeldObj->translation, 80, -270, 1260);
-                    break;
+        if (callContext == GEO_CONTEXT_RENDER) {
+            obj = (struct Object *) gCurGraphNodeObject;
+            if (gCurGraphNodeHeldObject != 0) {
+                marioState = (struct Object *) gCurGraphNodeHeldObject->objNode;
             }
+            marioState = &gMarioStates[obj->oAnimState];
+            asHeldObj->objNode = NULL;
+            if (marioState->heldObj != NULL) {
+                asHeldObj->objNode = marioState->heldObj;
+                switch (marioState->marioBodyState->grabPos) {
+                    case GRAB_POS_LIGHT_OBJ:
+                        if (marioState->action & ACT_FLAG_THROWING) {
+                            vec3s_set(asHeldObj->translation, 50, 0, 0);
+                        } else {
+                            vec3s_set(asHeldObj->translation, 50, 0, 110);
+                        }
+                        break;
+                    case GRAB_POS_HEAVY_OBJ:
+                        vec3s_set(asHeldObj->translation, 145, -173, 180);
+                        break;
+                    case GRAB_POS_BOWSER:
+                        vec3s_set(asHeldObj->translation, 80, -270, 1260);
+                        break;
+                }
+            }
+        } else if (callContext == GEO_CONTEXT_HELD_OBJ) {
+            obj = (struct Object *) gCurGraphNodeObject;
+            if (gCurGraphNodeHeldObject != 0) {
+                obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
+            }
+            marioState = &gMarioStates[obj->oAnimState];
+            // ! The HOLP is set here, which is why it only updates when the held object is drawn.
+            // This is why it won't update during a pause buffered hitstun or when the camera is very
+            // far away.
+            get_pos_from_transform_mtx(marioState->marioBodyState->heldObjLastPosition, *curTransform,
+                                       *gCurGraphNodeCamera->matrixPtr);
         }
-    } else if (callContext == GEO_CONTEXT_HELD_OBJ) {
-        obj = (struct Object *) gCurGraphNodeObject;
-        if (gCurGraphNodeHeldObject != 0) {
-            obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
-        }
-        marioState = &gMarioStates[obj->oAnimState];
-        // ! The HOLP is set here, which is why it only updates when the held object is drawn.
-        // This is why it won't update during a pause buffered hitstun or when the camera is very far
-        // away.
-        get_pos_from_transform_mtx(marioState->marioBodyState->heldObjLastPosition, *curTransform,
-                                   *gCurGraphNodeCamera->matrixPtr);
     }
     return NULL;
 }
@@ -665,40 +685,43 @@ Gfx *geo_switch_mario_hand_grab_pos(s32 callContext, struct GraphNode *b, Mat4 *
  * Geo node that creates a clone of Mario's geo node and updates it to becomes
  * a mirror image of the player.
  */
+u8 mirrorstates[2] = { 0, 0 };
 Gfx *geo_render_mirror_mario(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
-    struct GraphNodeGenerated *sp2C = (struct GraphNodeGenerated *) node;
-    s32 sp28 = (sp2C->parameter >> 8) & 0xFF;
-    s32 id = sp2C->parameter & 0xFF;
     f32 mirroredX;
-    struct Object *obj;
+    int i;
+    struct Object *mario;
+    for (i = 0; i < 2; i++) {
 
-    if (!id) {
+        mario = gMarioStates[i].marioObj;
+
         switch (callContext) {
             case GEO_CONTEXT_CREATE:
-                init_graph_node_object(NULL, &gMirrorMario, NULL, gVec3fZero, gVec3sZero, gVec3fOne);
+                init_graph_node_object(NULL, &gMirrorMario[i], NULL, gVec3fZero, gVec3sZero,
+                                       gVec3fOne);
                 break;
             case GEO_CONTEXT_AREA_LOAD:
-                geo_add_child(node, &gMirrorMario.node);
+                geo_add_child(node, &gMirrorMario[i].node);
                 break;
             case GEO_CONTEXT_AREA_UNLOAD:
-                geo_remove_child(&gMirrorMario.node);
+                geo_remove_child(&gMirrorMario[i].node);
                 break;
             case GEO_CONTEXT_RENDER:
-                if (obj->header.gfx.pos[0] > 1700.0f) {
+                if (mario->header.gfx.pos[0] > 1700.0f) {
                     // TODO: Is this a geo layout copy or a graph node copy?
-                    gMirrorMario.sharedChild = obj->header.gfx.sharedChild;
-                    gMirrorMario.areaIndex = obj->header.gfx.areaIndex;
-                    vec3s_copy(gMirrorMario.angle, obj->header.gfx.angle);
-                    vec3f_copy(gMirrorMario.pos, obj->header.gfx.pos);
-                    vec3f_copy(gMirrorMario.scale, obj->header.gfx.scale);
-                    gMirrorMario.animInfo = obj->header.gfx.animInfo;
-                    mirroredX = MIRROR_X - gMirrorMario.pos[0];
-                    gMirrorMario.pos[0] = mirroredX + MIRROR_X;
-                    gMirrorMario.angle[1] = -gMirrorMario.angle[1];
-                    gMirrorMario.scale[0] *= -1.0f;
-                    ((struct GraphNode *) &gMirrorMario)->flags |= 1;
+                    gMirrorMario[i].sharedChild = mario->header.gfx.sharedChild;
+                    gMirrorMario[i].areaIndex = mario->header.gfx.areaIndex;
+                    vec3s_copy(gMirrorMario[i].angle, mario->header.gfx.angle);
+                    vec3f_copy(gMirrorMario[i].pos, mario->header.gfx.pos);
+                    vec3f_copy(gMirrorMario[i].scale, mario->header.gfx.scale);
+
+                    gMirrorMario[i].animInfo = mario->header.gfx.animInfo;
+                    mirroredX = MIRROR_X - gMirrorMario[i].pos[0];
+                    gMirrorMario[i].pos[0] = mirroredX + MIRROR_X;
+                    gMirrorMario[i].angle[1] = -gMirrorMario[i].angle[1];
+                    gMirrorMario[i].scale[0] *= -1.0f;
+                    ((struct GraphNode *) &gMirrorMario[i])->flags |= 1;
                 } else {
-                    ((struct GraphNode *) &gMirrorMario)->flags &= ~1;
+                    ((struct GraphNode *) &gMirrorMario[i])->flags &= ~1;
                 }
                 break;
         }
@@ -714,7 +737,7 @@ Gfx *geo_mirror_mario_backface_culling(s32 callContext, struct GraphNode *node, 
     struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
     Gfx *gfx = NULL;
 
-    if (callContext == GEO_CONTEXT_RENDER && gCurGraphNodeObject == &gMirrorMario) {
+    if (callContext == GEO_CONTEXT_RENDER && ((gCurGraphNodeObject == &gMirrorMario[0]) || (gCurGraphNodeObject == &gMirrorMario[1]))  )  {
         gfx = alloc_display_list(3 * sizeof(*gfx));
 
         if (asGenerated->parameter == 0) {

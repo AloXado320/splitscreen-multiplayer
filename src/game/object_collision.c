@@ -21,6 +21,35 @@ struct Object *debug_print_obj_collision(struct Object *a) {
     }
     return NULL;
 }
+struct InteractionHandler {
+    u32 interactType;
+    u32 (*handler)(struct MarioState *, u32, struct Object *);
+};
+extern struct InteractionHandler sInteractionHandlers[];
+
+extern u32 interact_bounce_top(struct MarioState *m, UNUSED u32 interactType, struct Object *o);
+f32 IsBounceTop(struct Object *a, struct Object *b) { //this is a symptamatic treament and should not be finalized like this if possible, but i could not find the root issue of the bug that makes collision hurtboxes too big.
+    f32 ret = 0.f;
+    int i = 0;
+    if ((a == gMarioObject) || (b == gMarioObject) || (a == gLuigiObject) || (b == gLuigiObject)) {
+
+        for (i = 0; i < 31; i++) {
+            if (sInteractionHandlers[i].interactType == a->oInteractType) {
+                if (interact_bounce_top == sInteractionHandlers[i].handler) {
+                    ret += 37.f;
+                }
+            }
+        }
+        for (i = 0; i < 31; i++) {
+            if (sInteractionHandlers[i].interactType == b->oInteractType) {
+                if (interact_bounce_top == sInteractionHandlers[i].handler) {
+                    ret += 37.f;
+                }
+            }
+        }
+    }
+    return ret;
+};
 
 s32 detect_object_hitbox_overlap(struct Object *a, struct Object *b) {
     f32 sp3C = a->oPosY - a->hitboxDownOffset;
@@ -45,7 +74,7 @@ s32 detect_object_hitbox_overlap(struct Object *a, struct Object *b) {
               || (((a == gMarioObject) & ((b == gMarioObject->oPlayerHitbox) || (b == mObjHurtbox)))
                   || ((b == gMarioObject)
                       & ((a == gMarioObject->oPlayerHitbox) || (a == mObjHurtbox))))))) {
-        if (collisionRadius > distance) {
+        if ((collisionRadius - IsBounceTop(a, b)) > distance) {
             f32 sp20 = a->hitboxHeight + sp3C;
             f32 sp1C = b->hitboxHeight + sp38;
 

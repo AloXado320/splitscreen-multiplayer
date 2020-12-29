@@ -36,17 +36,17 @@ struct CameraHUD {
 static s16 sPowerMeterStoredHealth[2];
 
 static struct PowerMeterHUD sPowerMeterHUD[2] = { {
-POWER_METER_HIDDEN,
-30,
-181,
-1.0,
-},
-{
-POWER_METER_HIDDEN,
-30,
-181,
-1.0,
-} };
+                                                      POWER_METER_HIDDEN,
+                                                      30,
+                                                      181,
+                                                      1.0,
+                                                  },
+                                                  {
+                                                      POWER_METER_HIDDEN,
+                                                      30,
+                                                      181,
+                                                      1.0,
+                                                  } };
 
 // Power Meter timer that keeps counting when it's visible.
 // Gets reset when the health is filled and stops counting
@@ -126,17 +126,27 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
     }
 
     gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    gSPDisplayList(gDisplayListHead++, &dl_power_meter_base);
+    if (gActivePlayers == 1) {
+
+        gSPDisplayList(gDisplayListHead++, &dl_power_meter_base_2);
+    } else {
+
+        gSPDisplayList(gDisplayListHead++, &dl_power_meter_base);
+    }
 
     if (numHealthWedges != 0) {
-        gSPDisplayList(gDisplayListHead++, &dl_power_meter_health_segments_begin);
+        if (gActivePlayers == 1) {
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_health_segments_begin_2);
+        } else {
+
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_health_segments_begin);
+        }
         render_power_meter_health_segment(numHealthWedges);
         gSPDisplayList(gDisplayListHead++, &dl_power_meter_health_segments_end);
     }
 
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
-
 
 /**
  * Power meter animation called when there's less than 8 health segments

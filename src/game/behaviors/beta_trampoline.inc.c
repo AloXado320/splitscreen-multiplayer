@@ -73,13 +73,14 @@ void bhv_beta_trampoline_top_loop(void) {
     // Maybe they intended to decrease the trampoline's position
     // when Mario's on it in this if statement?
     if (gMarioObject->platform == o) {
+        f32 minPos = (o->oHomeY - 150.0f + 65.0f);
         stub_mario_step_2();
         o->oBetaTrampolineMarioOnTrampoline = TRUE;
 
         o->oPosY =
-            (o->oPosY > (o->oHomeY - 150.0f + 75.0f)) ?
-            (o->oPosY - 10) :
-            (o->oHomeY - 150.0f + 65.0f);
+            (o->oPosY > minPos) ?
+            (o->oPosY + ((minPos -o->oPosY)/8.f)) :
+            minPos;
 
 
         o->oBetaTrampolineAdditiveYVel =

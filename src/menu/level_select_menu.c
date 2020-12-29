@@ -21,7 +21,7 @@
 #define DEFINE_LEVEL(textname, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10) textname,
 
 static char gLevelSelect_StageNamesText[64][16] = {
-    #include "levels/level_defines.h"
+#include "levels/level_defines.h"
 };
 #undef STUB_LEVEL
 #undef DEFINE_LEVEL
@@ -57,7 +57,7 @@ s32 run_press_start_demo_timer(s32 timer) {
 // count if an input was received. signals the stage to be started
 // or the level select to be exited if start or the quit combo is
 // pressed.
-//also allow player 2 inputs
+// also allow player 2 inputs
 s16 level_select_input_loop(void) {
     s32 stageChanged = FALSE;
 
@@ -73,14 +73,16 @@ s16 level_select_input_loop(void) {
     }
     if (gPlayer1Controller->buttonPressed & D_JPAD) {
         ++gCurrLevelNum, stageChanged = TRUE;
-	}
+    }
     if (gPlayer1Controller->buttonPressed & L_JPAD) {
         gCurrLevelNum -= 10, stageChanged = TRUE;
     }
     if (gPlayer1Controller->buttonPressed & R_JPAD) {
         gCurrLevelNum += 10, stageChanged = TRUE;
     }
-
+    if (stageChanged) {
+        gPlayer1Controller->buttonPressed = 0;
+    }
     // if the stage was changed, play the sound for changing a stage.
     if (stageChanged) {
         play_sound(SOUND_GENERAL_LEVEL_SELECT_CHANGE, gGlobalSoundSource);
@@ -112,18 +114,18 @@ s16 level_select_input_loop(void) {
             gDebugLevelSelect = FALSE;
             return -1;
         }
-		if ((gDebugLevelSelect) && (gActivePlayers > 1)) {	
-			if (gActivePlayers = 2){
-			split_screens();
-			}
-		}
+        if ((gDebugLevelSelect) && (gActivePlayers > 1)) {
+            if (gActivePlayers = 2) {
+                split_screens();
+            }
+        }
         play_sound(SOUND_MENU_STAR_SOUND, gGlobalSoundSource);
         return gCurrLevelNum;
     }
     return 0;
 }
 
-int startGame = 0; //set this to 1 if a mode has been selected
+int startGame = 0; // set this to 1 if a mode has been selected
 extern int toggle;
 s32 intro_default(void) {
     s32 sp1C = 0;
@@ -137,7 +139,7 @@ s32 intro_default(void) {
         D_U_801A7C34 = 0;
         startGame = 0;
     }
-    if (!toggle){
+    if (!toggle) {
         startGame = 0;
     }
     print_intro_text();

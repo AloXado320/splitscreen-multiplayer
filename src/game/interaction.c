@@ -82,7 +82,7 @@ struct InteractionHandler {
     u32 (*handler)(struct MarioState *, u32, struct Object *);
 };
 
-static struct InteractionHandler sInteractionHandlers[] = {
+struct InteractionHandler sInteractionHandlers[] = {
     { INTERACT_COIN, interact_coin },
     { INTERACT_WATER_RING, interact_water_ring },
     { INTERACT_STAR_OR_KEY, interact_star_or_key },
@@ -1864,12 +1864,19 @@ void mario_process_interactions(struct MarioState *m) {
 
 void check_death_barrier(struct MarioState *m) {
     if (m->pos[1] < m->floorHeight + 2048.0f) {
-        m->vel[1] = 5.f;
-        m->pos[1] = m->floorHeight + 2050.0f;
+        // m->vel[1] = 5.f;
+        if (gActivePlayers > 1) {
+            m->pos[1] = m->floorHeight + 2050.0f;
+        }
         if (m->action != ACT_BUBBLED) {
             sSourceWarpNodeId = 0xf1;
             if (level_trigger_warp(m, WARP_OP_WARP_FLOOR) == 20 && !(m->flags & MARIO_UNKNOWN_18)) {
                 play_sound(SOUND_MARIO_WAAAOOOW, m->marioObj->soundOrigin);
+            }
+            if (gActivePlayers == 1) {
+                if (gMarioStates[0].numLives == 0) {
+                    sDelayedWarpOp = WARP_OP_GAME_OVER;
+                }
             }
         }
     }

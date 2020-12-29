@@ -15,7 +15,7 @@
 #define o gCurrentObject
 
 void bhv_blargg(void) {
-    f32 speed = 14.f;
+    f32 speed = 10.f;
     cur_obj_scale(2.0f);
     switch (o->oAction) {
         case 0:
@@ -33,10 +33,12 @@ void bhv_blargg(void) {
             o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x0140);
             if (coss(o->oMoveAngleYaw - o->oAngleToMario) > 0.f) {
                 o->oForwardVel = approach_f32(
-                    o->oForwardVel, coss(o->oMoveAngleYaw - o->oAngleToMario) * speed, 1.0f, 1.0f);
+                    o->oForwardVel, (coss(o->oMoveAngleYaw - o->oAngleToMario) + 1.0f) * speed, 1.0f, 1.0f);
             }
             if (o->oDistanceToMario < 600.f){
+                if (abs_angle_diff(obj_angle_to_object(o, gMarioObject), o->oMoveAngleYaw) < 0x2000){
                 o->oAction = 1;
+                }
             }
             break;
         case 1:

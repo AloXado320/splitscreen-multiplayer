@@ -324,7 +324,7 @@ void cutscene_put_cap_on(struct MarioState *m) {
 s32 mario_ready_to_speak(struct MarioState *m) {
     u32 actionGroup = m->action & ACT_GROUP_MASK;
     s32 isReadyToSpeak = FALSE;
-    if (PLAYERCOUNTAGAIN > 1) {
+    if (gActivePlayers > 1) {
         return TRUE;
     } else {
         if ((gMarioState->action == ACT_WAITING_FOR_DIALOG || actionGroup == ACT_GROUP_STATIONARY
@@ -345,28 +345,28 @@ s32 mario_ready_to_speak(struct MarioState *m) {
 // 2 = speaking
 s32 set_mario_npc_dialog(s32 actionArg) {
     s32 dialogState = 0;
-    if (PLAYERCOUNTAGAIN > 1) {
+    if (gActivePlayers > 1) {
         // in dialog
         return 2;
     } else {
-    if (gMarioState->action == ACT_READING_NPC_DIALOG) {
-        if (gMarioState->actionState < 8) {
+        if (gMarioState->action == ACT_READING_NPC_DIALOG) {
+            if (gMarioState->actionState < 8) {
+                dialogState = 1; // starting dialog
+            }
+            if (gMarioState->actionState == 8) {
+                if (actionArg == 0) {
+                    gMarioState->actionState++; // exit dialog
+                } else {
+                    dialogState = 2;
+                }
+            }
+        } else if (actionArg != 0 && mario_ready_to_speak(gMarioState)) {
+            gMarioState->usedObj = gCurrentObject;
+            set_mario_action(gMarioState, ACT_READING_NPC_DIALOG, actionArg);
             dialogState = 1; // starting dialog
         }
-        if (gMarioState->actionState == 8) {
-            if (actionArg == 0) {
-                gMarioState->actionState++; // exit dialog
-            } else {
-                dialogState = 2;
-            }
-        }
-    } else if (actionArg != 0 && mario_ready_to_speak(gMarioState)) {
-        gMarioState->usedObj = gCurrentObject;
-        set_mario_action(gMarioState, ACT_READING_NPC_DIALOG, actionArg);
-        dialogState = 1; // starting dialog
-    }
 
-    return dialogState;
+        return dialogState;
     }
 }
 
@@ -650,12 +650,13 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
 
 s32 act_star_dance(struct MarioState *m) {
     m->faceAngle[1] = m->thisPlayerCamera->yaw;
-    if ((m->thisPlayerCamera->cameraID) || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
-    set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
-                                               : MARIO_ANIM_WINDEMOAOLD);
+    if ((m->thisPlayerCamera->cameraID)
+        || ((gActivePlayers < 2) && (singlePlayerChar))) { // is player Luigi?
+        set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
+                                                   : MARIO_ANIM_WINDEMOAOLD);
     } else {
-    set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
-                                               : MARIO_ANIM_STAR_DANCE);
+        set_mario_animation(m, m->actionState == 2 ? MARIO_ANIM_RETURN_FROM_STAR_DANCE
+                                                   : MARIO_ANIM_STAR_DANCE);
     }
     general_star_dance_handler(m, 0);
     if (m->actionState != 2 && m->actionTimer >= 40) {
@@ -2098,14 +2099,14 @@ static void end_peach_cutscene_summon_jumbo_star(struct MarioState *m) {
 }
 
 #if defined(VERSION_EU)
-    #define TIMER_FADE_IN_PEACH 201
-    #define TIMER_DESCEND_PEACH 280
+#define TIMER_FADE_IN_PEACH 201
+#define TIMER_DESCEND_PEACH 280
 #elif defined(VERSION_SH)
-    #define TIMER_FADE_IN_PEACH 276
-    #define TIMER_DESCEND_PEACH 400
+#define TIMER_FADE_IN_PEACH 276
+#define TIMER_DESCEND_PEACH 400
 #else
-    #define TIMER_FADE_IN_PEACH 276
-    #define TIMER_DESCEND_PEACH 355
+#define TIMER_FADE_IN_PEACH 276
+#define TIMER_DESCEND_PEACH 355
 #endif
 
 // free peach from the stained glass window
@@ -2245,7 +2246,7 @@ static void end_peach_cutscene_dialog_1(struct MarioState *m) {
 #endif
             sEndPeachAnimation = 6;
             break;
-            
+
 #ifdef VERSION_SH
         case 111:
 #else
@@ -2314,14 +2315,14 @@ static void end_peach_cutscene_dialog_1(struct MarioState *m) {
 }
 
 #if defined(VERSION_EU)
-    #define TIMER_SOMETHING_SPECIAL 150
-    #define TIMER_PEACH_KISS        260
+#define TIMER_SOMETHING_SPECIAL 150
+#define TIMER_PEACH_KISS 260
 #elif defined(VERSION_SH)
-    #define TIMER_SOMETHING_SPECIAL 170
-    #define TIMER_PEACH_KISS        250
+#define TIMER_SOMETHING_SPECIAL 170
+#define TIMER_PEACH_KISS 250
 #else
-    #define TIMER_SOMETHING_SPECIAL 130
-    #define TIMER_PEACH_KISS        200
+#define TIMER_SOMETHING_SPECIAL 130
+#define TIMER_PEACH_KISS 200
 #endif
 
 // dialog 2
@@ -2345,7 +2346,7 @@ static void end_peach_cutscene_dialog_2(struct MarioState *m) {
 
 #ifdef VERSION_SH
         case 65:
-#else        
+#else
         case 45:
 #endif
             D_8032CBE8 = 1;
@@ -2395,80 +2396,116 @@ static void end_peach_cutscene_kiss_from_peach(struct MarioState *m) {
         m->marioBodyState->eyeState =
             m->actionTimer < 110 ? sMarioBlinkOverride[m->actionTimer - 90] : MARIO_EYES_HALF_CLOSED;
     }
+    if (gActivePlayers > 1) {
 
-    // rotate peach towards Mario and luigi respectively
-    // mirror these cases 0x88 delayed for luigi
-    // sEndPeachObj
-    if (m->actionTimer > 10 && m->actionTimer < 55) {
-        // move peach to Mario
-        sEndPeachObj->oPosX += 0.5f;
-    } else if (m->actionTimer > 10 + kissduration && m->actionTimer < 55 + kissduration) {
-        // move peach back
-        sEndPeachObj->oPosX -= 0.5f;
-    } else if (m->actionTimer > 146 && m->actionTimer < 191) {
-        // move peach to luigi
-        sEndPeachObj->oPosX -= 0.5f;
-    } else if (m->actionTimer > 146 + kissduration && m->actionTimer < 191 + kissduration) {
-        // move peach back
-        sEndPeachObj->oPosX += 0.5f;
-    }
+        // rotate peach towards Mario and luigi respectively
+        // mirror these cases 0x88 delayed for luigi
+        // sEndPeachObj
+        if (m->actionTimer > 10 && m->actionTimer < 55) {
+            // move peach to Mario
+            sEndPeachObj->oPosX += 0.5f;
+        } else if (m->actionTimer > 10 + kissduration && m->actionTimer < 55 + kissduration) {
+            // move peach back
+            sEndPeachObj->oPosX -= 0.5f;
+        } else if (m->actionTimer > 146 && m->actionTimer < 191) {
+            // move peach to luigi
+            sEndPeachObj->oPosX -= 0.5f;
+        } else if (m->actionTimer > 146 + kissduration && m->actionTimer < 191 + kissduration) {
+            // move peach back
+            sEndPeachObj->oPosX += 0.5f;
+        }
 
-    switch (m->actionTimer) {
-        case 8:
-            D_8032CBE8 = 0;
-            break;
+        switch (m->actionTimer) {
+            case 8:
+                D_8032CBE8 = 0;
+                break;
 
-        case 10:
-            D_8032CBE4 = 3;
-            break;
+            case 10:
+                D_8032CBE4 = 3;
+                break;
 
-        case 50:
-            D_8032CBE4 = 4;
-            break;
+            case 50:
+                D_8032CBE4 = 4;
+                break;
 
-        case 75:
-            m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
-            break;
+            case 75:
+                m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
+                break;
 
-        case 76:
-            m->marioBodyState->eyeState = MARIO_EYES_CLOSED;
-            break;
+            case 76:
+                m->marioBodyState->eyeState = MARIO_EYES_CLOSED;
+                break;
 
-        case 100:
-            D_8032CBE4 = 3;
-            break;
+            case 100:
+                D_8032CBE4 = 3;
+                break;
 
-        case 136:
-            D_8032CBE4 = 0;
-            break;
+            case 136:
+                D_8032CBE4 = 0;
+                break;
 
-        case 144:
-            D_8032CBE8 = 0;
-            break;
+            case 144:
+                D_8032CBE8 = 0;
+                break;
 
-        case 146:
-            D_8032CBE4 = 3;
-            break;
+            case 146:
+                D_8032CBE4 = 3;
+                break;
 
-        case 186:
-            D_8032CBE4 = 4;
-            break;
+            case 186:
+                D_8032CBE4 = 4;
+                break;
 
-        case 211:
-            m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
-            break;
+            case 211:
+                m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
+                break;
 
-        case 212:
-            m->marioBodyState->eyeState = MARIO_EYES_CLOSED;
-            break;
+            case 212:
+                m->marioBodyState->eyeState = MARIO_EYES_CLOSED;
+                break;
 
-        case 236:
-            D_8032CBE4 = 3;
-            break;
+            case 236:
+                D_8032CBE4 = 3;
+                break;
 
-        case 240:
-            advance_cutscene_step(m);
-            break;
+            case 240:
+                advance_cutscene_step(m);
+                break;
+        }
+    } else {
+        switch (m->actionTimer) {
+            case 8:
+                D_8032CBE8 = 0;
+                break;
+
+            case 10:
+                D_8032CBE4 = 3;
+                break;
+
+            case 50:
+                D_8032CBE4 = 4;
+                break;
+
+            case 75:
+                m->marioBodyState->eyeState = MARIO_EYES_HALF_CLOSED;
+                break;
+
+            case 76:
+                m->marioBodyState->eyeState = MARIO_EYES_CLOSED;
+                break;
+
+            case 100:
+                D_8032CBE4 = 3;
+                break;
+
+            case 136:
+                D_8032CBE4 = 0;
+                break;
+
+            case 140:
+                advance_cutscene_step(m);
+                break;
+        }
     }
 }
 
@@ -2663,17 +2700,17 @@ static s32 act_end_peach_cutscene(struct MarioState *m) {
 }
 
 #if defined(VERSION_EU)
-    #define TIMER_CREDITS_SHOW      51
-    #define TIMER_CREDITS_PROGRESS  80
-    #define TIMER_CREDITS_WARP     160
+#define TIMER_CREDITS_SHOW 51
+#define TIMER_CREDITS_PROGRESS 80
+#define TIMER_CREDITS_WARP 160
 #elif defined(VERSION_SH)
-    #define TIMER_CREDITS_SHOW      61
-    #define TIMER_CREDITS_PROGRESS  90
-    #define TIMER_CREDITS_WARP     204
+#define TIMER_CREDITS_SHOW 61
+#define TIMER_CREDITS_PROGRESS 90
+#define TIMER_CREDITS_WARP 204
 #else
-    #define TIMER_CREDITS_SHOW      61
-    #define TIMER_CREDITS_PROGRESS  90
-    #define TIMER_CREDITS_WARP     200
+#define TIMER_CREDITS_SHOW 61
+#define TIMER_CREDITS_PROGRESS 90
+#define TIMER_CREDITS_WARP 200
 #endif
 
 static s32 act_credits_cutscene(struct MarioState *m) {

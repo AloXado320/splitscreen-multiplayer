@@ -513,6 +513,11 @@ static void koopa_the_quick_act_wait_before_race(void) {
  */
 static void koopa_the_quick_act_show_init_text(void) {
     s32 response = 1;
+    if (gActivePlayers == 1) {
+
+        response = obj_update_race_proposition_dialog(
+            sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].initText);
+    }
 
     if (response == 1) {
         UNUSED s32 unused;
@@ -526,6 +531,7 @@ static void koopa_the_quick_act_show_init_text(void) {
 
         o->oKoopaTurningAwayFromWall = FALSE;
         o->oFlags |= OBJ_FLAG_ACTIVE_FROM_AFAR;
+        set_mario_npc_dialog(0);
     } else if (response == 2) {
         o->oAction = KOOPA_THE_QUICK_ACT_WAIT_BEFORE_RACE;
         o->oKoopaTheQuickInitTextboxCooldown = 60;
@@ -709,7 +715,7 @@ static void koopa_the_quick_act_after_race(void) {
             // Determine which text to display
 
             if (o->parentObj->oKoopaRaceEndpointRaceStatus != 0) {
-                o->parentObj->oKoopaRaceEndpointUnk100 = 1;
+                o->parentObj->oKoopaRaceEndpointUnk100 = DIALOG_041;
             } else {
                 // KtQ won
                 o->parentObj->oKoopaRaceEndpointUnk100 = DIALOG_041;
@@ -718,15 +724,16 @@ static void koopa_the_quick_act_after_race(void) {
             o->oFlags &= ~OBJ_FLAG_ACTIVE_FROM_AFAR;
         }
     } else if (o->parentObj->oKoopaRaceEndpointUnk100 > 0) {
-        s32 dialogResponse = cur_obj_update_dialog_with_cutscene(2, 1, CUTSCENE_DIALOG, o->parentObj->oKoopaRaceEndpointUnk100);
+        s32 dialogResponse = cur_obj_update_dialog_with_cutscene(
+            2, 1, CUTSCENE_DIALOG, o->parentObj->oKoopaRaceEndpointUnk100);
         if (dialogResponse != 0) {
             o->parentObj->oKoopaRaceEndpointUnk100 = -1;
             o->oTimer = 0;
         }
     } else if (o->parentObj->oKoopaRaceEndpointRaceStatus != 0) {
         spawn_default_star(sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].starPos[0],
-                   sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].starPos[1],
-                   sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].starPos[2]);
+                           sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].starPos[1],
+                           sKoopaTheQuickProperties[o->oKoopaTheQuickRaceIndex].starPos[2]);
 
         o->parentObj->oKoopaRaceEndpointRaceStatus = 0;
     }

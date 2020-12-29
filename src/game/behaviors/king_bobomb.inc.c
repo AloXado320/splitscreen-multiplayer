@@ -36,7 +36,7 @@ void king_bobomb_act_0(void) {
             o->oSubAction++;
             seq_player_lower_volume(SEQ_PLAYER_LEVEL, 60, 40);
         }
-    } else if (TRUE) {
+    } else if ((gActivePlayers>1) ||(cur_obj_update_dialog_with_cutscene(2, 1, CUTSCENE_DIALOG, DIALOG_017))) {
         o->oAction = 2;
         o->oFlags |= OBJ_FLAG_HOLDABLE;
     }

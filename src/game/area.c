@@ -315,12 +315,17 @@ void change_area(s32 index) {
 
         gCurrentArea->flags = areaFlags;
         gMarioObject->oActiveParticleFlags = 0;
-        gLuigiObject->oActiveParticleFlags = 0;
+        if (gActivePlayers > 1) {
+
+            gLuigiObject->oActiveParticleFlags = 0;
+        }
     }
 
     if (areaFlags & 0x01) {
         gMarioObject->header.gfx.areaIndex = index, gMarioSpawnInfo->areaIndex = index;
-        gLuigiObject->header.gfx.areaIndex = index, gMarioSpawnInfo->areaIndex = index;
+        if (gActivePlayers > 1) {
+            gLuigiObject->header.gfx.areaIndex = index, gMarioSpawnInfo->areaIndex = index;
+        }
     }
 }
 
@@ -447,9 +452,9 @@ void split_screens(void) {
             luigiCamFirst = 0;
         }
     } else {
-            geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
-            gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
-            luigiCamFirst = 0;
+        geo_process_root(gCurrentArea->unk04, D_8032CE74, D_8032CE78, gFBSetColor);
+        gSPViewport(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(&D_8032CF00));
+        luigiCamFirst = 0;
     }
 }
 

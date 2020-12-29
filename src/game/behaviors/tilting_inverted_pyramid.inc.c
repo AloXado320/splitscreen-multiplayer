@@ -135,4 +135,11 @@ void bhv_tilting_inverted_pyramid_loop(void) {
     }
 
     o->header.gfx.throwMatrix = transform;
+    dx = o->oTiltingPyramidNormalX*o->oTiltingPyramidNormalX;
+    dy = o->oTiltingPyramidNormalY*o->oTiltingPyramidNormalY;
+    dz = o->oTiltingPyramidNormalZ*o->oTiltingPyramidNormalZ;
+    o->oFaceAnglePitch = o->oTiltingPyramidNormalZ * 0x4000;
+    o->oFaceAngleRoll = o->oTiltingPyramidNormalX * -0x4000;
+    o->header.gfx.angle[2] = o->oFaceAngleRoll ;
+    o->header.gfx.angle[0] =o->oFaceAnglePitch;
 }

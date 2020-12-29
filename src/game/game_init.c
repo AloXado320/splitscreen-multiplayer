@@ -364,7 +364,7 @@ void display_and_vsync(void) {
     }
     send_display_list(&gGfxPool->spTask);
     profiler_log_thread5_time(AFTER_DISPLAY_LISTS);
-    if (PLAYERCOUNT < 2) {
+    if ((PLAYERCOUNT < 2) && (gCurrLevelNum != LEVEL_MIN)) {
         osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     }
 
