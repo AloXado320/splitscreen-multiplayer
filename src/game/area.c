@@ -341,7 +341,7 @@ void area_update_objects(void) {
 void play_transition(s16 transType, s16 time, u8 red, u8 green, u8 blue) {
     gWarpTransition.isActive = TRUE;
     gWarpTransition.type = transType;
-    gWarpTransition.time = time;
+    gWarpTransition.time = time*gActivePlayers;
     gWarpTransition.pauseRendering = FALSE;
 
     // The lowest bit of transType determines if the transition is fading in or out.

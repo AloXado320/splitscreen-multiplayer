@@ -373,8 +373,8 @@ void painting_state(s8 state, struct Painting *painting, struct Painting *painti
     painting->state = state;
     painting->rippleX = painting_ripple_x(painting, xSource);
     painting->rippleY = painting_ripple_y(painting, ySource);
-    gPaintingMarioYEntry = gPaintingMarioYPos * (gPaintingMarioYPos < gPaintingLuigiYPos)
-                           + gPaintingLuigiYPos * (gPaintingMarioYPos >= gPaintingLuigiYPos);
+    gPaintingMarioYEntry = gPaintingMarioYPos * (gPaintingMarioYPos > gPaintingLuigiYPos)
+                           + gPaintingLuigiYPos * (gPaintingMarioYPos <= gPaintingLuigiYPos);
 
     // Because true or false would be too simple...
     if (resetTimer == RESET_TIMER) {

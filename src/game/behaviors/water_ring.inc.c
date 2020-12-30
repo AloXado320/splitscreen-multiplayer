@@ -11,6 +11,8 @@ f32 water_ring_calc_mario_dist(void) {
 }
 
 void water_ring_init(void) {
+    u16 rotation;
+    f32 size;
     cur_obj_init_animation(0);
     o->oWaterRingScalePhaseX = (s32)(random_float() * 4096.0f) + 0x1000;
     o->oWaterRingScalePhaseY = (s32)(random_float() * 4096.0f) + 0x1000;
@@ -21,12 +23,18 @@ void water_ring_init(void) {
     //  This cause the ring's orientation for the purposes of collision to be
     //  different than the graphical orientation, which means that Mario won't
     //  necessarily collect a ring even if he appears to swim through it.
-    o->oWaterRingNormalX = coss(o->oFaceAnglePitch) * sins(o->oFaceAngleRoll) * -1.0f;
+    o->oWaterRingNormalX = sins(o->oFaceAngleYaw) * sins(o->oFaceAngleRoll);
     o->oWaterRingNormalY = coss(o->oFaceAnglePitch) * coss(o->oFaceAngleRoll);
-    o->oWaterRingNormalZ = sins(o->oFaceAnglePitch);
+    o->oWaterRingNormalZ = coss(o->oFaceAngleYaw) * sins(o->oFaceAnglePitch);
+    /*rotation = atan2s(o->oWaterRingNormalZ, o->oWaterRingNormalX);
+
+    size = sqrtf(o->oWaterRingNormalX * o->oWaterRingNormalX
+                 + o->oWaterRingNormalZ * o->oWaterRingNormalZ);
+    rotation += o->oFaceAngleYaw;
+    o->oWaterRingNormalX = sins(rotation) * size;
+    o->oWaterRingNormalX = coss(rotation) * size;*/
 
     o->oWaterRingMarioDistInFront = water_ring_calc_mario_dist();
-
     // Adding this code will alter the ring's graphical orientation to align with the faulty
     // collision orientation:
     //
@@ -49,8 +57,8 @@ void water_ring_check_collection(f32 avgScale, struct Object *ringManager) {
     struct Object *ringSpawner;
 
     if (!is_point_close_to_object(o, gMarioObject->header.gfx.pos[0],
-                              gMarioObject->header.gfx.pos[1] + 80.0f, gMarioObject->header.gfx.pos[2],
-                              (avgScale + 0.2) * 120.0)) {
+                                  gMarioObject->header.gfx.pos[1] + 80.0f,
+                                  gMarioObject->header.gfx.pos[2], (avgScale + 0.2) * 120.0)) {
         o->oWaterRingMarioDistInFront = marioDistInFront;
         return;
     }
@@ -210,8 +218,8 @@ void manta_water_ring_act_not_collected(void) {
             o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }
 
-    water_ring_check_collection(avgScale, ringManager);
     water_ring_set_scale(avgScale);
+    water_ring_check_collection(avgScale, ringManager);
     set_object_visibility(o, 5000);
 
     if (ringSpawner->oWaterRingSpawnerRingsCollected == 4

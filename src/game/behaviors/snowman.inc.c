@@ -126,7 +126,12 @@ void bhv_snowmans_bottom_loop(void) {
         case 0:
             if (is_point_within_radius_of_mario(o->oPosX, o->oPosY, o->oPosZ, 400) == 1
                 && set_mario_npc_dialog(1) == 2) {
-                sp1E = cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_110);
+                if (gActivePlayers == 1) {
+
+                    sp1E = cutscene_object_with_dialog(CUTSCENE_DIALOG, o, DIALOG_110);
+                } else {
+                    sp1E = 1;
+                }
                 if (sp1E) {
                     o->oForwardVel = 10.0f;
                     o->oAction = 1;

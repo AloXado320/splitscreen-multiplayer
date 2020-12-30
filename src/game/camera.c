@@ -11169,7 +11169,7 @@ void play_cutscene(struct Camera *c) {
         }
         //! Because gCutsceneTimer[c->cameraID] is often set to 0x7FFF (CUTSCENE_LOOP), this conditional
         //! can only check for == due to overflow
-        if (gCutsceneTimer[c->cameraID] == cutsceneDuration) {
+        if (gCutsceneTimer[c->cameraID] == ((cutsceneDuration*gActivePlayers) * (c->cutscene ==CUTSCENE_ENDING) +(cutsceneDuration) * (c->cutscene !=CUTSCENE_ENDING)            )) {
             sCutsceneShot[c->cameraID] += 1;
             gCutsceneTimer[c->cameraID] = 0;
         }

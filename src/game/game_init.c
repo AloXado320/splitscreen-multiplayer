@@ -353,7 +353,8 @@ void config_gfx_pool(void) {
     gDisplayListHead = gGfxPool->buffer;
     gGfxPoolEnd = (u8 *) (gGfxPool->buffer + GFX_POOL_SIZE);
 }
-
+extern const BehaviorScript bhvActSelector[];
+extern s32 count_objects_with_behavior(const BehaviorScript *behavior);
 /** Handles vsync. */
 void display_and_vsync(void) {
     profiler_log_thread5_time(BEFORE_DISPLAY_LISTS);
@@ -364,7 +365,7 @@ void display_and_vsync(void) {
     }
     send_display_list(&gGfxPool->spTask);
     profiler_log_thread5_time(AFTER_DISPLAY_LISTS);
-    if ((PLAYERCOUNT < 2) && (gCurrLevelNum != LEVEL_MIN)) {
+    if (((PLAYERCOUNT < 2) && (gCurrLevelNum != LEVEL_MIN)) || (count_objects_with_behavior(bhvActSelector) != 0)) {
         osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     }
 

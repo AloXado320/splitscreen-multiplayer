@@ -221,8 +221,8 @@ u16 level_control_timer(s32 timerOp) {
 
 u32 pressed_pause(void) {
     u32 val4 = get_dialog_id() >= 0;
-    u32 intangible = ((gMarioState->action & ACT_FLAG_INTANGIBLE) != 0 ) & (gActivePlayers==1);
-    
+    u32 intangible = ((gMarioState->action & ACT_FLAG_INTANGIBLE) != 0) & (gActivePlayers == 1);
+
     if (!intangible && !val4 && !gWarpTransition.isActive && sDelayedWarpOp == WARP_OP_NONE
         && ((gPlayer1Controller->buttonPressed | gPlayer2Controller->buttonPressed) & START_BUTTON)) {
         return TRUE;
@@ -768,9 +768,10 @@ void initiate_painting_warp(void) {
  * Return the time left until the delayed warp is initiated.
  */
 s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
-    int i;
+    int i = m->marioObj->oAnimState;
     int warp;
     s32 val04 = TRUE;
+    int backup = sDelayedWarpOp;
 
     if (sDelayedWarpOp == WARP_OP_NONE) {
         m->invincTimer = -1;
@@ -851,6 +852,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         m->health = 0x880;
                         m->healCounter = 31;
                         m->action = ACT_BUBBLED;
+                        sDelayedWarpOp = backup;
                         val04 = FALSE;
                         warp = 1;
                         for (i = 0; i < gActivePlayers; i++) {
@@ -950,7 +952,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 val04 = FALSE;
                 break;
         }
-
+        sDelayedWarpTimer *= gActivePlayers; // todo maybe remove this
         if (val04 && gCurrDemoInput == NULL) {
             fadeout_music((3 * sDelayedWarpTimer / 2) * 8 - 2);
         }

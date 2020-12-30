@@ -27,7 +27,7 @@ void king_bobomb_act_0(void) {
 #endif
     if (o->oSubAction == 0) {
         cur_obj_become_intangible();
-        gSecondCameraFocus[0] = o;  // FIX THIS
+        gSecondCameraFocus[0] = o; // FIX THIS
         gSecondCameraFocus[1] = o;
         cur_obj_init_animation_with_sound(5);
         cur_obj_set_pos_to_home();
@@ -36,9 +36,14 @@ void king_bobomb_act_0(void) {
             o->oSubAction++;
             seq_player_lower_volume(SEQ_PLAYER_LEVEL, 60, 40);
         }
-    } else if ((gActivePlayers>1) ||(cur_obj_update_dialog_with_cutscene(2, 1, CUTSCENE_DIALOG, DIALOG_017))) {
+    } else if ((gActivePlayers > 1)
+               || (cur_obj_update_dialog_with_cutscene(2, 1, CUTSCENE_DIALOG, DIALOG_017))) {
         o->oAction = 2;
         o->oFlags |= OBJ_FLAG_HOLDABLE;
+        if (gActivePlayers > 1) {
+
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_EVENT_BOSS), 0);
+        }
     }
 }
 
@@ -193,7 +198,7 @@ void king_bobomb_act_8(void) {
         stop_background_music(SEQUENCE_ARGS(4, SEQ_EVENT_BOSS));
 }
 
-void king_bobomb_act_4(void) { // bobomb been thrown
+void king_bobomb_act_4(void) {            // bobomb been thrown
     if (o->oPosY - o->oHomeY > -100.0f) { // not thrown off hill
         if (o->oMoveFlags & OBJ_MOVE_LANDED) {
             o->oHealth--;
@@ -228,7 +233,7 @@ void king_bobomb_act_5(void) { // bobomb returns home
                 cur_obj_play_sound_2(SOUND_OBJ_KING_BOBOMB_JUMP);
             o->oKingBobombUnkF8 = 1;
             cur_obj_init_animation_and_extend_if_at_end(8);
-            o->oMoveAngleYaw =  cur_obj_angle_to_home();
+            o->oMoveAngleYaw = cur_obj_angle_to_home();
             if (o->oPosY < o->oHomeY)
                 o->oVelY = 100.0f;
             else {

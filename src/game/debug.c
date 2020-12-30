@@ -354,8 +354,11 @@ void try_print_debug_mario_object_info(void) {
  * Similar to above, but with level information. (checkinfo, mapinfo,
  * stageinfo)
  */
+extern struct MarioState gMarioState;
 void try_print_debug_mario_level_info(void) {
-
+    /*if (gPlayer1Controller->buttonDown & L_TRIG){
+        level_trigger_warp(&gMarioState, 0x17);
+    }*/
     switch (sDebugPage) {
         case DEBUG_PAGE_OBJECTINFO:
             break; // no info list is printed for obj info.

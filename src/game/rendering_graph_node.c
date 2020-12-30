@@ -37,8 +37,8 @@
  */
 
 s16 gMatStackIndex;
-Mat4 gMatStack[32];
-Mtx *gMatStackFixed[32];
+Mat4 gMatStack[64];
+Mtx *gMatStackFixed[64];
 
 /**
  * Animation nodes have state in global variables, so this struct captures
@@ -743,7 +743,7 @@ static void geo_process_shadow(struct GraphNodeShadow *node) {
  *
  * Since (0,0,0) is unaffected by rotation, columns 0, 1 and 2 are ignored.
  */
-static s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
+s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
     s16 cullingRadius;
     s16 halfFov; // half of the fov in in-game angle units instead of degrees
     struct GraphNode *geo;
@@ -807,7 +807,7 @@ static s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
 /**
  * Process an object node.
  */
-static void geo_process_object(struct Object *node) {
+void geo_process_object(struct Object *node) {
     Mat4 mtxf;
     f32 dist;
     f32 dist2;
@@ -815,13 +815,13 @@ static void geo_process_object(struct Object *node) {
 
     if (node->header.gfx.areaIndex == gCurGraphNodeRoot->areaIndex) {
 
-    /*    if (node->header.gfx.throwMatrix) {
+        /*    if (node->header.gfx.throwMatrix) {
+                node->header.gfx.angle[2] = *node->header.gfx.throwMatrix[1][2] * 0x4000;
+                node->header.gfx.angle[0] = *node->header.gfx.throwMatrix[1][0] * -0x4000;
+                node->oFaceAnglePitch = node->header.gfx.angle[0];
+                node->oFaceAngleRoll = node->header.gfx.angle[2];
 
-            node->header.gfx.angle[2] = *node->header.gfx.throwMatrix[1][2] * 0x4000;
-            node->header.gfx.angle[0] = *node->header.gfx.throwMatrix[1][0] * -0x4000;
-    node->oFaceAnglePitch = node->header.gfx.angle[0];
-    node->oFaceAngleRoll = node->header.gfx.angle[2];
-        }*/
+            }*/
 
         if (node->header.gfx.node.flags & GRAPH_RENDER_BILLBOARD) {
             mtxf_billboard(gMatStack[gMatStackIndex + 1], gMatStack[gMatStackIndex],
@@ -887,7 +887,7 @@ static void geo_process_object(struct Object *node) {
  * the subtree rooted at 'sharedChild' and processes the subtree, after which the
  * actual children are be processed. (in practice they are null though)
  */
-static void geo_process_object_parent(struct GraphNodeObjectParent *node) {
+void geo_process_object_parent(struct GraphNodeObjectParent *node) {
     if (node->sharedChild != NULL) {
         node->sharedChild->parent = (struct GraphNode *) node;
         geo_process_node_and_siblings(node->sharedChild);

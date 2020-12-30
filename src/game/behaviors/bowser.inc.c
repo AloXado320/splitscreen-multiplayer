@@ -1006,7 +1006,7 @@ struct SoundState D_8032F5B8[] = { { 0, 0, 0, NO_SOUND },
                                    { 1, 0, -1, SOUND_OBJ_BOWSER_TAIL_PICKUP },
                                    { 1, 0, -1, SOUND_OBJ2_BOWSER_ROAR } };
 s8 D_8032F690[4] = { 0, 0, 1, 0 };
-s8 D_8032F694[4] = { 1, 1, 3, 0 };
+s8 D_8032F694[4] = { 1, 2, 3, 0 }; //kazetodo adjust lives. this is b1 b2 b3 fight
 extern u8 bowser_3_seg7_collision_07004B94[];
 extern u8 bowser_3_seg7_collision_07004C18[];
 extern u8 bowser_3_seg7_collision_07004C9C[];

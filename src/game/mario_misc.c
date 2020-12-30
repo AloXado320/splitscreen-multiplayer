@@ -690,7 +690,7 @@ Gfx *geo_render_mirror_mario(s32 callContext, struct GraphNode *node, UNUSED Mat
     f32 mirroredX;
     int i;
     struct Object *mario;
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < gActivePlayers; i++) {
 
         mario = gMarioStates[i].marioObj;
 

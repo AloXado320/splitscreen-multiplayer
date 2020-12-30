@@ -13,6 +13,8 @@ void dorrie_raise_head(void) {
 
     //set_mario_pos(gMarioObject->oPosX + xzDisp * sins(o->oMoveAngleYaw), gMarioObject->oPosY - yDisp,
     //              gMarioObject->oPosZ + xzDisp * coss(o->oMoveAngleYaw));
+
+    //kazetodo: spawn a collision here for multiplayer
 }
 
 void dorrie_act_move(void) {
@@ -75,9 +77,9 @@ void dorrie_act_lower_head(void) {
             }
         }
 #else
-        if (gMarioObject->platform == o) {
+        if ((gMarioObject->platform == o) || (gLuigiObject->platform == o)) {
             if (o->oDorrieOffsetY == -17.0f && o->oDorrieForwardDistToMario > 780.0f
-                && set_mario_npc_dialog(2) == 1) {
+                && ((set_mario_npc_dialog(2) == 1)||(gActivePlayers>1)) ) {
                 dorrie_begin_head_raise(TRUE);
             } else if (o->oDorrieForwardDistToMario > 320.0f) {
                 o->oTimer = 0;
