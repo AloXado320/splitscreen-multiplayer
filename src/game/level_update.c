@@ -853,6 +853,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         m->healCounter = 31;
                         m->action = ACT_BUBBLED;
                         sDelayedWarpOp = backup;
+                        m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
                         val04 = FALSE;
                         warp = 1;
                         for (i = 0; i < gActivePlayers; i++) {
@@ -1237,27 +1238,22 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            /*if (singlePlayerChar) { //attempt at fixing exit course by sunlit, please dont use this
-            unless you are fixing it yourself initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+            if (gActivePlayers > 1) {
+                sSourceWarpNodeId = 0xf1;
+                level_trigger_warp(&gMarioStates[0], WARP_OP_WARP_FLOOR);
+                level_trigger_warp(&gMarioStates[1], WARP_OP_WARP_FLOOR);
                 set_play_mode(PLAY_MODE_NORMAL);
-                fade_into_special_warp(0, 0);
-                gSavedCourseNum = COURSE_NONE;
-            }*/
-            sSourceWarpNodeId = 0xf1;
-            level_trigger_warp(&gMarioStates[0], WARP_OP_WARP_FLOOR);
-            level_trigger_warp(&gMarioStates[1], WARP_OP_WARP_FLOOR);
-            set_play_mode(PLAY_MODE_NORMAL);
-            if (PLAYERCOUNTAGAIN > 1) {
                 if (gMarioStates[0].numLives < 4) {
                     gMarioStates[0].numLives = 4;
                 }
                 if (gMarioStates[1].numLives < 4) {
                     gMarioStates[1].numLives = 4;
                 }
+            } else {
+                initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+                fade_into_special_warp(0, 0);
+                gSavedCourseNum = COURSE_NONE;
             }
-            // initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
-            // fade_into_special_warp(0, 0);
-            // gSavedCourseNum = COURSE_NONE;
         }
 
         gCameraMovementFlags[0] &= ~CAM_MOVE_PAUSE_SCREEN;

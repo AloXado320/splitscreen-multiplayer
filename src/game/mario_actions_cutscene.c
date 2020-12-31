@@ -268,7 +268,20 @@ void handle_save_menu(struct MarioState *m) {
             disable_time_stop();
             m->faceAngle[1] += 0x8000;
             // figure out what dialog to show, if we should
-            set_mario_action(m, ACT_IDLE, 0);
+            if (gActivePlayers > 1) {
+
+                set_mario_action(m, ACT_IDLE, 0);
+            } else {
+
+                dialogID = get_star_collection_dialog(m);
+                if (dialogID != 0) {
+                    play_peachs_jingle();
+                    // look up for dialog
+                    set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, dialogID);
+                } else {
+                    set_mario_action(m, ACT_IDLE, 0);
+                }
+            }
         }
     }
 }
@@ -635,11 +648,18 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     } else if (m->actionState == 2 && is_anim_at_end(m)) {
         disable_time_stop();
         enable_background_sound();
-        // dialogID = get_star_collection_dialog(m);
-        dialogID = 0;
+        if (gActivePlayers == 1) {
+
+            dialogID = get_star_collection_dialog(m);
+        } else {
+
+            dialogID = 0;
+        }
         if (dialogID != 0) {
             // look up for dialog
-            // set_mario_action(&gMarioStates[0], ACT_READING_AUTOMATIC_DIALOG, dialogID);
+            if (gActivePlayers == 1) {
+                set_mario_action(&gMarioStates[0], ACT_READING_AUTOMATIC_DIALOG, dialogID);
+            }
             // set_mario_action(&gMarioStates[1], ACT_READING_AUTOMATIC_DIALOG, dialogID);
             set_mario_action(m, ACT_READING_AUTOMATIC_DIALOG, dialogID);
         } else {
