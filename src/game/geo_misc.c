@@ -40,7 +40,8 @@ s8 gFlyingCarpetState;
  * Create a vertex with the given parameters and insert it into `vtx` at
  * position `n`.
  *
- * Texture coordinates are s10.5 fixed-point, which means you should left-shift the actual coordinates by 5.
+ * Texture coordinates are s10.5 fixed-point, which means you should left-shift the actual coordinates
+ * by 5.
  */
 #ifndef GBI_FLOATS
 void make_vertex(Vtx *vtx, s32 n, s16 x, s16 y, s16 z, s16 tx, s16 ty, u8 r, u8 g, u8 b, u8 a) {
@@ -74,17 +75,63 @@ s16 round_float(f32 num) {
     }
 }
 
+extern Vtx sample_Plane_mesh_vtx_0[4];
+extern Vtx sample_Plane_mesh_vtx_1[4];
+extern Vtx sample_Plane_mesh_vtx_2[4];
+extern Vtx sample_Plane_mesh_vtx_3[4];
 /**
  * Create a display list for the light in the castle lobby that shows the
  * player where to look to enter Tower of the Wing Cap.
  */
+#define scaleDist 2500.f
+void editLights(Vtx *a) {
+    f32 x;
+    f32 z;
+    int Max = 0x700;
+    x = gMarioStates[luigiCamFirst].pos[0] - 7178.f;
+    z = gMarioStates[luigiCamFirst].pos[2] - 6168.f;
+  /*  if (x > (gMarioStates[1].pos[0] - 7178.f)) {
+        x = gMarioStates[1].pos[0] - 7178.f;
+    }
+    if (z > (gMarioStates[1].pos[2] - 6168.f)) {
+        z = gMarioStates[1].pos[2] - 6168.f;
+    }*/
+
+    Max -= (sqrtf(x * x + z * z) / scaleDist) * 290.f;
+    if (Max < 0) {
+        Max = 0;
+    }
+    if (Max > 0xff) {
+        Max = 0xff;
+    }
+    a->v.cn[3] = 0xff - Max; // ff is bowser, 0 is peach
+}
 Gfx *geo_exec_inside_castle_light(s32 callContext, struct GraphNode *node, UNUSED f32 mtx[4][4]) {
     s32 flags;
     struct GraphNodeGenerated *generatedNode;
     Gfx *displayListHead = NULL;
     Gfx *displayList = NULL;
+    int i;
+    Vtx *manipulate;
 
     if (callContext == GEO_CONTEXT_RENDER) {
+        manipulate = segmented_to_virtual(sample_Plane_mesh_vtx_0);
+        for (i = 0; i < 4; i++) {
+            editLights(&manipulate[i]);
+        }
+        manipulate = segmented_to_virtual(sample_Plane_mesh_vtx_1);
+        for (i = 0; i < 4; i++) {
+            editLights(&manipulate[i]);
+        }
+        manipulate = segmented_to_virtual(sample_Plane_mesh_vtx_2);
+        for (i = 0; i < 4; i++) {
+            editLights(&manipulate[i]);
+        }
+        manipulate = segmented_to_virtual(sample_Plane_mesh_vtx_3);
+        for (i = 0; i < 4; i++) {
+            editLights(&manipulate[i]);
+        }
+
         flags = save_file_get_flags();
         if (gHudDisplay.stars >= 10 && !(flags & SAVE_FLAG_HAVE_WING_CAP)) {
             displayList = alloc_display_list(2 * sizeof(*displayList));
@@ -189,14 +236,13 @@ Gfx *geo_exec_flying_carpet_create(s32 callContext, struct GraphNode *node, UNUS
 
     return displayList;
 }
-void copyData( u32 *destination, u32 *source, u32 size){
-    u32 *end = destination+size;
-    while (destination < end){
+void copyData(u32 *destination, u32 *source, u32 size) {
+    u32 *end = destination + size;
+    while (destination < end) {
         *destination = *source;
         destination++;
         source++;
     }
-
 }
 extern const u8 cake_end_texture_0[];
 extern const u8 cake_end_texture_luigi_0[];
@@ -208,12 +254,14 @@ Gfx *geo_exec_cake_end_screen(s32 callContext, struct GraphNode *node, UNUSED f3
     struct GraphNodeGenerated *generatedNode = (struct GraphNodeGenerated *) node;
     Gfx *displayList = NULL;
     Gfx *displayListHead = NULL;
-    //overwrite texture with other texture if not in coop mode
-    if (ASSUMELOW == 1){
-        if (singlePlayerChar){  
-            copyData(segmented_to_virtual(cake_end_texture_0), segmented_to_virtual(cake_end_texture_luigi_0), 0xc80 * 12);
+    // overwrite texture with other texture if not in coop mode
+    if (ASSUMELOW == 1) {
+        if (singlePlayerChar) {
+            copyData(segmented_to_virtual(cake_end_texture_0),
+                     segmented_to_virtual(cake_end_texture_luigi_0), 0xc80 * 12);
         } else {
-            copyData(segmented_to_virtual(cake_end_texture_0), segmented_to_virtual(cake_end_texture_mario_0), 0xc80 * 12);
+            copyData(segmented_to_virtual(cake_end_texture_0),
+                     segmented_to_virtual(cake_end_texture_mario_0), 0xc80 * 12);
         }
     }
     if (callContext == GEO_CONTEXT_RENDER) {

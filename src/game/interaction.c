@@ -384,10 +384,16 @@ u32 mario_lose_cap_to_enemy(u32 arg) {
 void mario_retrieve_cap(void) {
     mario_drop_held_object(gMarioState);
     save_file_clear_flags(SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI);
+    if (gActivePlayers>1){
+        
+    gMarioState[0].flags |= MARIO_CAP_ON_HEAD;
+    gMarioState[0].flags |= MARIO_NORMAL_CAP;
+    gMarioState[1].flags |= MARIO_CAP_ON_HEAD;
+    gMarioState[1].flags |= MARIO_NORMAL_CAP;
+    } else {
     gMarioState[0].flags &= ~MARIO_CAP_ON_HEAD;
     gMarioState[0].flags |= MARIO_NORMAL_CAP | MARIO_CAP_IN_HAND;
-    gMarioState[1].flags &= ~MARIO_CAP_ON_HEAD;
-    gMarioState[1].flags |= MARIO_NORMAL_CAP | MARIO_CAP_IN_HAND;
+    }
 }
 
 u32 able_to_grab_object(struct MarioState *m, UNUSED struct Object *o) {

@@ -441,6 +441,7 @@
 #define /*0x100*/ oDorrieForwardDistToMario OBJECT_FIELD_F32(0x1E)
 #define /*0x104*/ oDorrieYawVel             OBJECT_FIELD_S32(0x1F)
 #define /*0x10C*/ oDorrieLiftingMario       OBJECT_FIELD_S32(0x21)
+#define /*0x110*/ ODorrieMPColl          OBJECT_FIELD_OBJ(0x22)
 #define /*0x1AC*/ oDorrieGroundPounded      OBJECT_FIELD_S16(0x49, 0)
 #define /*0x1AE*/ oDorrieAngleToHome        OBJECT_FIELD_S16(0x49, + 1)
 #define /*0x1B0*/ oDorrieNeckAngle          OBJECT_FIELD_S16(0x4A, 0)

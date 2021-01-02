@@ -101,7 +101,6 @@ const GeoLayout castle_geo_0016D8[] = {
       GEO_ASM(PAINTING_ID(8, 1), geo_painting_draw),
       GEO_ASM(PAINTING_ID(10, 1), geo_painting_draw),
       GEO_ASM(PAINTING_ID(12, 1), geo_painting_draw),
-      GEO_ASM(  0, geo_render_mirror_mario),
    GEO_CLOSE_NODE(),
    GEO_RETURN(),
 };

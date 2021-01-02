@@ -10,11 +10,25 @@ void dorrie_raise_head(void) {
 
     xzDisp = 440.0f * (coss(o->oDorrieNeckAngle) - coss(startAngle));
     yDisp = 440.0f * (sins(o->oDorrieNeckAngle) - sins(startAngle));
+    if (gActivePlayers == 1) {
 
-    //set_mario_pos(gMarioObject->oPosX + xzDisp * sins(o->oMoveAngleYaw), gMarioObject->oPosY - yDisp,
-    //              gMarioObject->oPosZ + xzDisp * coss(o->oMoveAngleYaw));
+        set_mario_pos(gMarioObject->oPosX + xzDisp * sins(o->oMoveAngleYaw),
+                      gMarioObject->oPosY - yDisp,
+                      gMarioObject->oPosZ + xzDisp * coss(o->oMoveAngleYaw), 0);
 
-    //kazetodo: spawn a collision here for multiplayer
+    } else {
+
+        // kazetodo: spawn a collision here for multiplayer
+        if (!o->ODorrieMPColl) {
+            o->ODorrieMPColl = spawn_object(o, MODEL_METAL_BOX, bhvPushableMetalBox);
+            o->ODorrieMPColl->oPosX = gMarioObject->oPosX + xzDisp * sins(o->oMoveAngleYaw);
+            o->ODorrieMPColl->oPosY = gMarioObject->oPosY - yDisp - 317.f;
+            o->ODorrieMPColl->oPosZ = gMarioObject->oPosZ + xzDisp * coss(o->oMoveAngleYaw);
+        }
+        o->ODorrieMPColl->oPosX = o->ODorrieMPColl->oPosX + xzDisp * sins(o->oMoveAngleYaw);
+        o->ODorrieMPColl->oPosY = o->ODorrieMPColl->oPosY - yDisp;
+        o->ODorrieMPColl->oPosZ = o->ODorrieMPColl->oPosZ + xzDisp * coss(o->oMoveAngleYaw);
+    }
 }
 
 void dorrie_act_move(void) {
@@ -79,7 +93,7 @@ void dorrie_act_lower_head(void) {
 #else
         if ((gMarioObject->platform == o) || (gLuigiObject->platform == o)) {
             if (o->oDorrieOffsetY == -17.0f && o->oDorrieForwardDistToMario > 780.0f
-                && ((set_mario_npc_dialog(2) == 1)||(gActivePlayers>1)) ) {
+                && ((set_mario_npc_dialog(2) == 1) || (gActivePlayers > 1))) {
                 dorrie_begin_head_raise(TRUE);
             } else if (o->oDorrieForwardDistToMario > 320.0f) {
                 o->oTimer = 0;
@@ -95,9 +109,9 @@ void dorrie_act_lower_head(void) {
 }
 
 void dorrie_act_raise_head(void) {
-    o->collisionData = segmented_to_virtual(dorrie_seg6_collision_0600F644);
     if (cur_obj_check_if_near_animation_end()) {
         o->oAction = DORRIE_ACT_MOVE;
+    o->collisionData = segmented_to_virtual(dorrie_seg6_collision_0600F644);
     } else if (o->oDorrieLiftingMario && o->header.gfx.animInfo.animFrame < 74) {
         if (set_mario_npc_dialog(2) == 2) {
             o->oDorrieHeadRaiseSpeed += 0x1CC;
@@ -161,6 +175,10 @@ void bhv_dorrie_update(void) {
         switch (o->oAction) {
             case DORRIE_ACT_MOVE:
                 dorrie_act_move();
+                if (o->ODorrieMPColl) {
+                    o->ODorrieMPColl->activeFlags = 0;
+                    o->ODorrieMPColl = 0;
+                }
                 break;
             case DORRIE_ACT_LOWER_HEAD:
                 dorrie_act_lower_head();
