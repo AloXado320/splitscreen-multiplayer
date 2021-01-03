@@ -1297,7 +1297,7 @@ void animate_mario_head_normal(struct ObjAnimator *self) {
 }
 
 /**
- * Loads the Mario head from `dynlist_mario_master`, sets up grabbers, and makes
+ * Loads the Mario head from `dynlist_`, sets up grabbers, and makes
  * sparkle particles
  */
 s32 load_mario_head(void (*aniFn)(struct ObjAnimator *)) {
@@ -1440,7 +1440,7 @@ s32 load_mario_head(void (*aniFn)(struct ObjAnimator *)) {
 }
 
 /**
- * Loads the Luigi head from `dynlist_mario_master`, sets up grabbers, and makes
+ * Loads the Luigi head from `dynlist_`, sets up grabbers, and makes
  * sparkle particles
  */
 s32 load_luigi_head(void (*aniFn)(struct ObjAnimator *)) {
@@ -1466,9 +1466,10 @@ s32 load_luigi_head(void (*aniFn)(struct ObjAnimator *)) {
     animator->controlFunc = aniFn;
     d_use_integer_names(FALSE);
     // FIXME: make segment address work once seg4 is disassembled
-    gLuigiFaceGrp = (struct ObjGroup *) load_dynlist(dynlist_mario_master);
+    return 0; //temporary
+    gLuigiFaceGrp =(struct ObjGroup *)  load_dynlist(dynlist_luigi_master); //doesnt load twice, just returns the DL IN THEORY
+    return 0; //temporary
     stop_memtracker("luigi face");
-
     // Make camera
 
     camera = (struct ObjCamera *) d_makeobj(D_CAMERA, NULL);

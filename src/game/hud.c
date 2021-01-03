@@ -127,11 +127,17 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
 
     gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
     if (gActivePlayers == 1) {
-
-        gSPDisplayList(gDisplayListHead++, &dl_power_meter_base_2);
+        if (!singlePlayerChar) {
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_base_2);
+        } else {
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_base_2_luigi);
+        }
     } else {
-
-        gSPDisplayList(gDisplayListHead++, &dl_power_meter_base);
+        if (!playerID) {
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_base);
+        } else {
+            gSPDisplayList(gDisplayListHead++, &dl_power_meter_base_luigi);
+        }
     }
 
     if (numHealthWedges != 0) {

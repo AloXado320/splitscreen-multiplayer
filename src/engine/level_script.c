@@ -281,12 +281,12 @@ static void level_cmd_load_mio0(void) {
     load_segment_decompress(CMD_GET(s16, 2), CMD_GET(void *, 4), CMD_GET(void *, 8));
     sCurrentCmd = CMD_NEXT;
 }
-
+#define GDMEMSIZE 0x1E1000
 static void level_cmd_load_mario_head(void) {
     // TODO: Fix these hardcoded sizes
-    void *addr = main_pool_alloc(DOUBLE_SIZE_ON_64_BIT(0xE1000), MEMORY_POOL_LEFT);
+    void *addr = 0x80500000;
     if (addr != NULL) {
-        gdm_init(addr, DOUBLE_SIZE_ON_64_BIT(0xE1000));
+        gdm_init(addr, DOUBLE_SIZE_ON_64_BIT(GDMEMSIZE)); //more memory for goddard head
         gd_add_to_heap(gZBuffer, sizeof(gZBuffer));               // 0x25800
         gd_add_to_heap(gFrameBuffer0, 3 * sizeof(gFrameBuffer0)); // 0x70800
         gdm_setup();

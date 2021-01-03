@@ -224,11 +224,13 @@ static s32 sDebugViewsCount = 0;         // number of elements in the sDebugView
 static s32 sCurrDebugViewIndex = 0;      // @ 801A86F4; timing activate cool down counter?
 static u32 unref_801a86F8 = 0;
 static struct GdDisplayList *sCurrentGdDl = NULL; // @ 801A86FC
+static struct GdDisplayList *sCurrentGdDlLuigi = NULL; // @ 801A86FC
 static u32 sGdDlCount = 0;                        // @ 801A8700
 static struct DynListBankInfo sDynLists[] = {     // @ 801A8704
     { STD_LIST_BANK, dynlist_test_cube },
     { STD_LIST_BANK, dynlist_spot_shape },
     { STD_LIST_BANK, dynlist_mario_master },
+    { STD_LIST_BANK, dynlist_luigi_master },
     { TABLE_END, NULL }
 };
 
@@ -724,6 +726,7 @@ void gd_setup_cursor(struct ObjGroup *);
 void parse_p1_controller(void);
 void update_cursor(void);
 void update_view_and_dl(struct ObjView *);
+void update_view_and_dlLuigi(struct ObjView *);
 static void update_render_mode(void);
 void gddl_is_loading_shine_dl(s32);
 void func_801A3370(f32, f32, f32);
@@ -1230,12 +1233,12 @@ void gdm_maketestdl(s32 id) {
                 gd_setup_cursor(NULL);
             }
             if (sLuigiSceneGrp == NULL) {
-                // load_luigi_head(animate_mario_head_normal);
-                sLuigiSceneGrp = gLuigiFaceGrp; // gMarioFaceGrp set by load_mario_head
+                load_luigi_head(animate_mario_head_normal);
+              //  sLuigiSceneGrp = gLuigiFaceGrp; // gMarioFaceGrp set by load_mario_head
                                                 // gd_setup_cursor(NULL);
             }
             sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
-            // sLSceneView = make_view_withgrpLuigi("lscene", sLuigiSceneGrp);
+           //  sLSceneView = make_view_withgrpLuigi("lscene", sLuigiSceneGrp);
             break;
         case 3: // game over Mario head
             if (sMarioSceneGrp == NULL) {
@@ -1243,13 +1246,7 @@ void gdm_maketestdl(s32 id) {
                 sMarioSceneGrp = gMarioFaceGrp;
                 gd_setup_cursor(NULL);
             }
-            if (sLuigiSceneGrp == NULL) {
-                // load_mario_head(animate_mario_head_gameover);
-                sLuigiSceneGrp = gMarioFaceGrp;
-                //   gd_setup_cursor(NULL);
-            }
             sMSceneView = make_view_withgrpMario("mscene", sMarioSceneGrp);
-            // sLSceneView = make_view_withgrpLuigi("scene", sLuigiSceneGrp);
             break;
         case 4:
             sCarSceneView = make_view_withgrp("car_scene", sCarSceneGrp);
@@ -1353,7 +1350,7 @@ Gfx *gdm_gettestdl(s32 id) {
         case GD_SCENE_DIZZY_MARIO:
             setup_timers();
             update_view_and_dl(sMSceneView);
-            // update_view_and_dl(sLSceneView);
+            //update_view_and_dlLuigi(sLSceneView);
             if (sHandView != NULL) {
                 update_view_and_dl(sHandView);
             }
@@ -3277,6 +3274,19 @@ void update_view_and_dl(struct ObjView *view) {
         }
     }
 }
+void update_view_and_dlLuigi(struct ObjView *view) {
+    UNUSED u32 pad;
+    s32 prevFlags; // 18
+
+    prevFlags = view->flags;
+    update_view(view);
+    if (prevFlags & VIEW_UPDATE) {
+        sCurrentGdDlLuigi = sMHeadMainDls[gGdFrameBufNum];
+        if (view->gdDlNum != 0) {
+            func_801A4848(view->gdDlNum);
+        }
+    }
+}
 
 /**
  * Unused - called by __main__
@@ -3858,7 +3868,6 @@ void stub_renderer_18(UNUSED u32 a0) {
 void stub_renderer_19(UNUSED u32 a0) {
 }
 
-#ifndef NO_SEGMENTED_MEMORY
 /**
  * Copies `size` bytes of data from ROM address `romAddr` to RAM address `vAddr`.
  */
@@ -3955,11 +3964,6 @@ struct GdObj *load_dynlist(struct DynList *dynlist) {
 
     return loadedList;
 }
-#else
-struct GdObj *load_dynlist(struct DynList *dynlist) {
-    return proc_dynlist(dynlist);
-}
-#endif
 
 /**
  * Unused (not called)
