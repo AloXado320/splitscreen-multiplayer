@@ -3,6 +3,15 @@
 
 /* DynListCmd Macros */
 
+#define StartList() \
+    { 53716, {0}, {0}, {0.0, 0.0, 0.0} }
+
+/* Necessary stop command for the dynlist. */
+#define StopList() \
+    { 58, {0}, {0}, {0.0, 0.0, 0.0} }
+
+#define UseIntId(w2) \
+    { 0, {0}, {(void *)(w2)}, {0.0, 0.0, 0.0} }
 /**
  * Must be the first command in a dynlist.
  */
@@ -166,6 +175,17 @@
 #define SetNodeGroup(grpName) \
     { 21, {(void *)(grpName)}, {0}, {0.0, 0.0, 0.0} }
 
+/* Ends a net sub-Group ID that was created with "MakeNetWithSubGroup" */
+#define EndNetSubGroup(w1) \
+    { 48, {(void *)(w1)}, {0}, {0.0, 0.0, 0.0} }
+/* Make Joint ID and attach the Net created with "MakeNetWithSubGroup". ARG1 is not used */
+#define AttachNetToJoint(w2, w1) \
+    { 47, {(void *)(w1)}, {(void *)(w2)}, {0.0, 0.0, 0.0} }
+
+
+/* Jump to pointed dynlist. Once that list has finished processing, flow returns to current list. */
+#define JumpToList(w1) \
+    { 12, {(void *)(w1)}, {0}, {0.0, 0.0, 0.0} }
 /**
  * Set the skin group of the current Net object with the vertices from the
  * specified shape.

@@ -1,0 +1,13 @@
+==== Build Options ====
+Version:        us
+Microcode:      f3dzex
+Target:         u64mb.us.f3dzex
+Compare ROM:    no
+Build Matching: yes
+=======================
+Building tools...
+Building ROM...
+[0;32mCompiling: [0;33msrc/goddard/dynlists/dynlist_mario_master.c[0;32m -> [0;34mbuild/us/src/goddard/dynlists/dynlist_mario_master.o[0m
+[0;32mLinking libgoddard:  [0;34mbuild/us/libgoddard.a [0m
+[0;32mLinking ELF file:  [0;34mbuild/us/u64mb.us.f3dzex.elf [0m
+[0;32mBuilding ROM: [0;33mbuild/us/u64mb.us.f3dzex.elf[0;32m -> [0;34mbuild/us/u64mb.us.f3dzex.z64[0m

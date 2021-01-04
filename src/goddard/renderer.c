@@ -1196,7 +1196,7 @@ struct ObjView *make_view_withgrpMario(char *name, struct ObjGroup *grp) {
     struct ObjView *view;            // 2c
     UNUSED struct ObjGroup *viewgrp; // 28
 
-    view = make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, -80, -20, 320, 240, grp);
+    view = make_view(name, (VIEW_DRAW | VIEW_ALLOC_ZBUF | VIEW_MOVEMENT), 1, 0, 0, 320, 240, grp);
     viewgrp = make_group(2, grp, view);
     view->lights = gGdLightGroup;
 
