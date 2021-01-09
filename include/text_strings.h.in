@@ -199,7 +199,7 @@
 #endif
 
 // Camera Options
-#define TEXT_LAKITU_MARIO _("LAKITU + MARIO")
+#define TEXT_LAKITU_MARIO _("LAKITU + PLAYER")
 #define TEXT_LAKITU_STOP _("LAKITU + STOP")
 #define TEXT_NORMAL_UPCLOSE __("(NORMAL)(UP-CLOSE)")
 #define TEXT_NORMAL_FIXED __("(NORMAL)(FIXED)")

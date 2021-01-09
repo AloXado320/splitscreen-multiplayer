@@ -14,12 +14,12 @@ ALIGNED8 static const Texture texture_power_meter_right_side[] = {
 
 // 0x030233E0
 ALIGNED8 static const Texture texture_power_meter_left_side_luigi[] = {
-#include "actors/power_meter/power_meter_left_side_luigi.rgba16.inc.c"
+#include "actors/power_meter/power_meter_left_side_luigi.custom.rgba16.inc.c"
 };
 
 // 0x030243E0
 ALIGNED8 static const Texture texture_power_meter_right_side_luigi[] = {
-#include "actors/power_meter/power_meter_right_side_luigi.rgba16.inc.c"
+#include "actors/power_meter/power_meter_right_side_luigi.custom.rgba16.inc.c"
 };
 // 0x030253E0
 ALIGNED8 static const Texture texture_power_meter_full[] = {
@@ -162,7 +162,7 @@ const Gfx dl_power_meter_base_luigi[] = {
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_power_meter_right_side),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_power_meter_right_side_luigi),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
     gsSP2Triangles( 4,  5,  6, 0x0,  4,  6,  7, 0x0),
@@ -186,7 +186,7 @@ const Gfx dl_power_meter_base_2_luigi[] = {
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_power_meter_right_side),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_power_meter_right_side_luigi),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
     gsSP2Triangles( 4,  5,  6, 0x0,  4,  6,  7, 0x0),

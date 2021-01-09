@@ -122,7 +122,7 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
                     (f32) sPowerMeterHUD[playerID].y / (1 + playerID) - playerID * 19, 0);
     } else {
 
-        guTranslate(mtx, (f32) sPowerMeterHUD[playerID].x + 120.f, (f32) sPowerMeterHUD[playerID].y, 0);
+        guTranslate(mtx, (f32) sPowerMeterHUD[playerID].x + 140.f, (f32) sPowerMeterHUD[playerID].y, 0);
     }
 
     gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
