@@ -38,13 +38,13 @@ static s16 sPowerMeterStoredHealth[2];
 static struct PowerMeterHUD sPowerMeterHUD[2] = { {
                                                       POWER_METER_HIDDEN,
                                                       30,
-                                                      181,
+                                                      179,
                                                       1.0,
                                                   },
                                                   {
                                                       POWER_METER_HIDDEN,
                                                       30,
-                                                      181,
+                                                      179,
                                                       1.0,
                                                   } };
 
@@ -122,7 +122,7 @@ void render_dl_power_meter(s16 numHealthWedges, int playerID) {
                     (f32) sPowerMeterHUD[playerID].y / (1 + playerID) - playerID * 19, 0);
     } else {
 
-        guTranslate(mtx, (f32) sPowerMeterHUD[playerID].x + 140.f, (f32) sPowerMeterHUD[playerID].y, 0);
+        guTranslate(mtx, (f32) sPowerMeterHUD[playerID].x + 110.f, (f32) sPowerMeterHUD[playerID].y, 0);
     }
 
     gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
