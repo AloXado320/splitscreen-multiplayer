@@ -137,7 +137,7 @@ const LevelScript level_yajima_test_entry[] = {
 
 //			 seqActor(S_hibiblock		,	-2867, 331,   -895,   0,0,0,  0,0,0, e_testball	) 
 
-			seqActor(S_hanbutton,    0, 0, -900,   0,0,0,  0,0,0,	e_onoff_switch )
+			seqActor(S_hanbutton,    0, 0, -900,   0,0,0,  0,0,0,	e_onoff_switch )//uh
 
 			seqActor(S_hanbutton,    0, 0, -300,   0,0,0,  0,0,0,	e_timeblock_switch )
 			seqActor(S_hibiblock, -500, 0, -700,   0,0,0,  0,0,0,	e_timeblock )
