@@ -6,6 +6,12 @@ U64MB Bug/todo List (Programmers; please take note of every bug in this list.)
 *** = IMPORTANT
 **** = This bug could be kept in, doesn't break gameplay in any way
 
+Newest bugs/issues:
+1. jumping up to dorrie's head after ground pounding her crashes
+2. HMC lags really bad
+3. we should rework segments so we can add rumble pak support
+
+OLD BUGS:
 [the first 30 here are singleplayer bugs only, second group contains misc bugs in singleplayer and multiplayer]
 0. The HUD is positioned too high on the screen with GlideN64's Overscan disabled
 1. Text strings are missing/incorrect (for example the text that shows when you enter BOB is the splitscreen text, the text string when you talk to King Bob Omb is missing, and the text string for the bob omb buddy opening the cannon is missing, which soft locks the game)

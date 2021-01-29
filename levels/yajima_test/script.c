@@ -58,6 +58,7 @@
 #define S_itemhat_wing MODEL_MARIOS_WING_CAP
 #define S_itemhat_hat MODEL_MARIOS_CAP
 #define S_itembox MODEL_EXCLAMATION_BOX
+#define S_motosman MODEL_MOTOS
 
 #define e_wind_ping bhvSLWalkingPenguin
 #define e_wind bhvSLSnowmanWind
@@ -82,6 +83,7 @@
 #define e_osublock bhvJumpingBox
 #define e_horiage bhvHeaveHo
 #define e_testball bhvFreeBowlingBall//it's unknown what testball actually was.
+#define e_motos bhvMotos
 
 //some of these objects can't be loaded all together because they're in different groups.
 //this may be evidence that most/all objects were once in a single group, or could be loaded at any time.
@@ -97,8 +99,8 @@ const LevelScript level_yajima_test_entry[] = {
     LOAD_RAW(         /*seg*/ 0x0D, _group6_geoSegmentRomStart,  _group6_geoSegmentRomEnd),
     LOAD_MIO0(        /*seg*/ 0x05, _group7_mio0SegmentRomStart, _group7_mio0SegmentRomEnd),
     LOAD_RAW(         /*seg*/ 0x0C, _group7_geoSegmentRomStart,  _group7_geoSegmentRomEnd),
-//    LOAD_MIO0(        /*seg*/ 0x09, _group8_mio0SegmentRomStart, _group8_mio0SegmentRomEnd),
-//    LOAD_RAW(         /*seg*/ 0x0A, _group8_geoSegmentRomStart,  _group8_geoSegmentRomEnd),
+    LOAD_MIO0(        /*seg*/ 0x09, _group8_mio0SegmentRomStart, _group8_mio0SegmentRomEnd),
+    LOAD_RAW(         /*seg*/ 0x0A, _group8_geoSegmentRomStart,  _group8_geoSegmentRomEnd),
     LOAD_MIO0(        /*seg*/ 0x08, _common0_mio0SegmentRomStart, _common0_mio0SegmentRomEnd),
     LOAD_RAW(         /*seg*/ 0x0F, _common0_geoSegmentRomStart,  _common0_geoSegmentRomEnd),
 
@@ -136,13 +138,13 @@ const LevelScript level_yajima_test_entry[] = {
 //            MACRO_OBJECT(/*preset*/ macro_box_vanish_cap, /*yaw*/ 0, /*pos*/ -1200, 250, 1500),
 
 //			 seqActor(S_hibiblock		,	-2867, 331,   -895,   0,0,0,  0,0,0, e_testball	) 
-
+			//OBJECT(/*model*/ MODEL_NONE,       /*pos*/ -870, 150, 370, /*angle*/ 0, 0, 0, /*behParam*/ 0x00340000, /*beh*/ bhvBetaTrampolineTop), //MUST be placed 150 units above the ground for it to work proper.
 			seqActor(S_hanbutton,    0, 0, -900,   0,0,0,  0,0,0,	e_onoff_switch )
 
-			seqActor(S_hanbutton,    0, 0, -300,   0,0,0,  0,0,0,	e_timeblock_switch )
-			seqActor(S_hibiblock, -500, 0, -700,   0,0,0,  0,0,0,	e_timeblock )
-			seqActor(S_hibiblock,    0, 0, -700,   0,0,0,  0,1,0,	e_timeblock )
-			seqActor(S_hibiblock,  500, 0, -700,   0,0,0,  0,2,0,	e_timeblock )
+			//seqActor(S_hanbutton,    0, 0, -300,   0,0,0,  0,0,0,	e_timeblock_switch )
+			//seqActor(S_hibiblock, -500, 0, -700,   0,0,0,  0,0,0,	e_timeblock )
+			//seqActor(S_hibiblock,    0, 0, -700,   0,0,0,  0,1,0,	e_timeblock )
+			//seqActor(S_hibiblock,  500, 0, -700,   0,0,0,  0,2,0,	e_timeblock )
 
 			seqActor(S_pushblock, 1000, 0, -1000,   0,0,0,  0,0,0,	e_pushblock )
 

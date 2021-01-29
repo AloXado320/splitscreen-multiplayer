@@ -13,7 +13,7 @@ ALIGNED8 static const Texture blue_coin_switch_seg8_texture_08000018[] = {
 
 // 0x08000418
 ALIGNED8 static const Texture blue_coin_switch_seg8_texture_08000418[] = {
-#include "actors/blue_coin_switch/blue_coin_switch_top.rgba16.inc.c"
+#include "actors/blue_coin_switch/blue_coin_switch_top.custom.rgba16.inc.c"
 };
 
 // 0x08000C18
