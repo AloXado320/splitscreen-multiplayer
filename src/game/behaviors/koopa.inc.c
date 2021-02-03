@@ -480,6 +480,8 @@ s32 obj_begin_race(s32 noTimer) {
 
             o->parentObj->oKoopaRaceEndpointRaceBegun = TRUE;
         }
+        set_mario_npc_dialog(0);
+        disable_time_stop_including_mario();
 
     } else if (o->oTimer > 50) {
         return TRUE;
@@ -715,7 +717,7 @@ static void koopa_the_quick_act_after_race(void) {
             // Determine which text to display
 
             if (o->parentObj->oKoopaRaceEndpointRaceStatus != 0) {
-                o->parentObj->oKoopaRaceEndpointUnk100 = DIALOG_041;
+                o->parentObj->oKoopaRaceEndpointUnk100 = DIALOG_007;
             } else {
                 // KtQ won
                 o->parentObj->oKoopaRaceEndpointUnk100 = DIALOG_041;

@@ -29,18 +29,9 @@ void bhv_beta_trampoline_spring_loop(void) {
     // For this to work correctly, the arbitrary value of 10
     // must be replaced with 150 (the height of the trampoline).
     // Note that all of the numbers in this if/else block are doubles.
-    if ((yDisplacement = o->oPosY - o->oHomeY) >= 0) {
-        yScale = yDisplacement / 10.0 + 1.0;
-    } else {
-        // Otherwise (if the trampoline is compressed),
-        // scale by 1 - (the displacement)/500.
-        // For this to work correctly, the arbitrary value of 500
-        // must be replaced with 150 (the height of the trampoline),
-        // as with the above code.
-        yDisplacement = -yDisplacement;
-        yScale = 1.0 - yDisplacement / /*500.0*/ 150.0f;
-        o->oPosY += 75.0f * (1.0f - yScale);
-    }
+    yDisplacement = -o->oPosY + o->oHomeY;
+    yScale = 1.0 - yDisplacement / /*500.0*/ 150.0f;
+    o->oPosY += 75.0f * (1.0f - yScale);
 
     // Scale the spring
     obj_scale_xyz(o, 1.0f, yScale, 1.0f);
@@ -71,36 +62,21 @@ void bhv_beta_trampoline_top_loop(void) {
     // the trampoline's position if Mario's not on it.
     // Since the trampoline never moves, this doesn't do anything.
     // Maybe they intended to decrease the trampoline's position
-    // when Mario's on it in this if statement?
+    // when Mario's on it in this if statement?/*
     if (gMarioObject->platform == o) {
-        f32 minPos = (o->oHomeY - 150.0f + 65.0f);
         stub_mario_step_2();
         o->oBetaTrampolineMarioOnTrampoline = TRUE;
 
-        o->oPosY =
-            (o->oPosY > minPos) ?
-            (o->oPosY + ((minPos -o->oPosY)/8.f)) :
-            minPos;
-
+        o->oVelY -= 4.f;
 
         o->oBetaTrampolineAdditiveYVel =
-            ((o->oBehParams2ndByte >> 4) / 2.0f) +
-            ((o->oHomeY - o->oPosY) / ((o->oBehParams2ndByte & 0x0F) / 2.0f));
+            ((o->oBehParams2ndByte >> 4) / 2.0f)
+            + ((o->oHomeY - o->oPosY) / ((o->oBehParams2ndByte & 0x0F) / 2.0f));
     } else {
         o->oBetaTrampolineMarioOnTrampoline = FALSE;
-        //o->oPosY = o->oHomeY;
-
-        o->oPosY =
-            (o->oPosY < (o->oHomeY - 10.0f)) ?
-            (o->oPosY + 10.0f) :
-            o->oHomeY;
-
         o->oBetaTrampolineAdditiveYVel = 0;
     }
-
-    // This function is from mario_step.c, and is empty.
-    // It was probably intended to be used to "let the game know"
-    // that the trampoline is currently in use. This potential
-    // trampoline infrastructure is found in mario_step.c. See
-    // that file for more details.
+    o->oVelY -= (o->oPosY - o->oHomeY) / 12.f;
+    o->oVelY *= 0.90f;
+    o->oPosY += o->oVelY;
 }

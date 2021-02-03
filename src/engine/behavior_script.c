@@ -903,6 +903,7 @@ static BhvCommandProc BehaviorCmdTable[] = {
     bhv_cmd_spawn_water_droplet,
 };
 
+extern s8 doneskipped;
 // Execute the behavior script of the current object, process the object flags, and other miscellaneous code for updating objects.
 void cur_obj_update(void) {
     UNUSED u32 unused;
@@ -910,6 +911,12 @@ void cur_obj_update(void) {
     f32 distanceFromMario;
     BhvCommandProc bhvCmdProc;
     s32 bhvProcResult;
+    s32 hasAnimation = (gCurrentObject->header.gfx.node.flags & GRAPH_RENDER_HAS_ANIMATION) != 0;
+    // frameskip
+    if ((doneskipped >= 0) && hasAnimation && gCurrentObject->header.gfx.animInfo.curAnim != NULL) {
+        gCurrentObject->header.gfx.animInfo.animFrame = geo_update_animation_frame(
+            &gCurrentObject->header.gfx.animInfo, &gCurrentObject->header.gfx.animInfo.animFrameAccelAssist);
+    }
     
     if ((gLuigiObject != NULL) && (gMarioObject != NULL)) {
         if (dist_between_objects(gCurrentObject, gMarioObject)
@@ -1010,5 +1017,9 @@ void cur_obj_update(void) {
     // gMarioObject = backupMarioObject;
     if ((gMarioStates[0].marioObj != NULL) && ((gMarioStates[0].marioObj->behavior) == segmented_to_virtual(bhvMario))) {
         gMarioObject = gMarioStates[0].marioObj;
+    }
+    // frameskip
+    if (gCurrentObject->header.gfx.animInfo.animFrame < 0) {
+        gCurrentObject->header.gfx.animInfo.animFrame = 0;
     }
 }

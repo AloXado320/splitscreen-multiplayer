@@ -384,15 +384,15 @@ u32 mario_lose_cap_to_enemy(u32 arg) {
 void mario_retrieve_cap(void) {
     mario_drop_held_object(gMarioState);
     save_file_clear_flags(SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI);
-    if (gActivePlayers>1){
-        
-    gMarioState[0].flags |= MARIO_CAP_ON_HEAD;
-    gMarioState[0].flags |= MARIO_NORMAL_CAP;
-    gMarioState[1].flags |= MARIO_CAP_ON_HEAD;
-    gMarioState[1].flags |= MARIO_NORMAL_CAP;
+    if (gActivePlayers > 1) {
+
+        gMarioState[0].flags |= MARIO_CAP_ON_HEAD;
+        gMarioState[0].flags |= MARIO_NORMAL_CAP;
+        gMarioState[1].flags |= MARIO_CAP_ON_HEAD;
+        gMarioState[1].flags |= MARIO_NORMAL_CAP;
     } else {
-    gMarioState[0].flags &= ~MARIO_CAP_ON_HEAD;
-    gMarioState[0].flags |= MARIO_NORMAL_CAP | MARIO_CAP_IN_HAND;
+        gMarioState[0].flags &= ~MARIO_CAP_ON_HEAD;
+        gMarioState[0].flags |= MARIO_NORMAL_CAP | MARIO_CAP_IN_HAND;
     }
 }
 
@@ -1625,6 +1625,7 @@ u32 interact_hoot(struct MarioState *m, UNUSED u32 interactType, struct Object *
     return FALSE;
 }
 
+extern u8 coop;
 u32 interact_cap(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
     u32 capFlag = get_mario_cap_flag(o);
     u16 capMusic = 0;
@@ -1640,7 +1641,11 @@ u32 interact_cap(struct MarioState *m, UNUSED u32 interactType, struct Object *o
         switch (capFlag) {
             case MARIO_VANISH_CAP:
                 capTime = 600;
-                capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_VANISH_CAP);
+                if (coop || (gActivePlayers == 1)) {
+                    capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP);
+                } else {
+                    capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_VANISH_CAP);
+                }
                 break;
 
             case MARIO_METAL_CAP:

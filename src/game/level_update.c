@@ -184,8 +184,10 @@ struct MarioState *gLuigiState = &gMarioStates[1];
 u8 *luigiData = NULL;
 s8 sWarpCheckpointActive = FALSE;
 #ifdef TARGET_N64
-OSTime oldTime = 0;
-OSTime deltaTime = 0;
+u64 deltaTime = 0;
+u64 newTime = 0;
+u64 oldTime = 0;
+s8 doneskipped;
 #endif
 
 u8 luigiCamFirst = 0;
@@ -891,10 +893,10 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         warp = 1;
                         if (warp) {
                             sDelayedWarpOp = warpOp;
-                            sDelayedWarpTimer = 48;
+                            sDelayedWarpTimer = 20;
                             sSourceWarpNodeId = WARP_NODE_DEATH;
-                            play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, 0x30, 0x00, 0x00, 0x00);
-                            play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+                        play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
+                           // play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
                         } else {
                             sDelayedWarpOp = WARP_OP_NONE;
                         }
@@ -1130,6 +1132,7 @@ void delta_time_handle(void) {
     OSTime newTime = osGetTime();
     int i;
 
+    doneskipped = -1;
     deltaTime += newTime - oldTime;
     oldTime = newTime;
     while (deltaTime > 1562744) {
@@ -1138,15 +1141,7 @@ void delta_time_handle(void) {
             gHudDisplay.timer += 1;
         }
         area_update_objects();
-        if (deltaTime > 1562744) {
-            // reset buttonPressed
-            for (i = 0; i < gActivePlayers; i++) {
-                struct Controller *controller = &gControllers[i];
-                if (controller->controllerData != NULL) {
-                    controller->buttonPressed = 0;
-                }
-            }
-        }
+        doneskipped++;
     }
 }
 #endif

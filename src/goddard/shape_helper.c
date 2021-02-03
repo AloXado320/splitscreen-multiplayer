@@ -1313,8 +1313,12 @@ struct DynList *getMarioLuigi() {
         random_u16();
     }
     if (random_u16() & 1) {
+        gActivePlayers = 1;
+        singlePlayerChar = 0;
         return dynlist_mario_master;
     } else {
+        gActivePlayers = 1;
+        singlePlayerChar = 1;
         return dynlist_luigi_master;
     }
 }

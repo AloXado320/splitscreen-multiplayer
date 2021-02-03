@@ -804,6 +804,17 @@ s32 obj_is_in_view(struct GraphNodeObject *node, Mat4 matrix) {
     return TRUE;
 }
 
+void killWeirdFloats(void *addr) {
+    u32 bits;
+    s32 exponent;
+    bits = *(u32 *) addr;
+    exponent = ((bits & 0x7f800000U) >> 0x17) - 0x7f;
+    if ((exponent >= -0x7e && exponent <= 0x7f) || bits == 0) {
+        return;
+    } else {
+        *(u32 *) addr = 0.f;
+    }
+}
 /**
  * Process an object node.
  */
@@ -838,7 +849,18 @@ void geo_process_object(struct Object *node) {
         node->header.gfx.cameraToObject[1] = gMatStack[gMatStackIndex][3][1];
         node->header.gfx.cameraToObject[2] = gMatStack[gMatStackIndex][3][2];
         if ((gCurrentArea->luigiCamera != NULL) && (gCurrentArea->marioCamera != NULL)) {
-
+            // kazetodo: note->pos is having invalid floats. i do not know what they are.
+            /*
+            bits = (u32) float;
+    exponent = ((bits & 0x7f800000U) >> 0x17) - 0x7f;
+    if ((exponent >= -0x7e && exponent <= 0x7f) || bits == 0) {
+        crash_screen_print(x, y, "F%02d:%.3e", regNum, *(f32 *) addr);
+    } else {
+        c*/
+            // USE THE SAME DETECTION FOR POSITIONS TO NOT DO THIS?
+            killWeirdFloats(&node->oPosX);
+            killWeirdFloats(&node->oPosY);
+            killWeirdFloats(&node->oPosZ);
             node->soundOrigin[0] = 0;
             node->soundOrigin[1] = 0;
             dist = sqrtf((gCurrentArea->marioCamera->pos[0] - node->oPosX)

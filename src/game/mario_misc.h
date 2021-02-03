@@ -6,7 +6,7 @@
 #include "macros.h"
 #include "types.h"
 
-extern struct GraphNodeObject gMirrorMario[2];
+extern struct Object gMirrorMario[2];
 extern struct MarioBodyState gBodyStates[2];
 
 Gfx *geo_draw_mario_head_goddard(s32 callContext, struct GraphNode *node, Mat4 *c);

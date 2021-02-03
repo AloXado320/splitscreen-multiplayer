@@ -167,8 +167,10 @@ u8 sSoundRequestCount = 0;
     (s16)(1 << (15 - cond1) | 1 << (15 - cond2) | 1 << (15 - cond3) | res), val1, val2, val3
 
 s16 sDynBbh[] = {
-    SEQ_LEVEL_SPOOKY, DYN1(MARIO_IS_IN_ROOM, BBH_OUTSIDE_ROOM, 6),
-    DYN1(MARIO_IS_IN_ROOM, BBH_NEAR_MERRY_GO_ROUND_ROOM, 6), 5,
+    SEQ_LEVEL_SPOOKY,
+    DYN1(MARIO_IS_IN_ROOM, BBH_OUTSIDE_ROOM, 6),
+    DYN1(MARIO_IS_IN_ROOM, BBH_NEAR_MERRY_GO_ROUND_ROOM, 6),
+    5,
 };
 s16 sDynDdd[] = {
     SEQ_LEVEL_WATER,
@@ -187,12 +189,16 @@ s16 sDynJrb[] = {
     5, // bogus entry, ignored (was JRB originally intended to have spooky music?)
 };
 s16 sDynWdw[] = {
-    SEQ_LEVEL_UNDERGROUND, DYN2(MARIO_Y_LT, -670, MARIO_IS_IN_AREA, AREA_WDW_MAIN & 0xf, 4),
-    DYN1(MARIO_IS_IN_AREA, AREA_WDW_TOWN & 0xf, 4), 3,
+    SEQ_LEVEL_UNDERGROUND,
+    DYN2(MARIO_Y_LT, -670, MARIO_IS_IN_AREA, AREA_WDW_MAIN & 0xf, 4),
+    DYN1(MARIO_IS_IN_AREA, AREA_WDW_TOWN & 0xf, 4),
+    3,
 };
 s16 sDynHmc[] = {
-    SEQ_LEVEL_UNDERGROUND, DYN2(MARIO_X_GE, 0, MARIO_Y_LT, -203, 4),
-    DYN2(MARIO_X_LT, 0, MARIO_Y_LT, -2400, 4), 3,
+    SEQ_LEVEL_UNDERGROUND,
+    DYN2(MARIO_X_GE, 0, MARIO_Y_LT, -203, 4),
+    DYN2(MARIO_X_LT, 0, MARIO_Y_LT, -2400, 4),
+    3,
 };
 s16 sDynUnk38[] = {
     SEQ_LEVEL_UNDERGROUND,
@@ -366,7 +372,6 @@ u8 sBackgroundMusicQueueSize = 0;
 #ifndef VERSION_JP
 u8 sUnused8033323C = 0; // never read, set to 0
 #endif
-
 
 // bss
 #if defined(VERSION_JP) || defined(VERSION_US)
@@ -700,7 +705,7 @@ void maybe_tick_game_sound(void) {
 #ifdef VERSION_EU
     func_802ad7a0();
 #else
-    func_sh_802F64C8(); // moved in SH
+    func_sh_802F64C8();    // moved in SH
 #endif
 }
 
@@ -820,15 +825,45 @@ struct SPTask *create_next_audio_frame_task(void) {
 }
 #endif
 
+// mario, luigi, coop
+// free: 2479, 247b, 247e, 247f, , 0x242A, 0x2469, 0x246A
+// free used 0x2429
+u16 peachVoiceTable[9][3] = { { 0x2428, 0x2468, 0x2429 }, { 0x2438, 0x2478, 0x2438 },
+                              { 0x2439, 0x2439, 0x2439 }, { 0x243A, 0x243A, 0x243A },
+                              { 0x243B, 0x247B, 0x243B }, { 0x243C, 0x243C, 0x243C },
+                              { 0x243D, 0x243D, 0x243D }, { 0x243E, 0x247E, 0x243E },
+                              { 0x243F, 0x247F, 0x243F } };
+
+u16 soundTableEntry(u16 soundBits) {
+    int i = 0;
+    while (1) {
+        if (peachVoiceTable[i][0] == soundBits) {
+            if (gActivePlayers == 1) {
+                if (!singlePlayerChar) {
+                    return (peachVoiceTable[i][0] - soundBits);
+                } else {
+                    return (peachVoiceTable[i][1] - soundBits);
+                }
+            } else {
+                return (peachVoiceTable[i][2] - soundBits);
+            }
+        }
+        i++;
+    }
+}
 /**
  * Called from threads: thread5_game_loop
  */
 void play_sound(s32 soundBits, f32 *pos) {
-    if (((soundBits >> 16) >= 0x2400) && ((soundBits >> 16) < 0x2440)) {
-        if ((gMarioStates[1].marioObj != NULL) && (pos == gMarioStates[1].marioObj->soundOrigin)) {
-            soundBits += 0x400000;
-        } else if (singlePlayerChar && (PLAYERCOUNTAGAIN < 2)) {
-            soundBits += 0x400000;
+    if (((soundBits >> 16)&0xFF00) == 0x2400) {
+        if (((soundBits >> 16) < 0x2438) && ((soundBits >> 16) != 0x2428)) {
+            if ((gMarioStates[1].marioObj != NULL) && (pos == gMarioStates[1].marioObj->soundOrigin)) {
+                soundBits += 0x400000;
+            } else if (singlePlayerChar && (PLAYERCOUNTAGAIN < 2)) {
+                soundBits += 0x400000;
+            }
+        } else {
+            soundBits += (soundTableEntry((soundBits >> 16)) * 0x10000);
         }
     }
 
@@ -1774,7 +1809,8 @@ void seq_player_fade_out(u8 player, u16 fadeDuration) {
 #ifdef VERSION_EU
     u32 fd = fadeDuration;
 #else
-    s32 fd = fadeDuration; // will also match if we change function signature func_802ad74c to use s32 as arg1
+    s32 fd = fadeDuration; // will also match if we change function signature func_802ad74c to use s32
+                           // as arg1
 #endif
     if (!player) {
         sCurrentBackgroundMusicSeqId = SEQUENCE_NONE;
@@ -1954,7 +1990,7 @@ void process_level_music_dynamics(void) {
             // The area matches. Break out of the loop.
             tempBits = 0;
         } else {
-            tempBits      = sLevelDynamics[gCurrLevelNum][i] & 0xff00;
+            tempBits = sLevelDynamics[gCurrLevelNum][i] & 0xff00;
             musicDynIndex = sLevelDynamics[gCurrLevelNum][i] & 0xff;
             i++;
         }
