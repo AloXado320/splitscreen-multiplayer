@@ -104,7 +104,7 @@ void editLights(Vtx *a) {
     if (Max > 0xff) {
         Max = 0xff;
     }
-    a->v.cn[3] = 0xff - Max; // ff is bowser, 0 is peach
+    a->v.cn[3] = Max; // ff is bowser, 0 is peach
 }
 Gfx *geo_exec_inside_castle_light(s32 callContext, struct GraphNode *node, UNUSED f32 mtx[4][4]) {
     s32 flags;

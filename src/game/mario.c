@@ -36,6 +36,7 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 
+extern s8 doneskipped;
 u32 unused80339F10;
 s8 filler80339F1C[20];
 
@@ -1425,6 +1426,9 @@ void update_mario_inputs(struct MarioState *m) {
         m->collidedObjInteractTypes = m->marioObj->collidedObjInteractTypes;
         m->flags &= 0xFFFFFF;
 
+        if (doneskipped >= 0) {
+            m->controller->buttonPressed = 0;
+        }
         update_mario_button_inputs(m);
         update_mario_joystick_inputs(m);
         update_mario_geometry_inputs(m);

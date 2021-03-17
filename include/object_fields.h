@@ -1027,8 +1027,8 @@
 #define /*0x0F8*/ oTTCChangeDirTimer OBJECT_FIELD_S32(0x1C)
 
 /* Beta Trampoline */
-#define /*0x110*/ oBetaTrampolineMarioOnTrampoline OBJECT_FIELD_S32(0x22)
-#define /*0x111*/ oBetaTrampolineAdditiveYVel      OBJECT_FIELD_F32(0x23)
+#define /*0x110*/ oBetaTrampolineMarioOnTrampoline OBJECT_FIELD_S32(0x1B)
+#define /*0x114*/ oBetaTrampolineAdditiveYVel      OBJECT_FIELD_F32(0x1C)
 
 /* Treasure Chest */
 #define /*0x0F4*/ oTreasureChestUnkF4 OBJECT_FIELD_S32(0x1B)

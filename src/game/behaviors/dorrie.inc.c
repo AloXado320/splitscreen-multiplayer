@@ -20,7 +20,7 @@ void dorrie_raise_head(void) {
 
         // kazetodo: spawn a collision here for multiplayer
         if (!o->ODorrieMPColl) {
-            o->ODorrieMPColl = spawn_object(o, MODEL_METAL_BOX, bhvPushableMetalBox);
+            o->ODorrieMPColl = spawn_object(o, 0, bhvPushableMetalBox);
             o->ODorrieMPColl->oPosX = gMarioObject->oPosX + xzDisp * sins(o->oMoveAngleYaw);
             o->ODorrieMPColl->oPosY = gMarioObject->oPosY - yDisp - 317.f;
             o->ODorrieMPColl->oPosZ = gMarioObject->oPosZ + xzDisp * coss(o->oMoveAngleYaw);

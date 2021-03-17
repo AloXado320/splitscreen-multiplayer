@@ -21,6 +21,7 @@
 #include "profiler.h"
 #include "save_file.h"
 #include "spawn_object.h"
+#include "buffers/buffers.h"
 
 /**
  * Flags controlling what debug info is displayed.
@@ -304,6 +305,7 @@ void bhv_despawnIf2Player(void) {
     }
 }
 
+extern void get_all_stars();
 /**
  * Mario's primary behavior update function.
  */
@@ -330,7 +332,7 @@ void bhv_mario_update(void) {
     }*/
     // give stars
     // debug
-    // get_all_stars();
+     get_all_stars();
     //  gCurrentObject->header.gfx.sharedChild = 0;
     gCurrentObject->oAnimState = l;
     gMarioStates[l].marioObj = gCurrentObject;

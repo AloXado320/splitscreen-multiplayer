@@ -257,6 +257,12 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "36_peach_luigi2_custom"
+        },
+        "inst46": {
+            "ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"],
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "37_peach_dear_mario_and_luigi_custom"
         }
     },
     "instrument_list": [
@@ -307,6 +313,7 @@
         "inst42",
         "inst43",
         "inst44",
-        "inst45"
+        "inst45",
+        "inst46"
     ]
 }

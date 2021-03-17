@@ -2030,7 +2030,7 @@ sound_ref .sound_mario_uh
 sound_ref .sound_mario_hrmm
 sound_ref .sound_mario_wah2
 sound_ref .sound_peach_dear_mario
-sound_ref .sound_mario_jump_hoo
+sound_ref .sound_peach_dear_marioluigi
 sound_ref .sound_mario_jump_hoo
 sound_ref .sound_mario_yahoo
 sound_ref .sound_mario_yahoo
@@ -2093,7 +2093,7 @@ sound_ref .sound_luigi_punch_wah
 sound_ref .sound_luigi_uh
 sound_ref .sound_luigi_hrmm
 sound_ref .sound_luigi_wah2
-sound_ref .sound_peach_dear_mario
+sound_ref .sound_peach_dear_luigi
 sound_ref .sound_luigi_jump_hoo
 sound_ref .sound_luigi_jump_hoo
 sound_ref .sound_luigi_yahoo
@@ -2783,6 +2783,20 @@ layer_jump .layer_C4E
   chan_transpose 0
   chan_setbank 10
   chan_setinstr 15
+  chan_setlayer 0, .layer_E6F
+  chan_end
+
+  .sound_peach_dear_luigi:
+  chan_transpose 0
+  chan_setbank 10
+  chan_setinstr 39
+  chan_setlayer 0, .layer_E6F
+  chan_end
+
+  .sound_peach_dear_marioluigi:
+  chan_transpose 0
+  chan_setbank 10
+  chan_setinstr 48
   chan_setlayer 0, .layer_E6F
   chan_end
 

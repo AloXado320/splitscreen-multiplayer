@@ -71,7 +71,7 @@ static s8 gMarioAttackScaleAnimation[3 * 6] = {
 };
 
 struct MarioBodyState gBodyStates[2];   // 2nd is never accessed in practice, most likely Luigi related
-struct GraphNodeObject gMirrorMario[2]; // copy of Mario's geo node for drawing mirror Mario
+struct Object gMirrorMario[2]; // copy of Mario's geo node for drawing mirror Mario
 
 // This whole file is weirdly organized. It has to be the same file due
 // to rodata boundaries and function aligns, which means the programmer
@@ -450,7 +450,6 @@ Gfx *geo_mario_head_rotation(s32 callContext, struct GraphNode *node, UNUSED Mat
     struct MarioBodyState *bodyState;
     s32 action;
     struct Object *obj;
-    if ((gCurGraphNodeObject != &gMirrorMario[0]) && (gCurGraphNodeObject != &gMirrorMario[1])) {
 
         if (callContext == GEO_CONTEXT_RENDER) {
             struct GraphNodeRotation *rotNode = (struct GraphNodeRotation *) node->next;
@@ -474,7 +473,6 @@ Gfx *geo_mario_head_rotation(s32 callContext, struct GraphNode *node, UNUSED Mat
                 vec3s_set(rotNode->rotation, 0, 0, 0);
             }
         }
-    }
     return NULL;
 }
 
@@ -553,14 +551,14 @@ Gfx *geo_switch_mario_cap_effect(s32 callContext, struct GraphNode *node, UNUSED
     struct MarioBodyState *bodyState;
     struct Object *obj;
 
-    if (callContext == GEO_CONTEXT_RENDER) {
-        obj = (struct Object *) gCurGraphNodeObject;
-        if (gCurGraphNodeHeldObject != 0) {
-            obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
+        if (callContext == GEO_CONTEXT_RENDER) {
+            obj = (struct Object *) gCurGraphNodeObject;
+            if (gCurGraphNodeHeldObject != 0) {
+                obj = (struct Object *) gCurGraphNodeHeldObject->objNode;
+            }
+            bodyState = &gBodyStates[obj->oAnimState];
+            switchCase->selectedCase = bodyState->modelState >> 8;
         }
-        bodyState = &gBodyStates[obj->oAnimState];
-        switchCase->selectedCase = bodyState->modelState >> 8;
-    }
     return NULL;
 }
 
@@ -635,7 +633,6 @@ Gfx *geo_switch_mario_hand_grab_pos(s32 callContext, struct GraphNode *b, Mat4 *
     Mat4 *curTransform = mtx;
     struct Object *obj;
     struct MarioState *marioState;
-    if ((gCurGraphNodeObject != &gMirrorMario[0]) && (gCurGraphNodeObject != &gMirrorMario[1])) {
 
         if (callContext == GEO_CONTEXT_RENDER) {
             obj = (struct Object *) gCurGraphNodeObject;
@@ -674,7 +671,6 @@ Gfx *geo_switch_mario_hand_grab_pos(s32 callContext, struct GraphNode *b, Mat4 *
             get_pos_from_transform_mtx(marioState->marioBodyState->heldObjLastPosition, *curTransform,
                                        *gCurGraphNodeCamera->matrixPtr);
         }
-    }
     return NULL;
 }
 
@@ -685,46 +681,50 @@ Gfx *geo_switch_mario_hand_grab_pos(s32 callContext, struct GraphNode *b, Mat4 *
  * Geo node that creates a clone of Mario's geo node and updates it to becomes
  * a mirror image of the player.
  */
-u8 mirrorstates[2] = { 0, 0 };
 Gfx *geo_render_mirror_mario(s32 callContext, struct GraphNode *node, UNUSED Mat4 *c) {
     f32 mirroredX;
     int i;
-    struct Object *mario;
-    for (i = 0; i < gActivePlayers; i++) {
+    struct Object *mario = gMarioStates[luigiCamFirst].marioObj;
+    switch (callContext) {
+        case GEO_CONTEXT_CREATE:
+            for (i = 0; i < gActivePlayers; i++) {
+                init_graph_node_object(NULL, &gMirrorMario[i], NULL, gVec3fZero, gVec3sZero, gVec3fOne);
+            }
+            break;
+        case GEO_CONTEXT_AREA_LOAD:
+            for (i = 0; i < gActivePlayers; i++) {
+                geo_add_child(node, &gMirrorMario[i].header.gfx.node);
+            }
+            break;
+        case GEO_CONTEXT_AREA_UNLOAD:
+            for (i = 0; i < gActivePlayers; i++) {
+                geo_remove_child(&gMirrorMario[i].header.gfx.node);
+            }
+            break;
+        case GEO_CONTEXT_RENDER:
+            if (mario->header.gfx.pos[0] > 1700.0f) {
+                // TODO: Is this a geo layout copy or a graph node copy?
+                gMirrorMario[luigiCamFirst].header.gfx.sharedChild = mario->header.gfx.sharedChild;
+                gMirrorMario[luigiCamFirst].header.gfx.areaIndex = mario->header.gfx.areaIndex;
+                vec3s_copy(gMirrorMario[luigiCamFirst].header.gfx.angle, mario->header.gfx.angle);
+                vec3f_copy(gMirrorMario[luigiCamFirst].header.gfx.pos, mario->header.gfx.pos);
+                vec3f_copy(gMirrorMario[luigiCamFirst].header.gfx.scale, mario->header.gfx.scale);
 
-        mario = gMarioStates[i].marioObj;
-
-        switch (callContext) {
-            case GEO_CONTEXT_CREATE:
-                init_graph_node_object(NULL, &gMirrorMario[i], NULL, gVec3fZero, gVec3sZero,
-                                       gVec3fOne);
-                break;
-            case GEO_CONTEXT_AREA_LOAD:
-                geo_add_child(node, &gMirrorMario[i].node);
-                break;
-            case GEO_CONTEXT_AREA_UNLOAD:
-                geo_remove_child(&gMirrorMario[i].node);
-                break;
-            case GEO_CONTEXT_RENDER:
-                if (mario->header.gfx.pos[0] > 1700.0f) {
-                    // TODO: Is this a geo layout copy or a graph node copy?
-                    gMirrorMario[i].sharedChild = mario->header.gfx.sharedChild;
-                    gMirrorMario[i].areaIndex = mario->header.gfx.areaIndex;
-                    vec3s_copy(gMirrorMario[i].angle, mario->header.gfx.angle);
-                    vec3f_copy(gMirrorMario[i].pos, mario->header.gfx.pos);
-                    vec3f_copy(gMirrorMario[i].scale, mario->header.gfx.scale);
-
-                    gMirrorMario[i].animInfo = mario->header.gfx.animInfo;
-                    mirroredX = MIRROR_X - gMirrorMario[i].pos[0];
-                    gMirrorMario[i].pos[0] = mirroredX + MIRROR_X;
-                    gMirrorMario[i].angle[1] = -gMirrorMario[i].angle[1];
-                    gMirrorMario[i].scale[0] *= -1.0f;
-                    ((struct GraphNode *) &gMirrorMario[i])->flags |= 1;
-                } else {
-                    ((struct GraphNode *) &gMirrorMario[i])->flags &= ~1;
-                }
-                break;
-        }
+                // print_text_fmt_int(100, 10 + luigiCamFirst * 20, "%d",
+                // gMirrorMario[luigiCamFirst].animInfo.animFrame);
+                gMirrorMario[luigiCamFirst].header.gfx.animInfo = mario->header.gfx.animInfo;
+                // print_text_fmt_int(10, 10 + luigiCamFirst * 20, "%d",
+                // gMirrorMario[luigiCamFirst].animInfo.animFrame);
+                mirroredX = MIRROR_X - gMirrorMario[luigiCamFirst].header.gfx.pos[0];
+                gMirrorMario[luigiCamFirst].oAnimState = mario->oAnimState;
+                gMirrorMario[luigiCamFirst].header.gfx.pos[0] = mirroredX + MIRROR_X;
+                gMirrorMario[luigiCamFirst].header.gfx.angle[1] = -gMirrorMario[luigiCamFirst].header.gfx.angle[1];
+                gMirrorMario[luigiCamFirst].header.gfx.scale[0] *= -1.0f;
+                ((struct GraphNode *) &gMirrorMario[luigiCamFirst])->flags |= 1;
+            } else {
+                ((struct GraphNode *) &gMirrorMario[luigiCamFirst])->flags &= ~1;
+            }
+            break;
     }
     return NULL;
 }
@@ -737,7 +737,8 @@ Gfx *geo_mirror_mario_backface_culling(s32 callContext, struct GraphNode *node, 
     struct GraphNodeGenerated *asGenerated = (struct GraphNodeGenerated *) node;
     Gfx *gfx = NULL;
 
-    if (callContext == GEO_CONTEXT_RENDER && ((gCurGraphNodeObject == &gMirrorMario[0]) || (gCurGraphNodeObject == &gMirrorMario[1]))  )  {
+    if (callContext == GEO_CONTEXT_RENDER
+        && ((gCurGraphNodeObject == &gMirrorMario[0].header.gfx) || (gCurGraphNodeObject == &gMirrorMario[1].header.gfx))) {
         gfx = alloc_display_list(3 * sizeof(*gfx));
 
         if (asGenerated->parameter == 0) {

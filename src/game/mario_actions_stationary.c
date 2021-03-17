@@ -280,11 +280,11 @@ s32 act_sleeping(struct MarioState *m) {
             }
 
             if (animFrame == 2) {
-                //play_sound(SOUND_MARIO_SNORING1, m->marioObj->soundOrigin);
+                play_sound(SOUND_MARIO_SNORING1, m->marioObj->soundOrigin);
             }
 
             if (animFrame == 20) {
-                //play_sound(SOUND_MARIO_SNORING2, m->marioObj->soundOrigin);
+                play_sound(SOUND_MARIO_SNORING2, m->marioObj->soundOrigin);
             }
 
             if (is_anim_at_end(m)) {

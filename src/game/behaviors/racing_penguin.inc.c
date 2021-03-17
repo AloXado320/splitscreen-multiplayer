@@ -25,10 +25,13 @@ static void racing_penguin_act_wait_for_mario(void) {
 }
 
 static void racing_penguin_act_show_init_text(void) {
-    s32 response = 1;
-
-    if (response == 1) {
         struct Object *child;
+    s32 response = 1;
+    if (gActivePlayers == 1){
+        
+    response = obj_update_race_proposition_dialog(sRacingPenguinData[o->oBehParams2ndByte].text);
+    }
+    if (response == 1) {
 
         child = cur_obj_nearest_object_with_behavior(bhvPenguinRaceFinishLine);
         child->parentObj = o;
@@ -120,7 +123,12 @@ static void racing_penguin_act_show_final_text(void) {
 
             if (cur_obj_can_mario_activate_textbox_2(400.0f, 400.0f)) {
                 if (o->oRacingPenguinMarioWon) {
-                    o->oRacingPenguinFinalTextbox = DIALOG_056;
+                    if (o->oRacingPenguinMarioCheated) {
+                        o->oRacingPenguinFinalTextbox = DIALOG_132;
+                        o->oRacingPenguinMarioWon = FALSE;
+                    } else {
+                        o->oRacingPenguinFinalTextbox = DIALOG_056;
+                    }
                 } else {
                     o->oRacingPenguinFinalTextbox = DIALOG_037;
                 }
