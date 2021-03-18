@@ -205,6 +205,7 @@ extern const Collision unknown_seg8_collision_080262F8[];
 
 //Ice Motos
 extern const GeoLayout RCP_HmsEnemyicemotos_basedata_A[];
+extern const struct Animation *const motos_anime[];
 extern const Gfx RCP_icemotos_LhandB[];
 extern const Gfx RCP_icemotos_LhandA[];
 extern const Gfx RCP_icemotos_RhandA[];
