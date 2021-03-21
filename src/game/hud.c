@@ -547,10 +547,10 @@ void render_hud(void) {
     int i;
 
     hudDisplayFlags = gHudDisplay.flags;
-    
+
     /*
     ** dev build hud strings to prevent one claiming screenshots as their own
-    ** uncomment for releases
+    ** comment out for releases
     */
 
     print_text_centered(SCREEN_WIDTH / 2, 209, "U64MB DEV BUILD");
