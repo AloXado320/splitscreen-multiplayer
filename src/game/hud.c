@@ -547,6 +547,16 @@ void render_hud(void) {
     int i;
 
     hudDisplayFlags = gHudDisplay.flags;
+    
+    /*
+    ** dev build hud strings to prevent one claiming screenshots as their own
+    ** uncomment for releases
+    */
+
+    print_text_centered(SCREEN_WIDTH / 2, 209, "U64MB DEV BUILD");
+    if ((gGlobalTimer & 0x1F) < 20) {
+    print_text_centered(SCREEN_WIDTH / 2, 10, "INTERNAL USE ONLY");
+    }
 
     if (hudDisplayFlags == HUD_DISPLAY_NONE) {
         sPowerMeterHUD[0].animation = POWER_METER_HIDDEN;
