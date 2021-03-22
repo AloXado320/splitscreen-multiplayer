@@ -126,7 +126,7 @@ ALIGNED8 static const Texture title_texture_0A005940[] = {
 
 // 0x0A005940
 ALIGNED8 static const Texture marioOption[] = {
-#include "textures/title_screen_bg/mareo_custom.rgba16.inc.c"
+#include "textures/title_screen_bg/mario_custom.rgba16.inc.c"
 };
 
 ALIGNED8 static const Texture luigiOption[] = {
@@ -156,7 +156,7 @@ const u8 *const game_over_texture_table[] = {
 
 UNUSED static const u64 title_screen_bg_unused_0 = 0;
 
-#ifdef VERSION_SH
+//#ifdef VERSION_SH
 const Gfx title_screen_bg_dl_0A0065E8[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_COPY),
@@ -175,9 +175,22 @@ const Gfx title_screen_bg_dl_0A006618[] = {
     gsSPEndDisplayList(),
 };
 
+#ifdef VERSION_JP
 ALIGNED8 static const u8 title_texture_rumble_pak[] = {
-#include "textures/title_screen_bg/title_screen_bg.06648.rgba16.inc.c"
+#include "textures/title_screen_bg/title_screen_bg.06648.custom.jp.rgba16.inc.c"
+#endif
+
+#ifdef VERSION_SH
+ALIGNED8 static const u8 title_texture_rumble_pak[] = {
+#include "textures/title_screen_bg/title_screen_bg.06648.custom.jp.rgba16.inc.c"
 };
+#endif
+
+#ifdef VERSION_US
+ALIGNED8 static const u8 title_texture_rumble_pak[] = {
+#include "textures/title_screen_bg/title_screen_bg.06648.custom.us.rgba16.inc.c"
+};
+#endif
 
 const Gfx title_screen_bg_dl_0A007548[] = {
     gsDPPipeSync(),
@@ -195,4 +208,4 @@ const Gfx title_screen_bg_dl_0A007548[] = {
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPEndDisplayList(),
 };
-#endif
+//#endif

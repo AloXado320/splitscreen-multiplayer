@@ -7192,7 +7192,7 @@ void player2_rotate_cam(struct Camera *c, s16 minPitch, s16 maxPitch, s16 minYaw
     s16 pitch, yaw, pitchCap;
 
     // Change the camera rotation to match the 2nd player's stick
-    approach_s16_asymptotic_bool(&sCreditsPlayer2Yaw[c->cameraID],
+/*    approach_s16_asymptotic_bool(&sCreditsPlayer2Yaw[c->cameraID],
                                  -(s16)(gPlayer2Controller->stickX * 250.f), 4);
     approach_s16_asymptotic_bool(&sCreditsPlayer2Pitch[c->cameraID],
                                  -(s16)(gPlayer2Controller->stickY * 265.f), 4);
@@ -7231,7 +7231,7 @@ void player2_rotate_cam(struct Camera *c, s16 minPitch, s16 maxPitch, s16 minYaw
     pitch += sCreditsPlayer2Pitch[c->cameraID];
     yaw += sCreditsPlayer2Yaw[c->cameraID];
     vec3f_set_dist_and_angle(c->pos, sPlayer2FocusOffset[c->cameraID], distCamToFocus, pitch, yaw);
-    vec3f_sub(sPlayer2FocusOffset[c->cameraID], c->focus);
+    vec3f_sub(sPlayer2FocusOffset[c->cameraID], c->focus);*/
 }
 
 /**

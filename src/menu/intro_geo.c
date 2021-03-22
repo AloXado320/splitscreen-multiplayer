@@ -28,9 +28,9 @@ struct GraphNodeMore {
 };
 
 // intro geo bss
-#ifdef VERSION_SH
+//#ifdef VERSION_SH
 static u16 *sFrameBuffers[3];
-#endif
+//#endif
 static s32 sGameOverFrameCounter;
 static s32 sGameOverTableIndex;
 static s16 sIntroFrameCounter;
@@ -312,7 +312,7 @@ Gfx *geo_intro_gameover_backdrop(s32 state, struct GraphNode *node, UNUSED void 
     return dl;
 }
 
-#ifdef VERSION_SH
+//#ifdef VERSION_SH
 extern Gfx title_screen_bg_dl_0A0065E8[];
 extern Gfx title_screen_bg_dl_0A006618[];
 extern Gfx title_screen_bg_dl_0A007548[];
@@ -505,4 +505,4 @@ Gfx *geo_intro_rumble_pak_graphic(s32 state, struct GraphNode *node, UNUSED void
     return dl;
 }
 
-#endif
+//#endif

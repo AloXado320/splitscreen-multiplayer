@@ -3149,7 +3149,7 @@ void update_cursor(void) {
         sHandView->upperLeft.y = sHandView->parent->upperLeft.y + sHandView->parent->lowerRight.y;
     }
     if (gGdCtrl.startedDragging) {
-        if (handCollission(50.0f, 25.0f)) {
+        if (handCollission(50.0f, 25.0f)) { //player clicks mario button
             startGame = 1;
             singlePlayerChar = 0;
             gActivePlayers = 1;
@@ -3163,7 +3163,7 @@ void update_cursor(void) {
                 str[11 + i] = 0x9e;
             }
         }
-        if (handCollission(130.0f, 25.0f)) {
+        if (handCollission(130.0f, 25.0f)) { //player clicks luigi button
             startGame = 1;
             singlePlayerChar = 1;
             gActivePlayers = 1;
@@ -3176,7 +3176,21 @@ void update_cursor(void) {
             for (i = 0; i < 10; i++) {
                 str[11 + i] = 0x9e;
             }
-#define TEXTBLOCKSIZE 0x7F00
+
+            if (handCollission(210.0f, 25.0f)) { //player clicks coop button
+             startGame = 1;
+                singlePlayerChar = 0;
+                gActivePlayers = 2;
+                coop = 1;
+            }
+            if (handCollission(290.0f, 25.0f)) { //player clicks vs button
+                startGame = 1;
+                singlePlayerChar = 0;
+                gActivePlayers = 2;
+                coop = 0;
+            }
+
+            #define TEXTBLOCKSIZE 0x7F00
             // replace mario references with luigi
             dialog = (struct DialogEntry *) segmented_to_virtual(dialogTable[0]);
             str = segmented_to_virtual(dialog->str);
@@ -3197,18 +3211,6 @@ void update_cursor(void) {
                     }
                 }
             }
-        }
-        if (handCollission(210.0f, 25.0f)) {
-            startGame = 1;
-            singlePlayerChar = 0;
-            gActivePlayers = 2;
-            coop = 1;
-        }
-        if (handCollission(290.0f, 25.0f)) {
-            startGame = 1;
-            singlePlayerChar = 0;
-            gActivePlayers = 2;
-            coop = 0;
         }
     }
 }

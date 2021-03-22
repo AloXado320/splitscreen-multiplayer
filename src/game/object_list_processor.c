@@ -332,7 +332,7 @@ void bhv_mario_update(void) {
     }*/
     // give stars
     // debug
-     get_all_stars();
+     //get_all_stars();
     //  gCurrentObject->header.gfx.sharedChild = 0;
     gCurrentObject->oAnimState = l;
     gMarioStates[l].marioObj = gCurrentObject;

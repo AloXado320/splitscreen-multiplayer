@@ -553,7 +553,7 @@ void render_hud(void) {
     ** comment out for releases
     */
 
-    //print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB RC1"); //release candidate string
+    //print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB RC1"); //release candidate string (change rc1 to rc2, etc for later rc's)
     //print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB BETA"); //beta string?
     print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB DEV BUILD");
     if ((gGlobalTimer & 0x1F) < 20) {
