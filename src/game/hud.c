@@ -553,6 +553,7 @@ void render_hud(void) {
     ** comment out for releases
     */
 
+    //print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB RC1"); //release candidate string
     print_text_centered(SCREEN_WIDTH / 2, 199, "U64MB DEV BUILD");
     if ((gGlobalTimer & 0x1F) < 20) {
     print_text_centered(SCREEN_WIDTH / 2, 10, "INTERNAL USE ONLY");
