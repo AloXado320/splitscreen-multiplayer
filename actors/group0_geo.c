@@ -18,3 +18,5 @@
 #include "player_shared/geo.inc.c"
 #include "mario/geo.inc.c"
 #include "luigi/geo.inc.c"
+
+#include "Luigi/geo.inc.c"
