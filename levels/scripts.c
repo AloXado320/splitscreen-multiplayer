@@ -33,6 +33,7 @@
 #include "levels/intro/header.h"
 #include "levels/castle/header.h"
 #include "levels/donjon/header.h"
+#include "levels/dummy/header.h"
 #include "levels/iwtest/header.h"
 #include "levels/sand/header.h"
 #include "levels/test/header.h"
