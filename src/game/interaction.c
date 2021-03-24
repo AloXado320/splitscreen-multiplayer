@@ -1642,7 +1642,7 @@ u32 interact_cap(struct MarioState *m, UNUSED u32 interactType, struct Object *o
             case MARIO_VANISH_CAP:
                 capTime = 600;
                 if (coop || (gActivePlayers == 1)) {
-                    capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_POWERUP);
+                    capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_VANISH_CAP);
                 } else {
                     capMusic = SEQUENCE_ARGS(4, SEQ_EVENT_VANISH_CAP);
                 }
