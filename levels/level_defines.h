@@ -51,7 +51,7 @@ DEFINE_LEVEL("EXT8 BLUE SKY",  LEVEL_WMOTR,            COURSE_WMOTR,    wmotr,  
 DEFINE_LEVEL("YAJIMA TEST",    LEVEL_YAJIMA_TEST,      COURSE_BOB,      yajima_test,      generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("KUPPA2",         LEVEL_BOWSER_2,         COURSE_BITFS,    bowser_2,         fire,     VAL_DIFF, 0x40, 0x40, 0x40, _,         _)
 DEFINE_LEVEL("KUPPA3",         LEVEL_BOWSER_3,         COURSE_BITS,     bowser_3,         generic,  VAL_DIFF, 0x40, 0x40, 0x40, _,         _)
-DEFINE_LEVEL("DUMMY",          LEVEL_DUMMY,            COURSE_NONE,     dummy,            generic,  15000,    0x08, 0x08, 0x08, _,         _)
+DEFINE_LEVEL("DUMMY",          LEVEL_DUMMY,            COURSE_BOB,      dummy,            generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("DONKEY % SLID2", LEVEL_TTM,              COURSE_TTM,      ttm,              mountain, 15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("IWTEST",         LEVEL_IWTEST,           COURSE_BOB,      iwtest,           generic,  15000,    0x08, 0x08, 0x08, _,         _)
 DEFINE_LEVEL("SAND",           LEVEL_SAND,             COURSE_BOB,      sand,             generic,  15000,    0x08, 0x08, 0x08, _,         _)
