@@ -1,8 +1,12 @@
 # Project Ultra 64 Mario Bros.
 
-- This Modification of Super Mario 64 (1996) aims to implement Luigi and Co-op as well as other enhancements.
+- This Decompilation Project-based Modification of Super Mario 64 (N64, 1996-97) aims to implement Luigi and Co-op as well as other enhancements.
 
-# Super Mario 64
+# IMPORTANT Copyright Disclaimer
+
+- Ultra 64 MARIO Bros. is Copyright (C) 1994-1995 Nintendo Co, Ltd. Super Mario 64 is Copyright (C) 1996-2003 Nintendo Co, Ltd. All rights belong to their respective owners.
+
+# Super Mario 64 Decompilation Project
 
 This repo contains a full decompilation of Super Mario 64 (J), (U), (E), and (SH).
 - Naming and documentation of the source code and data structures are in progress.
