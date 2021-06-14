@@ -1,6 +1,6 @@
-# Ultra 64 Mario Bros.
+# Project Ultra 64 Mario Bros.
 
-- This repo aims to combine Splitscreen and Single Player with the ability to select Mario or Luigi.
+- This Modification of Super Mario 64 (1996) aims to implement Luigi and Co-op as well as other enhancements.
 
 # Super Mario 64
 
